@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Eagl. — Trouve ton partenaire de golf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --eagl:#1a1a1a;--gold:#C9A84C;--gl:#F5EDD4;--gd:#7A5E1A;
+  --gr:#1D9E75;--grl:#E1F5EE;
+  --bg:#ffffff;--bg2:#f5f5f5;--b:rgba(0,0,0,0.1);
+  --t:#1a1a1a;--m:#888;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#111;--bg2:#1e1e1e;--b:rgba(255,255,255,0.1);--t:#f0f0f0;--m:#888}
+}
+html,body{height:100%;background:#000;display:flex;justify-content:center;align-items:center;font-family:'DM Sans',sans-serif;overflow:hidden}
+.phone{width:100%;max-width:390px;height:100%;max-height:844px;background:var(--bg);border-radius:40px;overflow:hidden;display:flex;flex-direction:column;position:relative;border:8px solid #222;box-shadow:0 40px 80px rgba(0,0,0,0.8)}
+@media(max-width:420px){.phone{border-radius:0;border:none;max-height:100%}}
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden}
+.screen.active{display:flex}
+.scroll{overflow-y:auto;flex:1;padding-bottom:80px;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+
+/* STATUS BAR */
+.sb{display:flex;justify-content:space-between;padding:14px 22px 4px;font-size:12px;font-weight:500;color:var(--t);background:var(--bg)}
+
+/* HEADER */
+.hdr{padding:4px 20px 14px;display:flex;align-items:center;justify-content:space-between;background:var(--bg)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--t)}
+.logo span{color:var(--gold)}
+.back-btn{width:34px;height:34px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;border:0.5px solid var(--b);color:var(--t)}
+.av{width:36px;height:36px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;color:var(--gd);cursor:pointer}
+.notif{width:36px;height:36px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:16px;border:0.5px solid var(--b)}
+
+/* BOTTOM NAV */
+.bnav{display:flex;border-top:0.5px solid var(--b);background:var(--bg);padding:8px 0 18px;position:absolute;bottom:0;left:0;right:0}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;color:var(--m)}
+.ni-ico{font-size:20px}
+.ni-lbl{font-size:9px;font-weight:400}
+.ni.active .ni-lbl{color:var(--gd);font-weight:500}
+.ni.active .ni-ico{filter:none}
+
+/* CHIPS */
+.chips{display:flex;gap:8px;padding:0 16px 14px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0;border:none;font-family:'DM Sans',sans-serif}
+.chip.on{background:var(--eagl);color:var(--gold)}
+.chip.off{background:var(--bg2);color:var(--m)}
+
+/* CARDS */
+.card{background:var(--bg);border:0.5px solid var(--b);border-radius:16px;margin:0 16px 10px;overflow:hidden;cursor:pointer}
+.card:active{opacity:.9}
+.sect-lbl{font-size:11px;color:var(--m);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+
+/* HERO */
+.hero{margin:0 16px 18px;background:var(--eagl);border-radius:18px;padding:20px}
+.hero-eye{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:3px}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:24px;color:#fff;letter-spacing:1px;margin-bottom:14px}
+.hero-stats{display:flex}
+.hs{flex:1;border-right:0.5px solid rgba(255,255,255,.1);padding-right:14px;margin-right:14px}
+.hs:last-child{border:none;margin:0}
+.hs-v{font-size:22px;font-weight:500;color:#fff;line-height:1}
+.hs-l{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* QUICK ACTIONS */
+.qa-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:0 16px 20px}
+.qa{display:flex;flex-direction:column;align-items:center;gap:5px;padding:11px 3px;background:var(--bg2);border-radius:14px;cursor:pointer;border:0.5px solid var(--b)}
+.qa:active{opacity:.8}
+.qa-ico{font-size:18px}
+.qa-lbl{font-size:9px;color:var(--m);text-align:center;line-height:1.2}
+
+/* PARTY CARD */
+.party-card{margin:0 16px 10px;background:var(--bg);border:1.5px solid var(--gr);border-radius:16px;padding:14px;cursor:pointer}
+.party-card.secondary{border:0.5px solid var(--b)}
+
+/* NEWS */
+.news-scroll{display:flex;gap:10px;padding:0 16px 4px;overflow-x:auto;scrollbar-width:none}
+.news-scroll::-webkit-scrollbar{display:none}
+.nc{min-width:190px;flex-shrink:0;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;overflow:hidden;cursor:pointer}
+.nc:active{opacity:.9}
+.nc-img{height:75px;display:flex;align-items:flex-end;padding:8px}
+.nc-tag{font-size:9px;font-weight:500;padding:2px 7px;border-radius:6px;text-transform:uppercase;letter-spacing:.5px}
+.nc-body{padding:9px 12px}
+.nc-title{font-size:12px;font-weight:500;color:var(--t);line-height:1.4;margin-bottom:3px}
+.nc-meta{font-size:10px;color:var(--m)}
+
+/* GOLF CARDS */
+.gc-img{height:75px;display:flex;align-items:flex-end;padding:10px 14px;position:relative}
+.gc-rating{position:absolute;top:8px;right:10px;background:rgba(0,0,0,.45);color:#FAC775;font-size:10px;font-weight:500;padding:2px 8px;border-radius:7px}
+.gc-open{position:absolute;top:8px;left:10px;font-size:9px;font-weight:500;padding:2px 8px;border-radius:7px}
+.gc-name{font-family:'Bebas Neue',sans-serif;font-size:14px;color:#fff;letter-spacing:.5px}
+.gc-body{padding:12px 14px}
+.tag{background:var(--bg2);border-radius:6px;padding:2px 7px;font-size:10px;color:var(--m)}
+.tag.pub{background:var(--grl);color:#085041}
+.tag.priv{background:#EEEDFE;color:#26215C}
+.tag.gold{background:var(--gl);color:var(--gd)}
+
+/* GROUP SELECTOR */
+.grp-sel{display:flex;gap:7px}
+.grp-btn{flex:1;padding:10px 4px;border-radius:10px;border:0.5px solid var(--b);background:var(--bg);text-align:center;cursor:pointer;transition:all .15s}
+.grp-btn.active{border-color:var(--gr);background:var(--grl)}
+
+/* ARENA */
+.arena-hero{margin:0 16px 14px;background:var(--eagl);border-radius:18px;padding:18px;overflow:hidden;position:relative}
+.tab-bar{display:flex;margin:0 16px 14px;background:var(--bg2);border-radius:12px;padding:3px;gap:2px}
+.tab-btn{flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.tab-btn.on{background:var(--eagl);color:var(--gold)}
+.tab-btn.off{background:transparent;color:var(--m)}
+
+/* LEADERBOARD */
+.lb-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:0.5px solid var(--b)}
+.lb-row:last-child{border-bottom:none}
+.lb-rank{font-size:18px;font-weight:500;min-width:24px;text-align:center}
+.lb-av{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.lb-av-round{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+
+/* PROS */
+.pro-card{margin:0 16px 10px;background:var(--bg);border:0.5px solid var(--b);border-radius:16px;padding:14px;cursor:pointer}
+.pro-av{width:58px;height:58px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;flex-shrink:0}
+.avail-slot{flex-shrink:0;text-align:center;padding:8px 10px;border-radius:10px;background:var(--bg2)}
+.avail-slot.ok{background:var(--grl);border:1px solid var(--gr)}
+
+/* BUTTONS */
+.btn-primary{width:100%;padding:13px;background:var(--eagl);color:var(--gold);border:none;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-primary:active{opacity:.85}
+.btn-secondary{width:100%;padding:11px;background:var(--bg2);color:var(--t);border:0.5px solid var(--b);border-radius:12px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-gold{padding:7px 14px;background:var(--gold);color:var(--gd);border:none;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-dark-sm{padding:7px 13px;background:var(--eagl);color:var(--gold);border:none;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+
+/* FRIEND ROW */
+.fr{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:0.5px solid var(--b)}
+.fr:last-child{border-bottom:none}
+.fr-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:13px;flex-shrink:0}
+
+/* CHAT */
+.bubble-left{display:inline-block;background:var(--bg2);border-radius:0 12px 12px 12px;padding:9px 12px;max-width:75%;margin-bottom:8px}
+.bubble-right{display:inline-block;background:var(--eagl);border-radius:12px 0 12px 12px;padding:9px 12px;max-width:75%;margin-bottom:8px}
+
+/* SEARCHBAR */
+.searchbar{margin:0 16px 12px;display:flex;align-items:center;gap:8px;background:var(--bg2);border:0.5px solid var(--b);border-radius:12px;padding:11px 14px;font-size:13px;color:var(--m)}
+
+/* ONBOARDING */
+.onb-screen{position:absolute;inset:0;background:var(--eagl);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;z-index:100;transition:opacity .4s}
+.onb-screen.hidden{opacity:0;pointer-events:none}
+.onb-logo{font-family:'Bebas Neue',sans-serif;font-size:60px;letter-spacing:4px;color:#fff;margin-bottom:4px}
+.onb-logo span{color:var(--gold)}
+.onb-sub{font-size:15px;color:rgba(255,255,255,.5);margin-bottom:48px;text-align:center}
+.onb-cta{width:100%;padding:16px;background:var(--gold);color:var(--gd);border:none;border-radius:14px;font-size:16px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;margin-bottom:12px}
+.onb-skip{font-size:13px;color:rgba(255,255,255,.4);cursor:pointer;text-align:center;padding:8px}
+
+/* INSTALL BANNER */
+.install-banner{position:absolute;bottom:90px;left:16px;right:16px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:50;animation:slideup .3s ease}
+@keyframes slideup{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.install-banner.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div class="phone">
+
+  <!-- ONBOARDING -->
+  <div class="onb-screen" id="onb">
+    <div class="onb-logo">EAGL<span>.</span></div>
+    <div class="onb-sub">Trouve tes partenaires de golf,<br>rejoins une compét, réserve ton parcours.</div>
+    <div style="display:flex;gap:12px;margin-bottom:32px">
+      <div style="text-align:center;padding:14px 20px;background:rgba(255,255,255,.06);border-radius:14px;flex:1">
+        <div style="font-size:24px;margin-bottom:4px">⛳</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">580+ golfs France</div>
+      </div>
+      <div style="text-align:center;padding:14px 20px;background:rgba(255,255,255,.06);border-radius:14px;flex:1">
+        <div style="font-size:24px;margin-bottom:4px">🤝</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">Trouve des partenaires</div>
+      </div>
+      <div style="text-align:center;padding:14px 20px;background:rgba(255,255,255,.06);border-radius:14px;flex:1">
+        <div style="font-size:24px;margin-bottom:4px">🏆</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">Eagl Arena</div>
+      </div>
+    </div>
+    <button class="onb-cta" onclick="startApp()">Commencer gratuitement →</button>
+    <div class="onb-skip" onclick="startApp()">J'ai déjà un compte · Se connecter</div>
+  </div>
+
+  <!-- INSTALL BANNER -->
+  <div class="install-banner hidden" id="install-banner">
+    <div style="width:40px;height:40px;border-radius:10px;background:var(--eagl);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);flex-shrink:0">E.</div>
+    <div style="flex:1">
+      <div style="font-size:13px;font-weight:500;color:var(--t)">Installer Eagl</div>
+      <div style="font-size:11px;color:var(--m)">Ajouter à l'écran d'accueil</div>
+    </div>
+    <button onclick="document.getElementById('install-banner').classList.add('hidden')" style="padding:7px 12px;background:var(--eagl);color:var(--gold);border:none;border-radius:20px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif">Installer</button>
+    <div onclick="document.getElementById('install-banner').classList.add('hidden')" style="font-size:18px;color:var(--m);cursor:pointer;padding:4px">✕</div>
+  </div>
+
+  <!-- ══ HOME ══ -->
+  <div class="screen active" id="s-home">
+    <div class="sb"><span>9:41</span><span>◼◼◼ 78%</span></div>
+    <div class="hdr">
+      <div class="logo">EAGL<span>.</span></div>
+      <div style="display:flex;gap:8px">
+        <div class="notif">🔔</div>
+        <div class="av" onclick="goTo('s-profile')">TM</div>
+      </div>
+    </div>
+    <div class="scroll">
+      <div class="hero">
+        <div class="hero-eye">Bonjour Thomas</div>
+        <div class="hero-title">Où veux-tu jouer ?</div>
+        <div class="hero-stats">
+          <div class="hs"><div class="hs-v">12.4</div><div class="hs-l">Handicap</div></div>
+          <div class="hs"><div class="hs-v">3</div><div class="hs-l">Amis dispo</div></div>
+          <div class="hs"><div class="hs-v" style="color:var(--gold)">5</div><div class="hs-l">Parties ouvertes</div></div>
+        </div>
+      </div>
+      <div class="qa-grid">
+        <div class="qa" onclick="goTo('s-jouer')"><div class="qa-ico">⛳</div><div class="qa-lbl">Jouer</div></div>
+        <div class="qa" onclick="goTo('s-compets')"><div class="qa-ico">🏆</div><div class="qa-lbl">Compéts</div></div>
+        <div class="qa" onclick="goTo('s-arena')"><div class="qa-ico">🔥</div><div class="qa-lbl">Arena</div></div>
+        <div class="qa" onclick="goTo('s-pros')"><div class="qa-ico">🎓</div><div class="qa-lbl">Pros</div></div>
+        <div class="qa" onclick="goTo('s-news')"><div class="qa-ico">📰</div><div class="qa-lbl">Actus</div></div>
+      </div>
+
+      <!-- Parties ouvertes -->
+      <div style="padding:0 16px;margin-bottom:10px"><div class="sect-lbl">Parties ouvertes près de toi</div></div>
+      <div class="party-card" onclick="goTo('s-partie')">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:38px;height:38px;border-radius:10px;background:#085041;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--gl);font-weight:500;flex-shrink:0">GN</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500;color:var(--t)">Golf National · Guyancourt</div>
+            <div style="font-size:11px;color:var(--m)">Sam. 29 mars · 9h30 · 18 trous</div>
+          </div>
+          <span style="font-size:10px;background:var(--grl);color:#085041;padding:3px 8px;border-radius:8px;font-weight:500">2 places</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <div style="display:flex">
+            <div style="width:28px;height:28px;border-radius:50%;background:#E1F5EE;color:#085041;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;border:2px solid var(--bg)">JL</div>
+            <div style="width:28px;height:28px;border-radius:50%;background:#EEEDFE;color:#26215C;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;border:2px solid var(--bg);margin-left:-8px">SA</div>
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--bg2);color:var(--m);display:flex;align-items:center;justify-content:center;font-size:9px;border:2px solid var(--bg);margin-left:-8px">+2?</div>
+          </div>
+          <div style="font-size:11px;color:var(--m)">Jean-Luc (14) · Sophie (9)</div>
+        </div>
+        <button class="btn-primary" onclick="event.stopPropagation();goTo('s-partie')">Rejoindre cette partie</button>
+      </div>
+      <div class="party-card secondary" onclick="goTo('s-jouer')">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div style="width:38px;height:38px;border-radius:10px;background:#3C3489;display:flex;align-items:center;justify-content:center;font-size:12px;color:#CECBF6;font-weight:500;flex-shrink:0">SC</div>
+          <div style="flex:1">
+            <div style="font-size:13px;font-weight:500;color:var(--t)">Golf de Saint-Cloud</div>
+            <div style="font-size:11px;color:var(--m)">Sam. 29 mars · 11h00</div>
+          </div>
+          <span style="font-size:10px;background:var(--grl);color:#085041;padding:3px 8px;border-radius:8px;font-weight:500">1 place</span>
+        </div>
+        <button class="btn-secondary">Demander à rejoindre</button>
+      </div>
+
+      <!-- Actus -->
+      <div style="padding:0 16px;margin:16px 0 10px"><div class="sect-lbl">Actus golf</div></div>
+      <div class="news-scroll">
+        <div class="nc">
+          <div class="nc-img" style="background:linear-gradient(135deg,#085041,#1D9E75)">
+            <span class="nc-tag" style="background:var(--gold);color:var(--gd)">Tour</span>
+          </div>
+          <div class="nc-body">
+            <div class="nc-title">Rory McIlroy remporte le Masters d'Augusta</div>
+            <div class="nc-meta">Il y a 2h · Golf.com</div>
+          </div>
+        </div>
+        <div class="nc">
+          <div class="nc-img" style="background:linear-gradient(135deg,#1a1a2a,#378ADD)">
+            <span class="nc-tag" style="background:#85B7EB;color:#042C53">Équipement</span>
+          </div>
+          <div class="nc-body">
+            <div class="nc-title">TaylorMade dévoile le Qi10 Max Tour 2026</div>
+            <div class="nc-meta">Il y a 5h · Golf Digest</div>
+          </div>
+        </div>
+        <div class="nc">
+          <div class="nc-img" style="background:linear-gradient(135deg,#2a1a0a,#BA7517)">
+            <span class="nc-tag" style="background:#FAC775;color:#412402">France</span>
+          </div>
+          <div class="nc-body">
+            <div class="nc-title">Victor Perez dans le top 20 mondial</div>
+            <div class="nc-meta">Il y a 1j · L'Équipe</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amis -->
+      <div style="padding:0 16px;margin:16px 0 10px"><div class="sect-lbl">Amis en ligne</div></div>
+      <div style="margin:0 16px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;overflow:hidden">
+        <div class="fr">
+          <div class="fr-av" style="background:#E1F5EE;color:#085041">JL</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Jean-Luc</div><div style="font-size:11px;color:var(--m)">Golf National · Trou 12</div></div>
+          <span style="font-size:10px;background:var(--grl);color:#085041;padding:2px 8px;border-radius:8px;font-weight:500">En jeu</span>
+        </div>
+        <div class="fr">
+          <div class="fr-av" style="background:#EEEDFE;color:#26215C">SA</div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Sophie A.</div><div style="font-size:11px;color:var(--m)">+2 aujourd'hui · Hcp 9</div></div>
+          <span style="font-size:10px;background:var(--bg2);color:var(--m);padding:2px 8px;border-radius:8px">Fini</span>
+        </div>
+      </div>
+    </div>
+    <nav class="bnav">
+      <button class="ni active" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+      <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+      <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+      <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+      <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- ══ JOUER ══ -->
+  <div class="screen" id="s-jouer">
+    <div class="sb"><span>9:41</span><span>◼◼◼</span></div>
+    <div class="hdr">
+      <div class="back-btn" onclick="goTo('s-home')">←</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--t)">Choisir un golf</div>
+      <div style="font-size:11px;color:var(--gd);font-weight:500">📍 Paris</div>
+    </div>
+    <div class="searchbar">🔍 Nom, ville, code postal...</div>
+    <div class="chips">
+      <div class="chip on">Près de moi</div>
+      <div class="chip off">Public</div>
+      <div class="chip off">Privé</div>
+      <div class="chip off">18 trous</div>
+      <div class="chip off">Île-de-France</div>
+    </div>
+    <div class="scroll">
+      <div style="padding:0 16px;margin-bottom:10px"><div class="sect-lbl">Golfs avec parties ouvertes</div></div>
+      <div class="card" style="border:1.5px solid var(--gr)" onclick="goTo('s-golf')">
+        <div class="gc-img" style="background:linear-gradient(160deg,#0a2a1a,#1D9E75)">
+          <span class="gc-rating">★ 4.9</span>
+          <div class="gc-open" style="background:var(--gr);color:#fff">5 parties ouvertes</div>
+          <div class="gc-name">Golf National · Guyancourt (78)</div>
+        </div>
+        <div class="gc-body">
+          <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap">
+            <span class="tag pub">Public</span><span class="tag">18 trous</span><span class="tag">Par 72</span>
+            <span style="font-size:11px;color:var(--m);margin-left:auto">55€ →</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="display:flex">
+              <div style="width:22px;height:22px;border-radius:50%;background:#E1F5EE;border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:8px;color:#085041;font-weight:500">JL</div>
+              <div style="width:22px;height:22px;border-radius:50%;background:#EEEDFE;border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:8px;color:#26215C;font-weight:500;margin-left:-5px">SA</div>
+              <div style="width:22px;height:22px;border-radius:50%;background:var(--bg2);border:2px solid var(--bg);display:flex;align-items:center;justify-content:center;font-size:7px;color:var(--m);margin-left:-5px">+9</div>
+            </div>
+            <div style="font-size:11px;color:var(--m)">11 golfeurs Eagl ce week-end</div>
+          </div>
+        </div>
+      </div>
+      <div class="card" onclick="goTo('s-golf')">
+        <div class="gc-img" style="background:linear-gradient(160deg,#1a1a2a,#3C3489)">
+          <span class="gc-rating">★ 4.7</span>
+          <div class="gc-open" style="background:#534AB7;color:#fff">2 parties ouvertes</div>
+          <div class="gc-name">Golf de Saint-Cloud (92)</div>
+        </div>
+        <div class="gc-body">
+          <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+            <span class="tag priv">Privé</span><span class="tag">18+9 trous</span><span class="tag">Par 71</span>
+            <span style="font-size:11px;color:var(--m);margin-left:auto">90€ →</span>
+          </div>
+          <div style="font-size:11px;color:var(--m)">4 golfeurs Eagl ce week-end</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="gc-img" style="background:linear-gradient(160deg,#2a1a0a,#854F0B)">
+          <span class="gc-rating">★ 4.5</span>
+          <div class="gc-open" style="background:var(--gold);color:var(--gd)">1 partie ouverte</div>
+          <div class="gc-name">Golf de Versailles (78)</div>
+        </div>
+        <div class="gc-body">
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="tag pub">Public</span><span class="tag">18 trous</span>
+            <span style="font-size:11px;color:var(--m);margin-left:auto">65€ →</span>
+          </div>
+        </div>
+      </div>
+      <div style="padding:0 16px;margin:6px 0 10px"><div class="sect-lbl">Autres golfs · sans partie</div></div>
+      <div class="card" style="padding:12px 14px;display:flex;align-items:center;gap:12px;border-radius:14px">
+        <div style="width:36px;height:36px;border-radius:8px;background:#085041;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gl);font-weight:500;flex-shrink:0">CH</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Golf de Chantilly</div><div style="font-size:11px;color:var(--m)">Privé · 18+18T · 120€</div></div>
+        <div style="font-size:11px;color:var(--m)">★ 4.8</div>
+      </div>
+      <div class="card" style="padding:12px 14px;display:flex;align-items:center;gap:12px;border-radius:14px">
+        <div style="width:36px;height:36px;border-radius:8px;background:#185FA5;display:flex;align-items:center;justify-content:center;font-size:11px;color:#B5D4F4;font-weight:500;flex-shrink:0">FB</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Golf de Fontainebleau</div><div style="font-size:11px;color:var(--m)">Privé · 18T · 80€</div></div>
+        <div style="font-size:11px;color:var(--m)">★ 4.6</div>
+      </div>
+      <div style="text-align:center;font-size:11px;color:var(--m);padding:12px">+ 580 golfs · Source FFGolf</div>
+    </div>
+    <nav class="bnav">
+      <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+      <button class="ni active"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+      <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+      <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+      <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- ══ FICHE GOLF ══ -->
+  <div class="screen" id="s-golf">
+    <div class="sb" style="position:absolute;top:0;left:0;right:0;z-index:10;background:transparent"><span style="color:#fff">9:41</span><span style="color:#fff">◼◼◼</span></div>
+    <div style="height:130px;background:linear-gradient(160deg,#0a2a1a,#1D9E75);position:relative;flex-shrink:0">
+      <div class="back-btn" style="position:absolute;top:36px;left:16px;background:rgba(0,0,0,.3);border:none" onclick="goTo('s-jouer')">←</div>
+      <div style="position:absolute;top:36px;right:16px;background:rgba(0,0,0,.4);color:#FAC775;font-size:11px;font-weight:500;padding:3px 9px;border-radius:8px">★ 4.9 · 1 234 avis</div>
+      <div style="position:absolute;bottom:14px;left:16px">
+        <div style="font-size:10px;color:rgba(255,255,255,.6);margin-bottom:2px">Guyancourt · Yvelines (78)</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;letter-spacing:.5px">Golf National</div>
+      </div>
+    </div>
+    <div class="scroll">
+      <div style="padding:14px 16px 6px"><div class="sect-lbl">Parties Eagl ouvertes</div></div>
+      <div class="party-card" onclick="goTo('s-partie')">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="background:var(--grl);border-radius:10px;padding:6px 10px;text-align:center;min-width:42px">
+            <div style="font-size:16px;font-weight:700;color:var(--gd);line-height:1">29</div>
+            <div style="font-size:8px;color:var(--gd);text-transform:uppercase">Mar</div>
+          </div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Samedi · 9h30 · Stableford</div><div style="font-size:11px;color:var(--m)">Jean-Luc (14) · Sophie (9)</div></div>
+          <span style="font-size:10px;background:var(--grl);color:#085041;padding:3px 8px;border-radius:8px;font-weight:500">2 places</span>
+        </div>
+        <button class="btn-primary" onclick="event.stopPropagation();goTo('s-partie')">Rejoindre</button>
+      </div>
+      <div class="party-card secondary">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="background:var(--gl);border-radius:10px;padding:6px 10px;text-align:center;min-width:42px">
+            <div style="font-size:16px;font-weight:700;color:var(--gd);line-height:1">29</div>
+            <div style="font-size:8px;color:var(--gd);text-transform:uppercase">Mar</div>
+          </div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Samedi · 14h00 · Libre</div><div style="font-size:11px;color:var(--m)">Marc R. (18)</div></div>
+          <span style="font-size:10px;background:var(--grl);color:#085041;padding:3px 8px;border-radius:8px;font-weight:500">3 places</span>
+        </div>
+        <button class="btn-secondary">Demander à rejoindre</button>
+      </div>
+      <div style="margin:8px 16px 14px;background:var(--bg2);border:1px dashed var(--b);border-radius:14px;padding:14px;cursor:pointer;text-align:center">
+        <div style="font-size:20px;margin-bottom:4px">+</div>
+        <div style="font-size:13px;font-weight:500;color:var(--t)">Créer une partie ici</div>
+      </div>
+      <div style="padding:0 16px;margin-bottom:10px"><div class="sect-lbl">Réserver ton green fee</div></div>
+      <div style="margin:0 16px 10px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;padding:14px">
+        <div class="grp-sel" style="margin-bottom:12px">
+          <div class="grp-btn active" id="gg1" onclick="selGrp(1)"><div style="font-size:15px;margin-bottom:2px">👤</div><div style="font-size:9px;color:var(--m)">Solo</div><div style="font-size:12px;font-weight:500;color:var(--t)">55€</div></div>
+          <div class="grp-btn" id="gg2" onclick="selGrp(2)"><div style="font-size:15px;margin-bottom:2px">👥</div><div style="font-size:9px;color:var(--m)">×2</div><div style="font-size:12px;font-weight:500;color:var(--t)">50€</div></div>
+          <div class="grp-btn" id="gg3" onclick="selGrp(3)"><div style="font-size:15px;margin-bottom:2px">👥</div><div style="font-size:9px;color:var(--m)">×3</div><div style="font-size:12px;font-weight:500;color:var(--t)">48€</div></div>
+          <div class="grp-btn" id="gg4" onclick="selGrp(4)"><div style="font-size:15px;margin-bottom:2px">4️⃣</div><div style="font-size:9px;color:var(--m)">×4</div><div style="font-size:12px;font-weight:500;color:var(--t)">45€</div></div>
+        </div>
+        <button class="btn-primary">Réserver sur golf-national.com →</button>
+        <div style="font-size:10px;color:var(--m);text-align:center;margin-top:5px">Redirection vers le site officiel</div>
+      </div>
+      <div style="padding:0 16px;margin-bottom:10px"><div class="sect-lbl">Compétitions FFGolf</div></div>
+      <div style="margin:0 16px 8px;background:var(--bg);border:0.5px solid var(--b);border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:10px">
+        <div style="background:var(--gl);border-radius:8px;padding:5px 8px;text-align:center;min-width:38px"><div style="font-size:15px;font-weight:700;color:var(--gd);line-height:1">29</div><div style="font-size:8px;color:var(--gd);text-transform:uppercase">Mar</div></div>
+        <div style="flex:1"><div style="font-size:12px;font-weight:500;color:var(--t)">Trophée du National</div><div style="font-size:10px;color:var(--m)">Stableford · Hcp ≤28</div></div>
+        <span style="font-size:9px;background:var(--grl);color:#085041;padding:2px 7px;border-radius:7px;font-weight:500">Ouvert</span>
+      </div>
+      <div style="margin:0 16px 14px"><button class="btn-secondary">Voir toutes les compéts FFGolf →</button></div>
+    </div>
+    <nav class="bnav">
+      <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+      <button class="ni active" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+      <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+      <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+      <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- ══ PARTIE ══ -->
+  <div class="screen" id="s-partie">
+    <div class="sb"><span>9:41</span><span>◼◼◼</span></div>
+    <div class="hdr">
+      <div class="back-btn" onclick="goTo('s-golf')">←</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--t)">Ta partie</div>
+      <div style="font-size:11px;color:var(--gr);font-weight:500">Confirmée ✓</div>
+    </div>
+    <div class="scroll">
+      <div style="margin:0 16px 14px;background:var(--eagl);border-radius:16px;padding:18px">
+        <div style="font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">Partie confirmée</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;margin-bottom:4px">Golf National · Sam. 29 mars</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:14px">9h30 · 18 trous · Stableford amical</div>
+        <div style="display:flex;gap:8px">
+          <div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px 10px;flex:1;text-align:center"><div style="font-size:16px;font-weight:500;color:#fff">4</div><div style="font-size:8px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">Joueurs</div></div>
+          <div style="background:rgba(255,255,255,.1);border-radius:8px;padding:8px 10px;flex:1;text-align:center"><div style="font-size:16px;font-weight:500;color:#fff">45€</div><div style="font-size:8px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">Green fee/p</div></div>
+          <div style="background:rgba(201,168,76,.2);border-radius:8px;padding:8px 10px;flex:1;text-align:center"><div style="font-size:16px;font-weight:500;color:var(--gold)">7j</div><div style="font-size:8px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">Reste</div></div>
+        </div>
+      </div>
+      <div style="padding:0 16px;margin-bottom:10px"><div class="sect-lbl">Tes partenaires</div></div>
+      <div style="margin:0 16px 14px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;overflow:hidden">
+        <div class="fr"><div class="fr-av" style="background:var(--eagl);color:var(--gold)">TM</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--gd)">Thomas (toi) · Hcp 12.4</div><div style="font-size:11px;color:var(--m)">TaylorMade · Pro V1x</div></div><span style="font-size:10px;background:var(--grl);color:#085041;padding:2px 7px;border-radius:7px">Hôte</span></div>
+        <div class="fr"><div class="fr-av" style="background:#E1F5EE;color:#085041">JL</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Jean-Luc · Hcp 14</div><div style="font-size:11px;color:var(--m)">TaylorMade · Pro V1</div></div><span style="font-size:10px;background:var(--grl);color:#085041;padding:2px 7px;border-radius:7px">✓</span></div>
+        <div class="fr"><div class="fr-av" style="background:#EEEDFE;color:#26215C">SA</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Sophie A. · Hcp 9</div><div style="font-size:11px;color:var(--m)">Callaway · Chrome Soft</div></div><span style="font-size:10px;background:var(--grl);color:#085041;padding:2px 7px;border-radius:7px">✓</span></div>
+        <div class="fr"><div class="fr-av" style="background:#FAEEDA;color:#412402">MR</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Marc R. · Hcp 18</div><div style="font-size:11px;color:var(--m)">Ping · Srixon</div></div><span style="font-size:10px;background:var(--gl);color:var(--gd);padding:2px 7px;border-radius:7px">En att.</span></div>
+      </div>
+      <div style="padding:0 16px;margin-bottom:10px"><div class="sect-lbl">Chat de groupe</div></div>
+      <div style="margin:0 16px 14px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;padding:12px 14px">
+        <div><div class="bubble-left"><div style="font-size:10px;font-weight:500;color:var(--gd);margin-bottom:2px">Jean-Luc</div><div style="font-size:12px;color:var(--t)">Voiturette ou on marche ? 🚶</div></div></div>
+        <div style="text-align:right"><div class="bubble-right"><div style="font-size:12px;color:#fff">On marche, il fait beau ! ☀️</div></div></div>
+        <div><div class="bubble-left"><div style="font-size:10px;font-weight:500;color:#26215C;margin-bottom:2px">Sophie</div><div style="font-size:12px;color:var(--t)">Parfait, à samedi !</div></div></div>
+        <div style="display:flex;gap:8px;margin-top:6px;align-items:center">
+          <div style="flex:1;background:var(--bg2);border-radius:20px;padding:9px 13px;font-size:12px;color:var(--m)">Écrire...</div>
+          <div style="width:34px;height:34px;border-radius:50%;background:var(--eagl);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer">→</div>
+        </div>
+      </div>
+      <div style="margin:0 16px 8px"><button class="btn-primary">Réserver mon green fee →</button></div>
+    </div>
+    <nav class="bnav">
+      <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+      <button class="ni active" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+      <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+      <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+      <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- ══ ARENA ══ -->
+  <div class="screen" id="s-arena">
+    <div class="sb"><span>9:41</span><span>◼◼◼</span></div>
+    <div class="hdr">
+      <div class="logo" style="font-size:22px">EAGL<span>.</span> Arena</div>
+      <div style="background:var(--gl);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:500;color:var(--gd)">J-3</div>
+    </div>
+    <div class="scroll">
+      <div class="arena-hero">
+        <div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px">Ta team · Semaine 13</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+          <div style="width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:18px">🏌️</div>
+          <div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;letter-spacing:1px">Team TaylorMade</div><div style="font-size:11px;color:rgba(255,255,255,.4)">4 823 membres · France</div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <div style="flex:1;background:rgba(255,255,255,.08);border-radius:10px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:500;color:var(--gold)">2e</div><div style="font-size:8px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">Classement</div></div>
+          <div style="flex:1;background:rgba(255,255,255,.08);border-radius:10px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:500;color:#fff">8 412</div><div style="font-size:8px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">Pts team</div></div>
+          <div style="flex:1;background:rgba(255,255,255,.08);border-radius:10px;padding:10px;text-align:center"><div style="font-size:20px;font-weight:500;color:#fff">142</div><div style="font-size:8px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">Tes pts</div></div>
+        </div>
+        <div style="background:rgba(255,255,255,.06);border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between">
+          <div style="font-size:11px;color:rgba(255,255,255,.5)">Écart avec Team Titleist (1er)</div>
+          <div style="font-size:12px;font-weight:500;color:var(--gold)">-312 pts</div>
+        </div>
+      </div>
+      <div class="tab-bar">
+        <button class="tab-btn on" id="tb1" onclick="arenaTab(1)">Marques</button>
+        <button class="tab-btn off" id="tb2" onclick="arenaTab(2)">Mes groupes</button>
+        <button class="tab-btn off" id="tb3" onclick="arenaTab(3)">Global</button>
+      </div>
+
+      <div id="at1">
+        <div style="padding:0 16px;margin-bottom:10px"><div class="sect-lbl">Classement marques · Sem. 13</div></div>
+        <div style="margin:0 16px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;overflow:hidden">
+          <div class="lb-row"><div class="lb-rank" style="color:var(--gold)">1</div><div class="lb-av" style="background:#1a2a4a;color:#B5D4F4;border-radius:10px">TIT</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Team Titleist</div><div style="font-size:10px;color:var(--m)">5 241 membres</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:500;color:var(--t)">8 724</div><div style="font-size:10px;color:var(--gr)">▲ +124</div></div></div>
+          <div class="lb-row" style="background:rgba(201,168,76,.04)"><div class="lb-rank" style="color:var(--gold)">2</div><div class="lb-av" style="background:#1a1a2a;color:var(--gold);border-radius:10px">TM</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Team TaylorMade</div><div style="font-size:10px;color:var(--gd);font-weight:500">Ta team ★</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:500;color:var(--t)">8 412</div><div style="font-size:10px;color:var(--gr)">▲ +89</div></div></div>
+          <div class="lb-row"><div class="lb-rank" style="color:var(--m)">3</div><div class="lb-av" style="background:#0a2a1a;color:#9FE1CB;border-radius:10px">CAL</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Team Callaway</div><div style="font-size:10px;color:var(--m)">6 118 membres</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:500;color:var(--t)">7 991</div><div style="font-size:10px;color:var(--m)">→ =</div></div></div>
+          <div class="lb-row"><div class="lb-rank" style="color:var(--m)">4</div><div class="lb-av" style="background:#2a1a0a;color:#FAC775;border-radius:10px">PIN</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Team Ping</div><div style="font-size:10px;color:var(--m)">3 445 membres</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:500;color:var(--t)">7 234</div><div style="font-size:10px;color:#A32D2D">▼ -41</div></div></div>
+          <div class="lb-row"><div class="lb-rank" style="color:var(--m)">5</div><div class="lb-av" style="background:#1a0a1a;color:#ED93B1;border-radius:10px">COB</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Team Cobra</div><div style="font-size:10px;color:var(--m)">2 198 membres</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:500;color:var(--t)">6 812</div><div style="font-size:10px;color:var(--gr)">▲ +201</div></div></div>
+        </div>
+        <div style="padding:0 16px;margin:14px 0 10px"><div class="sect-lbl">Comment gagner des points</div></div>
+        <div style="margin:0 16px;background:var(--bg2);border-radius:14px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--b)"><span style="font-size:12px;color:var(--t)">⛳ Jouer une partie</span><span style="font-size:13px;font-weight:500;color:var(--gr)">+10 pts</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--b)"><span style="font-size:12px;color:var(--t)">🦅 Faire un eagle</span><span style="font-size:13px;font-weight:500;color:var(--gr)">+50 pts</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--b)"><span style="font-size:12px;color:var(--t)">🐦 Faire un birdie</span><span style="font-size:13px;font-weight:500;color:var(--gr)">+15 pts</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:0.5px solid var(--b)"><span style="font-size:12px;color:var(--t)">🏆 Gagner une compét</span><span style="font-size:13px;font-weight:500;color:var(--gr)">+100 pts</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px"><span style="font-size:12px;color:var(--t)">👥 Inviter un ami</span><span style="font-size:13px;font-weight:500;color:var(--gr)">+25 pts</span></div>
+        </div>
+      </div>
+
+      <div id="at2" style="display:none">
+        <div style="padding:0 16px;margin-bottom:10px"><div class="sect-lbl">Mes groupes privés</div></div>
+        <div style="margin:0 16px 10px;background:var(--bg);border:1.5px solid var(--gold);border-radius:16px;padding:14px;cursor:pointer" onclick="goTo('s-groupe')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="width:44px;height:44px;border-radius:12px;background:var(--eagl);display:flex;align-items:center;justify-content:center;font-size:20px">⛳</div>
+            <div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--t)">Les Bogeymen</div><div style="font-size:11px;color:var(--m)">5 amis · J-3</div></div>
+            <div style="font-size:11px;color:var(--gd);font-weight:500">Voir →</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;gap:10px"><div style="font-size:13px;font-weight:500;color:var(--gold);min-width:18px">1</div><div class="lb-av-round" style="width:28px;height:28px;background:#E1F5EE;color:#085041;font-size:10px">JL</div><div style="flex:1;font-size:12px;font-weight:500;color:var(--t)">Jean-Luc</div><div style="font-size:13px;font-weight:500;color:var(--t)">186 pts</div></div>
+            <div style="display:flex;align-items:center;gap:10px"><div style="font-size:13px;font-weight:500;color:var(--m);min-width:18px">2</div><div class="lb-av-round" style="width:28px;height:28px;background:var(--eagl);color:var(--gold);font-size:10px">TM</div><div style="flex:1;font-size:12px;color:var(--gd);font-weight:500">Toi ★</div><div style="font-size:13px;font-weight:500;color:var(--t)">142 pts</div></div>
+            <div style="display:flex;align-items:center;gap:10px"><div style="font-size:13px;font-weight:500;color:var(--m);min-width:18px">3</div><div class="lb-av-round" style="width:28px;height:28px;background:#EEEDFE;color:#26215C;font-size:10px">SA</div><div style="flex:1;font-size:12px;color:var(--t)">Sophie</div><div style="font-size:13px;font-weight:500;color:var(--t)">128 pts</div></div>
+          </div>
+        </div>
+        <div style="margin:0 16px 10px;background:var(--bg2);border:1px dashed var(--b);border-radius:16px;padding:16px;cursor:pointer;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">+</div>
+          <div style="font-size:13px;font-weight:500;color:var(--t)">Créer un groupe compétition</div>
+          <div style="font-size:11px;color:var(--m);margin-top:3px">Invite tes amis et lance la compét</div>
+        </div>
+      </div>
+
+      <div id="at3" style="display:none">
+        <div style="padding:0 16px;margin-bottom:10px"><div class="sect-lbl">Classement global · France</div></div>
+        <div style="margin:0 16px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;overflow:hidden">
+          <div class="lb-row"><div class="lb-rank" style="color:var(--gold)">1</div><div class="lb-av-round" style="background:#1a2a4a;color:#B5D4F4">PD</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">PhilippeD75</div><div style="font-size:10px;color:var(--m)">Hcp 4 · Team Titleist</div></div><div style="font-size:14px;font-weight:500;color:var(--t)">312 pts</div></div>
+          <div class="lb-row"><div class="lb-rank" style="color:var(--m)">2</div><div class="lb-av-round" style="background:#085041;color:#9FE1CB">MA</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">MarcA78</div><div style="font-size:10px;color:var(--m)">Hcp 7 · Team Callaway</div></div><div style="font-size:14px;font-weight:500;color:var(--t)">289 pts</div></div>
+          <div class="lb-row"><div class="lb-rank" style="color:var(--m)">···</div><div></div><div style="flex:1;font-size:12px;color:var(--m);text-align:center">···</div><div></div></div>
+          <div class="lb-row" style="background:rgba(201,168,76,.05)"><div class="lb-rank" style="color:var(--gold)">142</div><div class="lb-av-round" style="background:var(--eagl);color:var(--gold)">TM</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--gd)">Toi ★</div><div style="font-size:10px;color:var(--m)">Hcp 12.4 · TaylorMade</div></div><div style="font-size:14px;font-weight:500;color:var(--t)">142 pts</div></div>
+        </div>
+      </div>
+    </div>
+    <nav class="bnav">
+      <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+      <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+      <button class="ni active"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+      <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+      <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- ══ GROUPE ══ -->
+  <div class="screen" id="s-groupe">
+    <div class="sb"><span>9:41</span><span>◼◼◼</span></div>
+    <div class="hdr"><div class="back-btn" onclick="goTo('s-arena')">←</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)">Les Bogeymen</div><div style="font-size:11px;color:var(--m)">Paramètres</div></div>
+    <div class="scroll">
+      <div style="margin:0 16px 14px;background:var(--eagl);border-radius:16px;padding:16px">
+        <div style="font-size:10px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Semaine 13 · Score net</div>
+        <div style="display:flex;gap:8px">
+          <div style="flex:1;background:rgba(255,255,255,.08);border-radius:10px;padding:10px;text-align:center"><div style="font-size:16px;font-weight:500;color:#fff">J-3</div><div style="font-size:8px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">Fin semaine</div></div>
+          <div style="flex:1;background:rgba(255,255,255,.08);border-radius:10px;padding:10px;text-align:center"><div style="font-size:16px;font-weight:500;color:#fff">5</div><div style="font-size:8px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">Membres</div></div>
+          <div style="flex:1;background:rgba(201,168,76,.2);border-radius:10px;padding:10px;text-align:center"><div style="font-size:16px;font-weight:500;color:var(--gold)">JL</div><div style="font-size:8px;color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">Leader</div></div>
+        </div>
+      </div>
+      <div style="padding:0 16px;margin-bottom:10px"><div class="sect-lbl">Classement semaine</div></div>
+      <div style="margin:0 16px 14px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;overflow:hidden">
+        <div class="lb-row"><div style="font-size:20px;min-width:24px;text-align:center">🥇</div><div class="lb-av-round" style="background:#E1F5EE;color:#085041">JL</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Jean-Luc</div><div style="font-size:10px;color:var(--m)">3 parties · 2 birdies</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:500;color:var(--t)">186</div><div style="font-size:10px;color:var(--gr)">▲ +44</div></div></div>
+        <div class="lb-row" style="background:rgba(201,168,76,.04)"><div style="font-size:20px;min-width:24px;text-align:center">🥈</div><div class="lb-av-round" style="background:var(--eagl);color:var(--gold)">TM</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--gd)">Toi ★</div><div style="font-size:10px;color:var(--m)">2 parties · 1 birdie</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:500;color:var(--t)">142</div><div style="font-size:10px;color:var(--gr)">▲ +10</div></div></div>
+        <div class="lb-row"><div style="font-size:20px;min-width:24px;text-align:center">🥉</div><div class="lb-av-round" style="background:#EEEDFE;color:#26215C">SA</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Sophie A.</div><div style="font-size:10px;color:var(--m)">2 parties · 3 birdies</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:500;color:var(--t)">128</div><div style="font-size:10px;color:var(--gr)">▲ +28</div></div></div>
+        <div class="lb-row"><div style="font-size:16px;font-weight:500;color:var(--m);min-width:24px;text-align:center">4</div><div class="lb-av-round" style="background:#FAEEDA;color:#412402">MR</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Marc R.</div><div style="font-size:10px;color:var(--m)">1 partie · 0 birdie</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:500;color:var(--t)">97</div><div style="font-size:10px;color:var(--m)">→</div></div></div>
+        <div class="lb-row"><div style="font-size:16px;font-weight:500;color:var(--m);min-width:24px;text-align:center">5</div><div class="lb-av-round" style="background:#EAF3DE;color:#173404">PD</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--t)">Pierre D.</div><div style="font-size:10px;color:#A32D2D">0 partie cette semaine</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:500;color:var(--t)">81</div><div style="font-size:10px;color:#A32D2D">▼ -5</div></div></div>
+      </div>
+      <div style="margin:0 16px 14px;background:var(--grl);border-radius:12px;padding:12px 14px;border:0.5px solid #9FE1CB">
+        <div style="font-size:12px;font-weight:500;color:#085041;margin-bottom:3px">Il te manque 44 pts pour prendre la tête !</div>
+        <div style="font-size:11px;color:#0F6E56">Joue une partie ce week-end pour dépasser Jean-Luc.</div>
+      </div>
+      <div style="margin:0 16px"><button class="btn-primary" onclick="goTo('s-jouer')">Jouer maintenant pour marquer des points →</button></div>
+    </div>
+    <nav class="bnav">
+      <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+      <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+      <button class="ni active" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+      <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+      <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- ══ PROS ══ -->
+  <div class="screen" id="s-pros">
+    <div class="sb"><span>9:41</span><span>◼◼◼</span></div>
+    <div class="hdr"><div class="logo" style="font-size:22px">Pros</div><div style="font-size:11px;color:var(--m)">📍 Paris</div></div>
+    <div class="searchbar">🔍 Spécialité, disponibilité...</div>
+    <div class="chips">
+      <div class="chip on">Tous</div>
+      <div class="chip off">Swing</div>
+      <div class="chip off">Putting</div>
+      <div class="chip off">Short game</div>
+      <div class="chip off">Débutants</div>
+      <div class="chip off">Mental</div>
+    </div>
+    <div class="scroll">
+      <div class="pro-card" onclick="goTo('s-pro')">
+        <div style="display:flex;gap:12px;margin-bottom:12px">
+          <div class="pro-av" style="background:var(--eagl);color:var(--gold)">FD</div>
+          <div style="flex:1"><div style="font-size:15px;font-weight:500;color:var(--t)">François Dubois</div><div style="font-size:11px;color:var(--m);margin-top:2px">Enseignant fédéral · Paris 16e</div><div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap"><span class="tag" style="background:var(--grl);color:#085041">Swing</span><span class="tag" style="background:var(--grl);color:#085041">Putting</span></div></div>
+          <div style="text-align:right;flex-shrink:0"><div style="font-size:13px;font-weight:500;color:var(--gold)">★ 4.9</div><div style="font-size:10px;color:var(--m)">142 avis</div></div>
+        </div>
+        <div style="display:flex;gap:7px;margin-bottom:11px">
+          <div style="flex:1;background:var(--bg2);border-radius:8px;padding:8px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--t)">85€</div><div style="font-size:9px;color:var(--m)">/heure</div></div>
+          <div style="flex:1;background:var(--bg2);border-radius:8px;padding:8px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--t)">150€</div><div style="font-size:9px;color:var(--m)">/2h parcours</div></div>
+          <div style="flex:1;background:var(--grl);border-radius:8px;padding:8px;text-align:center"><div style="font-size:13px;font-weight:500;color:#085041">Dispo</div><div style="font-size:9px;color:#085041">Sam. matin</div></div>
+        </div>
+        <button class="btn-primary" onclick="event.stopPropagation();goTo('s-pro')">Réserver un cours</button>
+      </div>
+      <div class="pro-card">
+        <div style="display:flex;gap:12px;margin-bottom:12px">
+          <div class="pro-av" style="background:#3C3489;color:#CECBF6">ML</div>
+          <div style="flex:1"><div style="font-size:15px;font-weight:500;color:var(--t)">Marie Laurent</div><div style="font-size:11px;color:var(--m);margin-top:2px">Enseignante PGA · Boulogne</div><div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap"><span class="tag" style="background:var(--grl);color:#085041">Débutants</span><span class="tag" style="background:var(--grl);color:#085041">Junior</span></div></div>
+          <div style="text-align:right;flex-shrink:0"><div style="font-size:13px;font-weight:500;color:var(--gold)">★ 4.8</div><div style="font-size:10px;color:var(--m)">98 avis</div></div>
+        </div>
+        <div style="display:flex;gap:7px;margin-bottom:11px">
+          <div style="flex:1;background:var(--bg2);border-radius:8px;padding:8px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--t)">70€</div><div style="font-size:9px;color:var(--m)">/heure</div></div>
+          <div style="flex:1;background:var(--grl);border-radius:8px;padding:8px;text-align:center"><div style="font-size:13px;font-weight:500;color:#085041">Dispo</div><div style="font-size:9px;color:#085041">Cette semaine</div></div>
+        </div>
+        <button class="btn-secondary">Voir le profil</button>
+      </div>
+      <div class="pro-card">
+        <div style="display:flex;gap:12px;margin-bottom:12px">
+          <div class="pro-av" style="background:#412402;color:#FAC775">AC</div>
+          <div style="flex:1"><div style="font-size:15px;font-weight:500;color:var(--t)">Alain Cordier</div><div style="font-size:11px;color:var(--m);margin-top:2px">Coach tour · Versailles</div><div style="display:flex;gap:5px;margin-top:6px"><span class="tag">Short game</span><span class="tag">Mental</span></div></div>
+          <div style="text-align:right;flex-shrink:0"><div style="font-size:13px;font-weight:500;color:var(--gold)">★ 5.0</div><div style="font-size:10px;color:var(--m)">67 avis</div></div>
+        </div>
+        <div style="display:flex;gap:7px;margin-bottom:11px">
+          <div style="flex:1;background:var(--bg2);border-radius:8px;padding:8px;text-align:center"><div style="font-size:13px;font-weight:500;color:var(--t)">110€</div><div style="font-size:9px;color:var(--m)">/heure</div></div>
+          <div style="flex:1;background:#FCEBEB;border-radius:8px;padding:8px;text-align:center"><div style="font-size:13px;font-weight:500;color:#791F1F">Complet</div><div style="font-size:9px;color:#791F1F">2 sem. att.</div></div>
+        </div>
+        <button class="btn-secondary">Liste d'attente</button>
+      </div>
+    </div>
+    <nav class="bnav">
+      <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+      <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+      <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+      <button class="ni active"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+      <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- ══ PRO DETAIL ══ -->
+  <div class="screen" id="s-pro">
+    <div class="sb" style="position:absolute;top:0;left:0;right:0;z-index:10;background:transparent"><span style="color:#fff">9:41</span><span style="color:#fff">◼◼◼</span></div>
+    <div style="height:110px;background:var(--eagl);display:flex;align-items:flex-end;padding:12px 16px;position:relative;flex-shrink:0">
+      <div class="back-btn" style="position:absolute;top:36px;left:16px;background:rgba(255,255,255,.1);border:none;color:#fff" onclick="goTo('s-pros')">←</div>
+      <div style="display:flex;align-items:flex-end;gap:12px">
+        <div style="width:58px;height:58px;border-radius:14px;background:rgba(201,168,76,.2);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold)">FD</div>
+        <div><div style="font-size:10px;color:rgba(255,255,255,.5);margin-bottom:2px">Paris 16e · Golf National</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff">François Dubois</div></div>
+      </div>
+    </div>
+    <div class="scroll">
+      <div style="padding:12px 16px">
+        <div style="display:flex;gap:8px;margin-bottom:14px">
+          <div style="background:var(--bg2);border-radius:10px;padding:10px;flex:1;text-align:center"><div style="font-size:16px;font-weight:500;color:var(--gold)">★ 4.9</div><div style="font-size:8px;color:var(--m);text-transform:uppercase;margin-top:2px">Note</div></div>
+          <div style="background:var(--bg2);border-radius:10px;padding:10px;flex:1;text-align:center"><div style="font-size:16px;font-weight:500;color:var(--t)">142</div><div style="font-size:8px;color:var(--m);text-transform:uppercase;margin-top:2px">Élèves Eagl</div></div>
+          <div style="background:var(--bg2);border-radius:10px;padding:10px;flex:1;text-align:center"><div style="font-size:16px;font-weight:500;color:var(--t)">8 ans</div><div style="font-size:8px;color:var(--m);text-transform:uppercase;margin-top:2px">Exp.</div></div>
+        </div>
+        <div style="margin-bottom:14px"><div class="sect-lbl">Formules</div>
+          <div style="background:var(--bg);border:0.5px solid var(--b);border-radius:12px;overflow:hidden">
+            <div style="padding:12px 14px;border-bottom:0.5px solid var(--b);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:500;color:var(--t)">Cours individuel 1h</div><div style="font-size:11px;color:var(--m)">Practice + vidéo</div></div><div style="font-size:14px;font-weight:500;color:var(--t)">85€</div></div>
+            <div style="padding:12px 14px;border-bottom:0.5px solid var(--b);display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:500;color:var(--t)">Cours sur parcours 2h</div><div style="font-size:11px;color:var(--m)">9 trous avec coaching</div></div><div style="font-size:14px;font-weight:500;color:var(--t)">150€</div></div>
+            <div style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:13px;font-weight:500;color:var(--t)">Pack 5 cours</div><div style="font-size:11px;color:var(--m)">Suivi personnalisé</div></div><div><div style="font-size:14px;font-weight:500;color:var(--t)">380€</div><div style="font-size:10px;color:var(--gr)">-11%</div></div></div>
+          </div>
+        </div>
+        <div style="margin-bottom:14px"><div class="sect-lbl">Disponibilités</div>
+          <div style="display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px">
+            <div class="avail-slot"><div style="font-size:10px;color:var(--m)">Lun</div><div style="font-size:11px;color:var(--m)">—</div></div>
+            <div class="avail-slot ok"><div style="font-size:10px;color:#085041">Mar</div><div style="font-size:11px;font-weight:500;color:#085041">10h</div></div>
+            <div class="avail-slot ok"><div style="font-size:10px;color:#085041">Mer</div><div style="font-size:11px;font-weight:500;color:#085041">14h</div></div>
+            <div class="avail-slot"><div style="font-size:10px;color:var(--m)">Jeu</div><div style="font-size:11px;color:var(--m)">—</div></div>
+            <div class="avail-slot ok"><div style="font-size:10px;color:#085041">Ven</div><div style="font-size:11px;font-weight:500;color:#085041">9h</div></div>
+            <div class="avail-slot ok"><div style="font-size:10px;color:#085041">Sam</div><div style="font-size:11px;font-weight:500;color:#085041">8h30</div></div>
+          </div>
+        </div>
+        <button class="btn-primary" style="margin-bottom:8px">Réserver un cours →</button>
+        <button class="btn-secondary">Envoyer un message</button>
+      </div>
+    </div>
+    <nav class="bnav">
+      <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+      <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+      <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+      <button class="ni active" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+      <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- ══ COMPETS ══ -->
+  <div class="screen" id="s-compets">
+    <div class="sb"><span>9:41</span><span>◼◼◼</span></div>
+    <div class="hdr"><div class="logo" style="font-size:22px">Compétitions</div><button class="btn-gold">+ Créer</button></div>
+    <div class="scroll">
+      <div style="margin:0 16px 10px;background:var(--grl);border-radius:12px;padding:11px 14px;border:0.5px solid #9FE1CB"><div style="font-size:12px;font-weight:500;color:#085041;margin-bottom:2px">Données FFGolf en direct</div><div style="font-size:11px;color:#0F6E56">Les inscriptions se font sur ffgolf.org. Eagl t'y redirige.</div></div>
+      <div style="padding:0 16px;margin-bottom:10px"><div class="sect-lbl">Compétitions à venir</div></div>
+      <div style="margin:0 16px 10px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;padding:14px">
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+          <div style="background:var(--gl);border-radius:10px;padding:6px 8px;text-align:center;min-width:42px;flex-shrink:0"><div style="font-size:16px;font-weight:700;color:var(--gd);line-height:1">29</div><div style="font-size:8px;color:var(--gd);text-transform:uppercase">Mar</div></div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--t)">Trophée du Bois de Boulogne</div><div style="font-size:11px;color:var(--m);margin-top:2px">Golf de Longchamp · Paris 16e</div><div style="display:flex;gap:5px;margin-top:6px"><span class="tag">Stableford</span><span class="tag">Hcp ≤28</span><span style="font-size:10px;padding:2px 7px;border-radius:6px;background:var(--grl);color:#085041">6 places</span></div></div>
+        </div>
+        <button class="btn-primary">S'inscrire sur FFGolf →</button>
+      </div>
+      <div style="margin:0 16px 10px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;padding:14px">
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+          <div style="background:var(--gl);border-radius:10px;padding:6px 8px;text-align:center;min-width:42px;flex-shrink:0"><div style="font-size:16px;font-weight:700;color:var(--gd);line-height:1">05</div><div style="font-size:8px;color:var(--gd);text-transform:uppercase">Avr</div></div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--t)">Open Île-de-France</div><div style="font-size:11px;color:var(--m);margin-top:2px">Golf de Saint-Cloud · (92)</div><div style="display:flex;gap:5px;margin-top:6px"><span class="tag">Medal Play</span><span class="tag">Hcp ≤18</span><span style="font-size:10px;padding:2px 7px;border-radius:6px;background:#FCEBEB;color:#791F1F">Complet</span></div></div>
+        </div>
+        <button class="btn-secondary">Liste d'attente →</button>
+      </div>
+      <div style="margin:0 16px 10px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;padding:14px">
+        <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+          <div style="background:var(--gl);border-radius:10px;padding:6px 8px;text-align:center;min-width:42px;flex-shrink:0"><div style="font-size:16px;font-weight:700;color:var(--gd);line-height:1">12</div><div style="font-size:8px;color:var(--gd);text-transform:uppercase">Avr</div></div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:500;color:var(--t)">Eagl Pro-Am Challenge</div><div style="font-size:11px;color:var(--m);margin-top:2px">Golf de Versailles · (78)</div><div style="display:flex;gap:5px;margin-top:6px"><span class="tag">Pro-Am</span><span class="tag">Tous niveaux</span><span style="font-size:10px;padding:2px 7px;border-radius:6px;background:#EEEDFE;color:#26215C">12 places</span></div></div>
+        </div>
+        <button class="btn-primary">S'inscrire sur FFGolf →</button>
+      </div>
+      <div style="margin:0 16px;text-align:center;padding:8px"><button class="btn-secondary">Voir toutes les compéts FFGolf →</button></div>
+    </div>
+    <nav class="bnav">
+      <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+      <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+      <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+      <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+      <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- ══ NEWS ══ -->
+  <div class="screen" id="s-news">
+    <div class="sb"><span>9:41</span><span>◼◼◼</span></div>
+    <div class="hdr"><div class="back-btn" onclick="goTo('s-home')">←</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--t)">Actus Golf</div><div style="font-size:11px;color:var(--m)">En direct</div></div>
+    <div class="chips">
+      <div class="chip on">Tout</div>
+      <div class="chip off">Tour</div>
+      <div class="chip off">Équipement</div>
+      <div class="chip off">France</div>
+      <div class="chip off">Eagl</div>
+    </div>
+    <div class="scroll">
+      <div style="margin:0 16px 10px;background:var(--bg);border:0.5px solid var(--b);border-radius:16px;overflow:hidden;cursor:pointer">
+        <div style="height:120px;background:linear-gradient(135deg,#085041,#1D9E75);display:flex;align-items:flex-end;padding:12px"><span style="font-size:9px;font-weight:500;padding:2px 8px;border-radius:6px;background:var(--gold);color:var(--gd);text-transform:uppercase">Tour</span></div>
+        <div style="padding:12px 14px"><div style="font-size:14px;font-weight:500;color:var(--t);margin-bottom:4px">Rory McIlroy remporte le Masters d'Augusta en dominant le dernier tour</div><div style="font-size:11px;color:var(--m)">Il y a 2h · Golf.com</div></div>
+      </div>
+      <div style="margin:0 16px 10px;background:var(--bg);border:0.5px solid var(--b);border-radius:16px;overflow:hidden;cursor:pointer">
+        <div style="height:100px;background:linear-gradient(135deg,#1a1a2a,#378ADD);display:flex;align-items:flex-end;padding:12px"><span style="font-size:9px;font-weight:500;padding:2px 8px;border-radius:6px;background:#85B7EB;color:#042C53;text-transform:uppercase">Équipement</span></div>
+        <div style="padding:12px 14px"><div style="font-size:14px;font-weight:500;color:var(--t);margin-bottom:4px">TaylorMade dévoile le Qi10 Max Tour 2026 avec une nouvelle face IA</div><div style="font-size:11px;color:var(--m)">Il y a 5h · Golf Digest</div></div>
+      </div>
+      <div style="margin:0 16px 10px;background:var(--bg);border:0.5px solid var(--b);border-radius:16px;overflow:hidden;cursor:pointer">
+        <div style="height:100px;background:linear-gradient(135deg,#2a1a0a,#BA7517);display:flex;align-items:flex-end;padding:12px"><span style="font-size:9px;font-weight:500;padding:2px 8px;border-radius:6px;background:#FAC775;color:#412402;text-transform:uppercase">France</span></div>
+        <div style="padding:12px 14px"><div style="font-size:14px;font-weight:500;color:var(--t);margin-bottom:4px">Victor Perez entre dans le top 20 mondial pour la première fois</div><div style="font-size:11px;color:var(--m)">Il y a 1j · L'Équipe</div></div>
+      </div>
+    </div>
+    <nav class="bnav">
+      <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+      <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+      <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+      <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+      <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    </nav>
+  </div>
+
+  <!-- ══ PROFILE ══ -->
+  <div class="screen" id="s-profile">
+    <div class="sb"><span>9:41</span><span>◼◼◼</span></div>
+    <div class="hdr"><div class="logo" style="font-size:22px">Mon profil</div><div style="font-size:11px;color:var(--m)">Paramètres</div></div>
+    <div class="scroll">
+      <div style="margin:0 16px 14px;display:flex;align-items:center;gap:14px;padding:14px;background:var(--bg2);border-radius:16px;border:0.5px solid var(--b)">
+        <div style="width:58px;height:58px;border-radius:50%;background:var(--eagl);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);flex-shrink:0">TM</div>
+        <div><div style="font-size:18px;font-weight:500;color:var(--t)">Thomas Martin</div><div style="font-size:11px;color:var(--m);margin-top:2px">Handicap 12.4 · Paris 8e · 8 amis</div><div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap"><span style="font-size:9px;padding:2px 7px;border-radius:7px;font-weight:500;background:var(--gl);color:var(--gd)">⚡ Pro Member</span><span style="font-size:9px;padding:2px 7px;border-radius:7px;background:var(--grl);color:#085041">38 parties</span><span style="font-size:9px;padding:2px 7px;border-radius:7px;background:#EEEDFE;color:#26215C">TaylorMade</span></div></div>
+      </div>
+      <div style="margin:0 16px 10px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;padding:13px 15px">
+        <div style="font-size:13px;font-weight:500;color:var(--t);margin-bottom:10px">Mon sac</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--m)">Driver</span><span style="color:var(--t);font-weight:500">TaylorMade Qi10 Max · 274m</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--m)">Fers</span><span style="color:var(--t);font-weight:500">Callaway Apex Pro 24</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--m)">Balle</span><span style="color:var(--t);font-weight:500">Titleist Pro V1x</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--m)">Putter</span><span style="color:var(--t);font-weight:500">Scotty Cameron Phantom X</span></div>
+        </div>
+      </div>
+      <div style="margin:0 16px 10px;background:var(--bg);border:0.5px solid var(--b);border-radius:14px;padding:13px 15px">
+        <div style="font-size:13px;font-weight:500;color:var(--t);margin-bottom:10px">Mes données partagées</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:0.5px solid var(--b)"><div><div style="font-size:12px;color:var(--t)">Clubs & marques</div><div style="font-size:10px;color:var(--m)">Partagé anonymement aux fabricants</div></div><div style="width:34px;height:19px;border-radius:9px;background:var(--gr);position:relative"><div style="position:absolute;width:15px;height:15px;background:#fff;border-radius:50%;top:2px;right:2px"></div></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:0.5px solid var(--b)"><div><div style="font-size:12px;color:var(--t)">Distances & stats</div><div style="font-size:10px;color:var(--m)">Stats agrégées uniquement</div></div><div style="width:34px;height:19px;border-radius:9px;background:var(--gr);position:relative"><div style="position:absolute;width:15px;height:15px;background:#fff;border-radius:50%;top:2px;right:2px"></div></div></div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:12px;color:var(--t)">Parcours fréquentés</div><div style="font-size:10px;color:var(--m)">Partagé aux clubs partenaires</div></div><div style="width:34px;height:19px;border-radius:9px;background:var(--gr);position:relative"><div style="position:absolute;width:15px;height:15px;background:#fff;border-radius:50%;top:2px;right:2px"></div></div></div>
+        </div>
+      </div>
+      <div style="margin:0 16px;background:var(--grl);border-radius:14px;padding:13px 15px;border:0.5px solid #9FE1CB">
+        <div style="font-size:13px;font-weight:500;color:#085041;margin-bottom:3px">Tu contribues à Eagl Data</div>
+        <div style="font-size:11px;color:#0F6E56;line-height:1.5">Tes données anonymisées aident les fabricants à améliorer leur matériel. En échange, Eagl reste 100% gratuit.</div>
+      </div>
+    </div>
+    <nav class="bnav">
+      <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+      <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+      <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+      <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+      <button class="ni active"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+    </nav>
+  </div>
+
+</div><!-- end phone -->
+
+<script>
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const el=document.getElementById(id);
+  if(el){el.classList.add('active');el.querySelector('.scroll')?.scrollTo(0,0)}
+}
+function startApp(){
+  document.getElementById('onb').classList.add('hidden');
+  setTimeout(()=>{
+    const b=document.getElementById('install-banner');
+    if(b) b.classList.remove('hidden');
+    setTimeout(()=>b?.classList.add('hidden'),5000);
+  },1500);
+}
+function arenaTab(n){
+  for(let i=1;i<=3;i++){
+    const t=document.getElementById('at'+i);
+    const b=document.getElementById('tb'+i);
+    if(t) t.style.display=i===n?'block':'none';
+    if(b){b.className='tab-btn '+(i===n?'on':'off')}
+  }
+}
+function selGrp(n){
+  for(let i=1;i<=4;i++){
+    const el=document.getElementById('gg'+i);
+    if(el) el.className='grp-btn'+(i===n?' active':'');
+  }
+}
+</script>
+</body>
+</html>
