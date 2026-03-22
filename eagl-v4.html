@@ -306,13 +306,9 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--t)">Compétitions</div>
     <div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="comp-badge">📡 FFGolf Live</div>
   </div>
-
-  <!-- RECHERCHE -->
   <div style="padding:0 14px 8px">
     <input class="inp" id="comp-input" placeholder="🔍  Nom du golf, ville..." type="text" style="margin:0" oninput="afficherComps()">
   </div>
-
-  <!-- CHIPS FORMAT -->
   <div class="chips">
     <div class="chip chip-on" id="cf-all" onclick="setFormatComp('',this)">Toutes</div>
     <div class="chip chip-off" id="cf-stbl" onclick="setFormatComp('Stableford',this)">Stableford</div>
@@ -321,19 +317,14 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     <div class="chip chip-off" id="cf-scr" onclick="setFormatComp('Scramble',this)">Scramble</div>
     <div class="chip chip-off" id="cf-9" onclick="setFormatComp('9',this)">9 trous</div>
   </div>
-
-  <!-- LISTE -->
   <div class="scroll">
-    <div id="comp-list">
-      <div class="empty-state" id="comp-loading">Chargement... ⛳</div>
-    </div>
+    <div id="comp-list"><div class="empty-state" id="comp-loading">Chargement... ⛳</div></div>
     <div style="margin:0 14px 14px;background:var(--bg3);border:0.5px dashed var(--gring);border-radius:16px;padding:16px;cursor:pointer;text-align:center" onclick="window.open('https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats','_blank')">
       <div style="font-size:18px;margin-bottom:6px">🏆</div>
       <div style="font-size:13px;font-weight:600;color:var(--t)">Calendrier complet FFGolf</div>
       <div style="font-size:11px;color:var(--t3);margin-top:2px">Toutes les compétitions officielles →</div>
     </div>
   </div>
-
   <nav class="bnav">
     <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
     <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
@@ -708,75 +699,73 @@ setInterval(()=>{
 
 
 // ━━━ COMPÉTITIONS FFGOLF ━━━
-let _compFormat = '';
-let _compData = [];
+var _compFormat = '';
+var _compData = [];
 
-window.setFormatComp = (fmt, el) => {
+window.setFormatComp = function(fmt, el) {
   _compFormat = fmt;
-  document.querySelectorAll('[id^="cf-"]').forEach(c => c.className = 'chip chip-off');
+  document.querySelectorAll('[id^="cf-"]').forEach(function(c){ c.className = 'chip chip-off'; });
   el.className = 'chip chip-on';
   afficherComps();
 };
 
-window.afficherComps = () => {
-  const q = (document.getElementById('comp-input')?.value || '').toLowerCase();
-  const el = document.getElementById('comp-list');
+window.afficherComps = function() {
+  var q = (document.getElementById('comp-input') ? document.getElementById('comp-input').value : '').toLowerCase();
+  var el = document.getElementById('comp-list');
   if (!el) return;
-  let filtered = _compData.filter(c => {
-    const matchQ = !q || c.nom?.toLowerCase().includes(q) || c.club?.toLowerCase().includes(q) || c.lieu?.toLowerCase().includes(q);
-    const matchF = !_compFormat || c.format?.includes(_compFormat) || c.trous === _compFormat;
+  var filtered = _compData.filter(function(c) {
+    var matchQ = !q || (c.nom && c.nom.toLowerCase().indexOf(q) >= 0) || (c.club && c.club.toLowerCase().indexOf(q) >= 0) || (c.lieu && c.lieu.toLowerCase().indexOf(q) >= 0);
+    var matchF = !_compFormat || (c.format && c.format.indexOf(_compFormat) >= 0) || c.trous === _compFormat;
     return matchQ && matchF;
   });
   if (filtered.length === 0) {
-    el.innerHTML = '<div class="empty-state">Aucune compétition.<br><br><button class="btn btn-d" style="padding:10px;font-size:12px" onclick="window.open('https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats','_blank')">Voir sur FFGolf →</button></div>';
+    el.innerHTML = '<div class="empty-state">Aucune compétition.<br><br><button class="btn btn-d" style="padding:10px;font-size:12px" onclick="window.open(\'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats\',\'_blank\')">Voir sur FFGolf →</button></div>';
     return;
   }
-  const colors = {'Stableford':'var(--green)','Medal':'var(--gold)','Quatre balles':'var(--blue)','Scramble':'#a78bfa'};
-  el.innerHTML = filtered.map(c => `
-    <div style="margin:0 14px 10px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:15px;cursor:pointer" onclick="window.open('${c.lien}','_blank')">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-        <div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🏆</div>
-        <div style="flex:1;min-width:0">
-          <div style="font-size:13px;font-weight:600;color:var(--t)">${c.nom}</div>
-          <div style="font-size:11px;color:var(--t2);margin-top:2px">${c.club}</div>
-          ${c.lieu ? `<div style="font-size:10px;color:var(--t3);margin-top:1px">📍 ${c.lieu}</div>` : ''}
-        </div>
-        <div style="text-align:right;flex-shrink:0">
-          <div style="font-size:14px;font-weight:700;color:var(--t)">${c.date}</div>
-          <div style="font-size:10px;color:var(--t3);margin-top:2px">${c.trous} trous</div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <span style="font-size:10px;background:var(--gdim);color:${colors[c.format]||'var(--green)'};padding:3px 10px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">${c.format}</span>
-        <span style="font-size:11px;color:var(--green);font-weight:600">S'inscrire →</span>
-      </div>
-    </div>
-  `).join('');
+  var colors = {'Stableford':'var(--green)','Medal':'var(--gold)','Quatre balles':'var(--blue)','Scramble':'#a78bfa'};
+  var html = '';
+  filtered.forEach(function(c) {
+    var color = colors[c.format] || 'var(--green)';
+    var lieuHtml = c.lieu ? '<div style="font-size:10px;color:var(--t3);margin-top:1px">📍 ' + c.lieu + '</div>' : '';
+    html += '<div style="margin:0 14px 10px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:15px;cursor:pointer" onclick="window.open(\'' + c.lien + '\',\'_blank\')">';
+    html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">';
+    html += '<div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🏆</div>';
+    html += '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--t)">' + c.nom + '</div>';
+    html += '<div style="font-size:11px;color:var(--t2);margin-top:2px">' + c.club + '</div>' + lieuHtml + '</div>';
+    html += '<div style="text-align:right;flex-shrink:0"><div style="font-size:14px;font-weight:700;color:var(--t)">' + c.date + '</div>';
+    html += '<div style="font-size:10px;color:var(--t3);margin-top:2px">' + c.trous + ' trous</div></div></div>';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center">';
+    html += '<span style="font-size:10px;background:var(--gdim);color:' + color + ';padding:3px 10px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">' + c.format + '</span>';
+    html += '<span style="font-size:11px;color:var(--green);font-weight:600">S\'inscrire →</span></div></div>';
+  });
+  el.innerHTML = html;
 };
 
 function chargerComps() {
-  const today = new Date();
-  const fmt = (d) => d.toLocaleDateString('fr-FR', {day:'numeric', month:'short'});
-  const d = (n) => { const x = new Date(today); x.setDate(today.getDate()+n); return x; };
+  var today = new Date();
+  function fmt(d){ return d.toLocaleDateString('fr-FR', {day:'numeric', month:'short'}); }
+  function dd(n){ var x = new Date(today); x.setDate(today.getDate()+n); return x; }
+  var lien = 'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats';
   _compData = [
-    {nom:'Classic Mid AM', club:'Golf du Bassin Bleu', lieu:'Saint-Gilles-les-Hauts (974)', date:fmt(d(1)), format:'Stableford', trous:'18', lien:'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats'},
-    {nom:'Coupe du Printemps', club:'Golf National', lieu:'Saint-Quentin-en-Yvelines (78)', date:fmt(d(2)), format:'Stableford', trous:'18', lien:'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats'},
-    {nom:'Open de Fontainebleau', club:'Golf de Fontainebleau', lieu:'Fontainebleau (77)', date:fmt(d(3)), format:'Medal', trous:'18', lien:'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats'},
-    {nom:'Quatre Balles du Club', club:'Golf de Chantilly', lieu:'Chantilly (60)', date:fmt(d(5)), format:'Quatre balles', trous:'18', lien:'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats'},
-    {nom:'Challenge Scramble', club:'Golf Bluegreen Nantes', lieu:'Nantes (44)', date:fmt(d(6)), format:'Scramble', trous:'18', lien:'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats'},
-    {nom:'Trophée Hardelot', club:"Golf d'Hardelot", lieu:'Hardelot (62)', date:fmt(d(8)), format:'Stableford', trous:'18', lien:'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats'},
-    {nom:'Open 9 trous Cergy', club:'Garden Golf de Cergy', lieu:'Cergy (95)', date:fmt(d(9)), format:'Stableford', trous:'9', lien:'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats'},
-    {nom:'Championnat du Club', club:'Golf de Saint-Cloud', lieu:'Saint-Cloud (92)', date:fmt(d(12)), format:'Medal', trous:'18', lien:'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats'},
-    {nom:'Scramble des Amis', club:'Golf de Bondues', lieu:'Bondues (59)', date:fmt(d(14)), format:'Scramble', trous:'18', lien:'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats'},
-    {nom:'Coupe Bluegreen', club:'Golf Bluegreen Bordeaux Lac', lieu:'Bordeaux (33)', date:fmt(d(15)), format:'Stableford', trous:'18', lien:'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats'},
+    {nom:'Classic Mid AM', club:'Golf du Bassin Bleu', lieu:'Saint-Gilles-les-Hauts (974)', date:fmt(dd(1)), format:'Stableford', trous:'18', lien:lien},
+    {nom:'Coupe du Printemps', club:'Golf National', lieu:'Saint-Quentin-en-Yvelines (78)', date:fmt(dd(2)), format:'Stableford', trous:'18', lien:lien},
+    {nom:'Open de Fontainebleau', club:'Golf de Fontainebleau', lieu:'Fontainebleau (77)', date:fmt(dd(3)), format:'Medal', trous:'18', lien:lien},
+    {nom:'Quatre Balles du Club', club:'Golf de Chantilly', lieu:'Chantilly (60)', date:fmt(dd(5)), format:'Quatre balles', trous:'18', lien:lien},
+    {nom:'Challenge Scramble', club:'Golf Bluegreen Nantes', lieu:'Nantes (44)', date:fmt(dd(6)), format:'Scramble', trous:'18', lien:lien},
+    {nom:'Trophée Hardelot', club:"Golf d'Hardelot", lieu:'Hardelot (62)', date:fmt(dd(8)), format:'Stableford', trous:'18', lien:lien},
+    {nom:'Open 9 trous Cergy', club:'Garden Golf de Cergy', lieu:'Cergy (95)', date:fmt(dd(9)), format:'Stableford', trous:'9', lien:lien},
+    {nom:'Championnat du Club', club:'Golf de Saint-Cloud', lieu:'Saint-Cloud (92)', date:fmt(dd(12)), format:'Medal', trous:'18', lien:lien},
+    {nom:'Scramble des Amis', club:'Golf de Bondues', lieu:'Bondues (59)', date:fmt(dd(14)), format:'Scramble', trous:'18', lien:lien},
+    {nom:'Coupe Bluegreen', club:'Golf Bluegreen Bordeaux Lac', lieu:'Bordeaux (33)', date:fmt(dd(15)), format:'Stableford', trous:'18', lien:lien}
   ];
-  document.getElementById('comp-loading')?.remove();
-  document.getElementById('comp-badge').textContent = '📡 FFGolf Live';
+  var loading = document.getElementById('comp-loading');
+  if (loading) loading.remove();
+  var badge = document.getElementById('comp-badge');
+  if (badge) badge.textContent = '📡 FFGolf Live';
   afficherComps();
 }
 
-// Charger les comps quand on arrive sur l'onglet
-const _goTo_orig = window.goTo;
+var _goTo_orig = window.goTo;
 window.goTo = function(id) {
   _goTo_orig(id);
   if (id === 's-pros' && _compData.length === 0) chargerComps();
