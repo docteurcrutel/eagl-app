@@ -27,3 +27,780 @@ html,body{height:100%;background:#0e1014;display:flex;justify-content:center;ali
 .back-btn{width:36px;height:36px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;color:var(--t);border:none}
 .av{width:36px;height:36px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--green);cursor:pointer}
 .bnav{display:flex;border-top:0.5px solid var(--line);background:var(--bg);padding:6px 0 22px;position:absolute;bottom:0;left:0;right:0}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px 0;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif}
+.ni-ico{font-size:20px;opacity:0.35}.ni-lbl{font-size:9px;color:var(--t3);font-weight:400;letter-spacing:.3px}
+.ni.active .ni-ico{opacity:1}.ni.active .ni-lbl{color:var(--green);font-weight:600}
+/* STAT CARDS */
+.stats-row{display:flex;gap:8px;padding:12px 14px 16px}
+.stat-card{flex:1;background:var(--bg2);border:0.5px solid var(--line);border-radius:14px;padding:13px 12px;cursor:pointer}
+.stat-label{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:1px;line-height:1;margin-bottom:2px}
+.stat-sub{font-size:10px;color:var(--t2);margin-bottom:10px}
+.stat-bar{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.stat-fill{height:100%;border-radius:2px}
+.stat-trend{font-size:10px;font-weight:600;margin-top:5px}
+/* CARDS */
+.sl{padding:0 18px;margin-bottom:9px;font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1.8px}
+.card{background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;margin:0 14px 10px;overflow:hidden;cursor:pointer}
+.pcard{margin:0 14px 10px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:15px;cursor:pointer}
+.pcard.hi{border-color:var(--gring);background:rgba(46,204,113,0.04)}
+.btn{width:100%;padding:14px;border:none;border-radius:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-g{background:var(--green);color:#000}
+.btn-d{background:var(--bg3);color:var(--t);border:0.5px solid var(--line)}
+.chips{display:flex;gap:7px;padding:0 14px 12px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:7px 16px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0;border:none;font-family:'DM Sans',sans-serif}
+.chip-on{background:var(--green);color:#000}.chip-off{background:var(--bg3);color:var(--t2);border:0.5px solid var(--line)}
+.search{margin:0 14px 12px;background:var(--bg3);border:0.5px solid var(--line);border-radius:13px;padding:12px 16px;font-size:13px;color:var(--t3)}
+.pbar{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.pbar-g{height:100%;border-radius:2px;background:var(--green)}
+.tabs{display:flex;margin:0 14px 12px;background:var(--bg3);border-radius:12px;padding:3px;gap:2px}
+.tab{flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.tab-on{background:var(--green);color:#000}.tab-off{background:transparent;color:var(--t3)}
+.lbr{display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line)}
+.lbr:last-child{border-bottom:none}
+.av-sq{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.av-r{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.bbl{display:inline-block;background:var(--bg3);border-radius:0 14px 14px 14px;padding:9px 13px;max-width:80%;margin-bottom:6px}
+.bbr{display:inline-block;background:var(--green);border-radius:14px 0 14px 14px;padding:9px 13px;max-width:80%;margin-bottom:6px}
+/* TOAST */
+.toast{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:20px;font-size:12px;font-weight:500;opacity:0;transition:opacity .3s;white-space:nowrap;z-index:999;pointer-events:none}
+.toast.show{opacity:1}
+/* INPUT */
+.inp{width:100%;background:var(--bg3);border:0.5px solid var(--line);border-radius:11px;padding:12px 14px;font-size:13px;color:var(--t);font-family:'DM Sans',sans-serif;outline:none;margin-bottom:10px}
+.inp:focus{border-color:var(--green)}
+select.inp option{background:var(--bg3);color:var(--t)}
+/* LOGIN */
+.login-screen{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;z-index:200}
+.google-btn{display:flex;align-items:center;gap:12px;background:#fff;color:#000;border:none;border-radius:13px;padding:14px 24px;font-size:14px;font-weight:600;cursor:pointer;width:100%;justify-content:center;font-family:'DM Sans',sans-serif}
+/* SPINNER */
+.spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(0,0,0,.2);border-top-color:#000;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:32px 20px;color:var(--t3);font-size:13px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+
+<!-- ══ LOGIN ══ -->
+<div class="login-screen" id="s-login">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;letter-spacing:6px;color:var(--t);line-height:.9;margin-bottom:8px">EAGL<span style="color:var(--green)">.</span></div>
+  <div style="font-size:14px;color:var(--t2);margin-bottom:52px;text-align:center;line-height:1.7">Trouve tes partenaires.<br>Rejoins une partie. Domine l'Arena.</div>
+  <button class="google-btn" id="btn-google" onclick="loginGoogle()">
+    <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.3 30.1 0 24 0 14.7 0 6.8 5.4 3 13.3l7.8 6C12.6 13.1 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17z"/><path fill="#FBBC05" d="M10.8 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7L2.5 13.3A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8.3-5.9z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.1 0-11.3-4.1-13.2-9.7l-8.3 5.9C6.8 42.6 14.7 48 24 48z"/></svg>
+    Continuer avec Google
+  </button>
+  <div style="font-size:11px;color:var(--t3);margin-top:20px;text-align:center">Gratuit · Aucune carte bancaire</div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ══ HOME ══ -->
+<div class="screen" id="s-home">
+  <div class="sb"><span id="time-home">9:41</span><span>▐▐▐ 78%</span></div>
+  <div class="hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="av user-initials" onclick="goTo('s-profile')">TM</div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <div style="font-size:18px;color:var(--t3)">‹</div>
+        <div style="background:var(--bg3);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;color:var(--t)" id="date-label">AUJOURD'HUI</div>
+        <div style="font-size:18px;color:var(--t3)">›</div>
+      </div>
+    </div>
+    <div style="width:34px;height:34px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer">🔔</div>
+  </div>
+  <div class="scroll">
+    <!-- STAT CARDS -->
+    <div class="stats-row">
+      <div class="stat-card" onclick="goTo('s-arena')">
+        <div class="stat-label">Parties</div>
+        <div class="stat-val user-parties" style="color:var(--green)">0</div>
+        <div class="stat-sub">cette saison</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--green);width:10%"></div></div>
+        <div class="stat-trend" style="color:var(--green)">▲ joue !</div>
+      </div>
+      <div class="stat-card" onclick="goTo('s-arena')">
+        <div class="stat-label">Handicap</div>
+        <div class="stat-val user-hcp" style="color:var(--gold)">—</div>
+        <div class="stat-sub">index FFGolf</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:58%"></div></div>
+        <div class="stat-trend" style="color:var(--t2)">→ stable</div>
+      </div>
+      <div class="stat-card" onclick="goTo('s-arena')">
+        <div class="stat-label">Arena</div>
+        <div class="stat-val user-pts" style="color:var(--blue)">0</div>
+        <div class="stat-sub">pts · sem.</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--blue);width:5%"></div></div>
+        <div class="stat-trend" style="color:var(--green)">▲ joue !</div>
+      </div>
+    </div>
+
+    <!-- TEAM BANNER -->
+    <div style="margin:0 14px 16px;background:rgba(46,204,113,0.07);border:0.5px solid var(--gring);border-radius:16px;padding:14px 15px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="goTo('s-arena')">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🏌️</div>
+      <div style="flex:1">
+        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:3px">Team <span class="user-team">—</span></div>
+        <div style="font-size:13px;font-weight:600;color:var(--t)">Rejoins l'Arena cette semaine !</div>
+        <div class="pbar" style="margin-top:6px"><div class="pbar-g" style="width:20%"></div></div>
+      </div>
+      <div style="font-size:20px;color:var(--t3)">›</div>
+    </div>
+
+    <!-- PARTIES -->
+    <div class="sl">Parties ouvertes</div>
+    <div id="home-parties">
+      <div class="empty-state">Chargement... ⏳</div>
+    </div>
+
+    <!-- AMIS -->
+    <div class="sl" style="margin-top:8px">Joueurs en ligne</div>
+    <div id="home-joueurs" style="margin:0 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;overflow:hidden">
+      <div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Tes amis apparaîtront ici</div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni active" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ══ JOUER ══ -->
+<div class="screen" id="s-jouer">
+  <div class="sb"><span>9:41</span><span>▐▐▐</span></div>
+  <div class="hdr">
+    <div class="back-btn" onclick="goTo('s-home')">←</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--t)">Parties ouvertes</div>
+    <div style="font-size:20px;cursor:pointer" onclick="goTo('s-creer')">➕</div>
+  </div>
+  <div class="chips">
+    <div class="chip chip-on">Toutes</div>
+    <div class="chip chip-off">Aujourd'hui</div>
+    <div class="chip chip-off">Ce week-end</div>
+  </div>
+  <div class="scroll">
+    <div id="liste-parties">
+      <div class="empty-state">Chargement des parties... ⏳</div>
+    </div>
+    <div style="margin:8px 14px 0;background:var(--bg3);border:1px dashed var(--line);border-radius:16px;padding:18px;cursor:pointer;text-align:center" onclick="goTo('s-creer')">
+      <div style="font-size:24px;margin-bottom:6px;color:var(--green)">+</div>
+      <div style="font-size:13px;font-weight:600;color:var(--t)">Créer une partie</div>
+      <div style="font-size:11px;color:var(--t3);margin-top:2px">Invite des partenaires autour de toi</div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni active"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ══ CRÉER PARTIE ══ -->
+<div class="screen" id="s-creer">
+  <div class="sb"><span>9:41</span><span>▐▐▐</span></div>
+  <div class="hdr">
+    <div class="back-btn" onclick="goTo('s-jouer')">←</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)">Nouvelle partie</div>
+    <div></div>
+  </div>
+  <div class="scroll">
+    <div style="padding:8px 14px">
+      <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:8px">Golf</div>
+      <input class="inp" id="input-golf" placeholder="Ex: Golf National, Golf de Versailles..." type="text">
+      <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:8px">Date</div>
+      <input class="inp" id="input-date" type="date">
+      <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:8px">Heure de départ</div>
+      <input class="inp" id="input-heure" type="time" value="09:00">
+      <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:8px">Parcours</div>
+      <select class="inp" id="input-trous">
+        <option value="18">18 trous</option>
+        <option value="9">9 trous</option>
+      </select>
+      <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:8px">Format</div>
+      <select class="inp" id="input-format">
+        <option value="Stableford">Stableford</option>
+        <option value="Medal">Medal (stroke play)</option>
+        <option value="Match play">Match play</option>
+        <option value="Scramble">Scramble</option>
+        <option value="Amical">Amical</option>
+      </select>
+      <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:8px">Places disponibles</div>
+      <select class="inp" id="input-places">
+        <option value="1">1 place</option>
+        <option value="2">2 places</option>
+        <option value="3">3 places</option>
+      </select>
+      <div style="font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:8px">Message (optionnel)</div>
+      <input class="inp" id="input-msg" placeholder="Ex: Niveau 10-20 bienvenu, débutants ok..." type="text">
+      <button class="btn btn-g" id="btn-creer" onclick="creerPartie()" style="margin-top:4px">Publier la partie →</button>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni active" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ══ PARTIE DETAIL ══ -->
+<div class="screen" id="s-partie">
+  <div class="sb"><span>9:41</span><span>▐▐▐</span></div>
+  <div class="hdr">
+    <div class="back-btn" onclick="goTo('s-jouer')">←</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;color:var(--t)" id="partie-titre">Partie</div>
+    <div style="font-size:11px;color:var(--green);font-weight:600" id="partie-statut"></div>
+  </div>
+  <div class="scroll">
+    <!-- INFO CARD -->
+    <div style="margin:0 14px 14px;background:linear-gradient(135deg,#0a1a0d,#0d2814);border:0.5px solid var(--gring);border-radius:18px;padding:18px" id="partie-info-card">
+    </div>
+
+    <!-- JOUEURS -->
+    <div class="sl">Partenaires</div>
+    <div id="partie-joueurs" style="margin:0 14px 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;overflow:hidden"></div>
+
+    <!-- ACTIONS -->
+    <div style="margin:0 14px 14px" id="partie-actions"></div>
+
+    <!-- CHAT -->
+    <div class="sl">Chat de groupe</div>
+    <div style="margin:0 14px 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:12px 14px">
+      <div id="chat-messages" style="min-height:80px;max-height:200px;overflow-y:auto;margin-bottom:10px"></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="inp" id="chat-input" placeholder="Message..." style="margin:0;flex:1;padding:10px 14px;border-radius:22px" onkeypress="if(event.key==='Enter')envoyerMessage()">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;color:#000;font-weight:700;flex-shrink:0" onclick="envoyerMessage()">→</div>
+      </div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni active" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ══ ARENA ══ -->
+<div class="screen" id="s-arena">
+  <div class="sb"><span>9:41</span><span>▐▐▐</span></div>
+  <div class="hdr">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--t)">EAGL<span style="color:var(--green)">.</span> ARENA</div>
+    <div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="arena-sem">SEM. —</div>
+  </div>
+  <div class="scroll">
+    <div class="stats-row" style="padding:8px 14px 14px">
+      <div class="stat-card">
+        <div class="stat-label">Team</div>
+        <div class="stat-val user-team-pts" style="color:var(--gold);font-size:22px">—</div>
+        <div class="stat-sub">pts collectifs</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:20%"></div></div>
+        <div class="stat-trend" style="color:var(--t2)">→</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Rang team</div>
+        <div class="stat-val" style="color:var(--green)" id="arena-rang">—</div>
+        <div class="stat-sub">/ 5 teams</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--green);width:50%"></div></div>
+        <div class="stat-trend" style="color:var(--t2)">→</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Mes pts</div>
+        <div class="stat-val user-pts" style="color:var(--blue)">0</div>
+        <div class="stat-sub">cette semaine</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--blue);width:5%"></div></div>
+        <div class="stat-trend" style="color:var(--green)">▲</div>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab tab-on" id="tb1" onclick="arenaTab(1)">Marques</button>
+      <button class="tab tab-off" id="tb2" onclick="arenaTab(2)">Groupes</button>
+      <button class="tab tab-off" id="tb3" onclick="arenaTab(3)">Global</button>
+    </div>
+    <div id="at1">
+      <div class="sl">Classement teams</div>
+      <div id="arena-teams" style="margin:0 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;overflow:hidden">
+        <div class="empty-state">Chargement... ⏳</div>
+      </div>
+      <div style="margin:12px 14px 0;background:rgba(46,204,113,0.05);border:0.5px solid var(--gring);border-radius:13px;padding:12px 14px">
+        <div style="font-size:12px;font-weight:600;color:var(--green);margin-bottom:8px">Gagne des pts pour ta team</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">⛳ Jouer une partie</span><span style="color:var(--green);font-weight:600">+10</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">🦅 Eagle</span><span style="color:var(--green);font-weight:600">+50</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">🐦 Birdie</span><span style="color:var(--green);font-weight:600">+15</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">🏆 Gagner une compét</span><span style="color:var(--green);font-weight:600">+100</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="at2" style="display:none">
+      <div class="sl">Mes groupes</div>
+      <div style="margin:0 14px;text-align:center;padding:24px;color:var(--t3);font-size:13px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px">Bientôt disponible 🔜<br><span style="font-size:11px">Crée un groupe privé avec tes amis</span></div>
+    </div>
+    <div id="at3" style="display:none">
+      <div class="sl">Classement global</div>
+      <div id="arena-global" style="margin:0 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;overflow:hidden">
+        <div class="empty-state">Chargement... ⏳</div>
+      </div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni active"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ══ PROS ══ -->
+<div class="screen" id="s-pros">
+  <div class="sb"><span>9:41</span><span>▐▐▐</span></div>
+  <div class="hdr"><div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:var(--t)">Pros</div><div style="font-size:11px;color:var(--t3)">📍 Paris</div></div>
+  <div class="search">🔍 Spécialité, disponibilité...</div>
+  <div class="chips"><div class="chip chip-on">Tous</div><div class="chip chip-off">Swing</div><div class="chip chip-off">Putting</div><div class="chip chip-off">Débutants</div></div>
+  <div class="scroll">
+    <div style="margin:0 14px 10px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px;cursor:pointer">
+      <div style="display:flex;gap:12px;margin-bottom:12px">
+        <div style="width:58px;height:58px;border-radius:14px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--green);flex-shrink:0">FD</div>
+        <div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t)">François Dubois</div><div style="font-size:11px;color:var(--t2);margin-top:2px">Enseignant fédéral · Paris 16e</div><div style="display:flex;gap:5px;margin-top:7px"><span style="font-size:10px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:7px;font-weight:600;border:0.5px solid var(--gring)">Swing</span><span style="font-size:10px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:7px;font-weight:600;border:0.5px solid var(--gring)">Putting</span></div></div>
+        <div style="text-align:right;flex-shrink:0"><div style="font-size:13px;font-weight:600;color:var(--gold)">★ 4.9</div><div style="font-size:10px;color:var(--t3)">142 avis</div></div>
+      </div>
+      <div style="display:flex;gap:7px;margin-bottom:12px"><div style="flex:1;background:var(--bg3);border-radius:9px;padding:9px;text-align:center"><div style="font-size:13px;font-weight:700;color:var(--t)">85€</div><div style="font-size:9px;color:var(--t3)">/heure</div></div><div style="flex:1;background:var(--gdim);border-radius:9px;padding:9px;text-align:center;border:0.5px solid var(--gring)"><div style="font-size:13px;font-weight:700;color:var(--green)">Dispo</div><div style="font-size:9px;color:var(--green)">Sam. matin</div></div></div>
+      <button class="btn btn-g">Réserver un cours</button>
+    </div>
+    <div style="margin:0 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px;cursor:pointer">
+      <div style="display:flex;gap:12px;margin-bottom:12px">
+        <div style="width:58px;height:58px;border-radius:14px;background:rgba(167,139,250,0.1);border:0.5px solid rgba(167,139,250,0.2);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:#a78bfa;flex-shrink:0">ML</div>
+        <div style="flex:1"><div style="font-size:15px;font-weight:600;color:var(--t)">Marie Laurent</div><div style="font-size:11px;color:var(--t2);margin-top:2px">Enseignante PGA · Boulogne</div><div style="display:flex;gap:5px;margin-top:7px"><span style="font-size:10px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:7px;font-weight:600;border:0.5px solid var(--gring)">Débutants</span></div></div>
+        <div style="text-align:right;flex-shrink:0"><div style="font-size:13px;font-weight:600;color:var(--gold)">★ 4.8</div><div style="font-size:10px;color:var(--t3)">98 avis</div></div>
+      </div>
+      <div style="display:flex;gap:7px;margin-bottom:12px"><div style="flex:1;background:var(--bg3);border-radius:9px;padding:9px;text-align:center"><div style="font-size:13px;font-weight:700;color:var(--t)">70€</div><div style="font-size:9px;color:var(--t3)">/heure</div></div><div style="flex:1;background:var(--gdim);border-radius:9px;padding:9px;text-align:center;border:0.5px solid var(--gring)"><div style="font-size:13px;font-weight:700;color:var(--green)">Dispo</div><div style="font-size:9px;color:var(--green)">Cette sem.</div></div></div>
+      <button class="btn btn-d" style="font-size:13px;padding:12px">Voir le profil</button>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni active"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ══ PROFIL ══ -->
+<div class="screen" id="s-profile">
+  <div class="sb"><span>9:41</span><span>▐▐▐</span></div>
+  <div class="hdr"><div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:var(--t)">Profil</div><div style="font-size:11px;color:var(--red);font-weight:600;cursor:pointer" onclick="logout()">Déconnexion</div></div>
+  <div class="scroll">
+    <div style="margin:0 14px 14px;display:flex;align-items:center;gap:14px;padding:16px;background:var(--bg2);border:0.5px solid var(--line);border-radius:18px">
+      <div style="width:60px;height:60px;border-radius:50%;background:var(--gdim);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--green);flex-shrink:0;overflow:hidden" id="profile-avatar">TM</div>
+      <div>
+        <div style="font-size:18px;font-weight:600;color:var(--t) user-name">—</div>
+        <div id="profile-name" style="font-size:18px;font-weight:600;color:var(--t)">—</div>
+        <div style="font-size:11px;color:var(--t2);margin-top:2px">Hcp <span class="user-hcp">—</span> · Team <span class="user-team">—</span></div>
+        <div style="display:flex;gap:5px;margin-top:7px"><span style="font-size:9px;padding:2px 9px;border-radius:8px;background:var(--gdim);color:var(--green);font-weight:600;border:0.5px solid var(--gring)">⚡ Eagl Member</span><span style="font-size:9px;padding:2px 9px;border-radius:8px;background:var(--bg3);color:var(--t3)" id="profile-parties-badge">0 parties</span></div>
+      </div>
+    </div>
+    <!-- STAT CARDS -->
+    <div class="stats-row" style="padding:0 14px 14px">
+      <div class="stat-card">
+        <div class="stat-label">Drive</div>
+        <div class="stat-val" style="color:var(--green)" id="stat-drive">—</div>
+        <div class="stat-sub">mètres moy.</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--green);width:65%"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">GIR</div>
+        <div class="stat-val" style="color:var(--gold)" id="stat-gir">—</div>
+        <div class="stat-sub">greens/trou</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:55%"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Putts</div>
+        <div class="stat-val" style="color:var(--blue)" id="stat-putts">—</div>
+        <div class="stat-sub">par green</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--blue);width:60%"></div></div>
+      </div>
+    </div>
+    <!-- MON SAC -->
+    <div class="sl">Mon sac</div>
+    <div style="margin:0 14px 12px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Driver</span><span style="color:var(--t);font-weight:600" id="sac-driver">—</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Fers</span><span style="color:var(--t);font-weight:600" id="sac-fers">—</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Balle</span><span style="color:var(--t);font-weight:600" id="sac-balle">—</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Putter</span><span style="color:var(--t);font-weight:600" id="sac-putter">—</span></div>
+      </div>
+    </div>
+    <!-- EDIT -->
+    <div class="sl">Modifier mon profil</div>
+    <div style="padding:0 14px 14px;display:flex;flex-direction:column;gap:0">
+      <input class="inp" id="edit-hcp" placeholder="Handicap (ex: 12.4)" type="number" step="0.1">
+      <select class="inp" id="edit-team">
+        <option value="TaylorMade">Team TaylorMade</option>
+        <option value="Titleist">Team Titleist</option>
+        <option value="Callaway">Team Callaway</option>
+        <option value="Ping">Team Ping</option>
+        <option value="Cobra">Team Cobra</option>
+      </select>
+      <input class="inp" id="edit-driver" placeholder="Driver (ex: TaylorMade Qi10)" type="text">
+      <input class="inp" id="edit-balle" placeholder="Balle (ex: Pro V1x)" type="text">
+      <button class="btn btn-g" onclick="sauvegarderProfil()">Sauvegarder ✓</button>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni active"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+</div><!-- phone -->
+
+<!-- ══ FIREBASE ══ -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc, updateDoc, increment, getDocs, limit } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAdu956Nu-vNvukznKYN52YgIPbhwf-Dt0",
+  authDomain: "eagl-app.firebaseapp.com",
+  projectId: "eagl-app",
+  storageBucket: "eagl-app.appspot.com",
+  messagingSenderId: "602608898506",
+  appId: "1:602608898506:web:5aa3bc246f7a235ca5ff33"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
+
+let currentUser = null;
+let currentPartieId = null;
+let unsubChat = null;
+let unsubParties = null;
+
+// ── UTILS ──
+function toast(msg, dur=2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('active'); el.querySelector('.scroll')?.scrollTo(0, 0); }
+}
+window.goTo = goTo;
+
+function arenaTab(n) {
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById('at'+i).style.display = i===n ? 'block' : 'none';
+    const b = document.getElementById('tb'+i);
+    b.className = 'tab ' + (i===n ? 'tab-on' : 'tab-off');
+  }
+}
+window.arenaTab = arenaTab;
+
+// Heure live
+function updateTime() {
+  const now = new Date();
+  const h = now.getHours().toString().padStart(2,'0');
+  const m = now.getMinutes().toString().padStart(2,'0');
+  document.querySelectorAll('[id^="time-"]').forEach(el => el.textContent = h+':'+m);
+}
+setInterval(updateTime, 10000); updateTime();
+
+// Date label
+const jrs = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+const mths = ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+const today = new Date();
+document.getElementById('date-label').textContent = jrs[today.getDay()]+' '+today.getDate()+' '+mths[today.getMonth()];
+document.getElementById('arena-sem').textContent = 'SEM. '+getWeek(today);
+
+function getWeek(d) {
+  const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay()||7));
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(),0,1));
+  return Math.ceil((((date - yearStart) / 86400000) + 1)/7);
+}
+
+// ── AUTH ──
+window.loginGoogle = async () => {
+  const btn = document.getElementById('btn-google');
+  btn.innerHTML = '<span class="spin"></span> Connexion...';
+  btn.disabled = true;
+  try { await signInWithPopup(auth, provider); }
+  catch(e) {
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.2l6.7-6.7C35.5 2.3 30.1 0 24 0 14.7 0 6.8 5.4 3 13.3l7.8 6C12.6 13.1 17.9 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17z"/><path fill="#FBBC05" d="M10.8 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7L2.5 13.3A23.9 23.9 0 0 0 0 24c0 3.8.9 7.4 2.5 10.6l8.3-5.9z"/><path fill="#34A853" d="M24 48c6.1 0 11.2-2 14.9-5.4l-7.5-5.8c-2 1.4-4.6 2.2-7.4 2.2-6.1 0-11.3-4.1-13.2-9.7l-8.3 5.9C6.8 42.6 14.7 48 24 48z"/></svg> Continuer avec Google';
+    btn.disabled = false;
+    toast('Connexion annulée');
+  }
+};
+
+window.logout = async () => {
+  await signOut(auth);
+  document.getElementById('s-login').style.display = 'flex';
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    document.getElementById('s-login').style.display = 'none';
+    // Créer/charger profil
+    const ref = doc(db, 'users', user.uid);
+    const snap = await getDoc(ref);
+    let profil = {};
+    if (!snap.exists()) {
+      profil = { nom: user.displayName, email: user.email, photo: user.photoURL, handicap: null, team: 'TaylorMade', points: 0, parties: 0, driver: null, balle: null, createdAt: serverTimestamp() };
+      await setDoc(ref, profil);
+    } else { profil = snap.data(); }
+    updateUI(user, profil);
+    goTo('s-home');
+    chargerParties();
+    chargerClassement();
+  } else {
+    currentUser = null;
+    document.getElementById('s-login').style.display = 'flex';
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  }
+});
+
+function updateUI(user, profil) {
+  const initials = (profil.nom || user.displayName || 'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  document.querySelectorAll('.user-initials').forEach(el => el.textContent = initials);
+  document.getElementById('profile-name').textContent = profil.nom || user.displayName;
+  document.querySelectorAll('.user-hcp').forEach(el => el.textContent = profil.handicap ?? '—');
+  document.querySelectorAll('.user-team').forEach(el => el.textContent = profil.team || 'TaylorMade');
+  document.querySelectorAll('.user-pts').forEach(el => el.textContent = profil.points || 0);
+  document.querySelectorAll('.user-parties').forEach(el => el.textContent = profil.parties || 0);
+  document.getElementById('profile-parties-badge').textContent = (profil.parties || 0) + ' parties';
+  document.getElementById('stat-drive').textContent = profil.drive ? profil.drive+'m' : '—';
+  document.getElementById('stat-gir').textContent = profil.gir ? profil.gir+'%' : '—';
+  document.getElementById('stat-putts').textContent = profil.putts ?? '—';
+  document.getElementById('sac-driver').textContent = profil.driver || '—';
+  document.getElementById('sac-fers').textContent = profil.fers || '—';
+  document.getElementById('sac-balle').textContent = profil.balle || '—';
+  document.getElementById('sac-putter').textContent = profil.putter || '—';
+  if (profil.team) document.getElementById('edit-team').value = profil.team;
+  if (profil.driver) document.getElementById('edit-driver').value = profil.driver;
+  if (profil.balle) document.getElementById('edit-balle').value = profil.balle;
+  if (profil.handicap) document.getElementById('edit-hcp').value = profil.handicap;
+  // Photo
+  if (user.photoURL) {
+    document.getElementById('profile-avatar').innerHTML = `<img src="${user.photoURL}" style="width:100%;height:100%;object-fit:cover">`;
+  }
+}
+
+// ── PROFIL ──
+window.sauvegarderProfil = async () => {
+  if (!currentUser) return;
+  const hcp = parseFloat(document.getElementById('edit-hcp').value) || null;
+  const team = document.getElementById('edit-team').value;
+  const driver = document.getElementById('edit-driver').value;
+  const balle = document.getElementById('edit-balle').value;
+  const data = { team, updatedAt: serverTimestamp() };
+  if (hcp) data.handicap = hcp;
+  if (driver) data.driver = driver;
+  if (balle) data.balle = balle;
+  await updateDoc(doc(db, 'users', currentUser.uid), data);
+  document.querySelectorAll('.user-team').forEach(el => el.textContent = team);
+  if (hcp) document.querySelectorAll('.user-hcp').forEach(el => el.textContent = hcp);
+  toast('Profil sauvegardé ✓');
+};
+
+// ── PARTIES ──
+function chargerParties() {
+  const q = query(collection(db, 'parties'), orderBy('date'));
+  if (unsubParties) unsubParties();
+  unsubParties = onSnapshot(q, (snap) => {
+    const containers = ['liste-parties', 'home-parties'];
+    containers.forEach(cid => {
+      const el = document.getElementById(cid);
+      if (!el) return;
+      el.innerHTML = '';
+      if (snap.empty) { el.innerHTML = '<div class="empty-state">Aucune partie ouverte.<br>Sois le premier ! 👇</div>'; return; }
+      snap.forEach(d => {
+        const p = d.data();
+        const joueurs = p.joueurs || [];
+        const places = p.places - joueurs.length;
+        const dejaDedans = joueurs.some(j => j.uid === currentUser?.uid);
+        el.insertAdjacentHTML('beforeend', `
+          <div class="pcard ${places > 0 || dejaDedans ? 'hi' : ''}" onclick="ouvrirPartie('${d.id}')">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+              <div style="width:42px;height:42px;border-radius:11px;background:var(--gdim);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--green);flex-shrink:0">${(p.golf||'?').slice(0,2).toUpperCase()}</div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">${p.golf}</div><div style="font-size:11px;color:var(--t2);margin-top:2px">${p.dateAffichage} · ${p.heure} · ${p.trous}</div></div>
+              <span style="font-size:10px;background:var(--gdim);color:${places>0?'var(--green)':'var(--t3)'};padding:3px 9px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">${dejaDedans ? '✓ Inscrit' : places > 0 ? places+' place'+(places>1?'s':'') : 'Complet'}</span>
+            </div>
+            ${p.message ? `<div style="font-size:11px;color:var(--t2);margin-bottom:10px;font-style:italic">"${p.message}"</div>` : ''}
+            <button class="btn ${dejaDedans || places>0 ? 'btn-g' : 'btn-d'}" onclick="event.stopPropagation();${dejaDedans ? `ouvrirPartie('${d.id}')` : `rejoindrePartie('${d.id}')`}">${dejaDedans ? 'Voir la partie →' : places>0 ? 'Rejoindre' : 'Liste d\'attente'}</button>
+          </div>`);
+      });
+    });
+  });
+}
+
+window.creerPartie = async () => {
+  if (!currentUser) return;
+  const golf = document.getElementById('input-golf').value.trim();
+  const heure = document.getElementById('input-heure').value;
+  const trous = document.getElementById('input-trous').value;
+  const format = document.getElementById('input-format').value;
+  const places = parseInt(document.getElementById('input-places').value);
+  const msg = document.getElementById('input-msg').value.trim();
+  const dateVal = document.getElementById('input-date').value;
+  if (!golf || !heure || !dateVal) { toast('Remplis tous les champs !'); return; }
+  const dateObj = new Date(dateVal);
+  const dateAff = jrs[dateObj.getDay()]+' '+dateObj.getDate()+' '+mths[dateObj.getMonth()];
+  const btn = document.getElementById('btn-creer');
+  btn.textContent = 'Publication...'; btn.disabled = true;
+  try {
+    const ref = await addDoc(collection(db, 'parties'), {
+      golf, heure, trous: trous+' trous', format, places,
+      date: dateObj, dateAffichage: dateAff, message: msg,
+      hote: { uid: currentUser.uid, nom: currentUser.displayName },
+      joueurs: [{ uid: currentUser.uid, nom: currentUser.displayName }],
+      createdAt: serverTimestamp()
+    });
+    // +10 pts pour avoir créé une partie
+    await updateDoc(doc(db, 'users', currentUser.uid), { points: increment(10), parties: increment(1) });
+    toast('Partie créée ! +10 pts ⛳');
+    // Reset form
+    ['input-golf','input-msg'].forEach(id => document.getElementById(id).value = '');
+    goTo('s-jouer');
+  } catch(e) { toast('Erreur : '+e.message); }
+  btn.textContent = 'Publier la partie →'; btn.disabled = false;
+};
+
+window.rejoindrePartie = async (partieId) => {
+  if (!currentUser) return;
+  try {
+    await updateDoc(doc(db, 'parties', partieId), {
+      joueurs: [...(await getDoc(doc(db, 'parties', partieId))).data().joueurs || [], { uid: currentUser.uid, nom: currentUser.displayName }]
+    });
+    await updateDoc(doc(db, 'users', currentUser.uid), { points: increment(10), parties: increment(1) });
+    toast('Tu as rejoint la partie ! +10 pts 🎉');
+    ouvrirPartie(partieId);
+  } catch(e) { toast('Erreur'); }
+};
+
+window.ouvrirPartie = async (partieId) => {
+  currentPartieId = partieId;
+  const snap = await getDoc(doc(db, 'parties', partieId));
+  const p = snap.data();
+  const joueurs = p.joueurs || [];
+  const isHote = p.hote?.uid === currentUser?.uid;
+  const places = p.places - joueurs.length;
+
+  document.getElementById('partie-titre').textContent = p.golf;
+  document.getElementById('partie-statut').textContent = places > 0 ? places+' place(s)' : 'Complet';
+
+  document.getElementById('partie-info-card').innerHTML = `
+    <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:4px">${isHote ? 'Ta partie' : 'Partie de '+p.hote?.nom}</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff;margin-bottom:3px">${p.golf}</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:14px">${p.dateAffichage} · ${p.heure} · ${p.trous} · ${p.format}</div>
+    <div style="display:flex;gap:8px">
+      <div style="flex:1;background:rgba(255,255,255,.06);border-radius:11px;padding:11px;text-align:center"><div style="font-size:17px;font-weight:700;color:#fff">${joueurs.length}</div><div style="font-size:8px;color:rgba(255,255,255,.3);text-transform:uppercase;font-weight:600;margin-top:3px">Joueurs</div></div>
+      <div style="flex:1;background:rgba(255,255,255,.06);border-radius:11px;padding:11px;text-align:center"><div style="font-size:17px;font-weight:700;color:#fff">${places}</div><div style="font-size:8px;color:rgba(255,255,255,.3);text-transform:uppercase;font-weight:600;margin-top:3px">Places libres</div></div>
+      <div style="flex:1;background:rgba(46,204,113,0.15);border-radius:11px;padding:11px;text-align:center"><div style="font-size:17px;font-weight:700;color:var(--green)">${p.format}</div><div style="font-size:8px;color:var(--green);opacity:.7;text-transform:uppercase;font-weight:600;margin-top:3px">Format</div></div>
+    </div>`;
+
+  document.getElementById('partie-joueurs').innerHTML = joueurs.map(j =>
+    `<div style="display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line)">
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--gdim);color:var(--green);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">${(j.nom||'?').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:${j.uid===currentUser?.uid?'var(--green)':'var(--t)'}">${j.nom}${j.uid===currentUser?.uid?' (toi)':''}</div></div>
+      ${j.uid===p.hote?.uid?'<span style="font-size:10px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:8px;font-weight:600">Hôte</span>':''}
+    </div>`
+  ).join('');
+
+  document.getElementById('partie-actions').innerHTML = `<button class="btn btn-d" style="margin-bottom:8px">Réserver mon green fee →</button>`;
+
+  // Chat temps réel
+  if (unsubChat) unsubChat();
+  const chatQ = query(collection(db, 'parties', partieId, 'messages'), orderBy('createdAt'));
+  unsubChat = onSnapshot(chatQ, snap => {
+    const el = document.getElementById('chat-messages');
+    el.innerHTML = '';
+    if (snap.empty) { el.innerHTML = '<div style="text-align:center;color:var(--t3);font-size:11px;padding:8px">Soyez les premiers à écrire !</div>'; return; }
+    snap.forEach(d => {
+      const m = d.data();
+      const isMe = m.uid === currentUser?.uid;
+      el.insertAdjacentHTML('beforeend', `
+        <div style="text-align:${isMe?'right':'left'};margin-bottom:4px">
+          ${!isMe ? `<div style="font-size:10px;font-weight:600;color:var(--green);margin-bottom:2px">${m.nom}</div>` : ''}
+          <div class="${isMe?'bbr':'bbl'}"><div style="font-size:12px;color:${isMe?'#000':'var(--t)'}">${m.text}</div></div>
+        </div>`);
+    });
+    el.scrollTop = el.scrollHeight;
+  });
+  goTo('s-partie');
+};
+
+window.envoyerMessage = async () => {
+  if (!currentUser || !currentPartieId) return;
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  await addDoc(collection(db, 'parties', currentPartieId, 'messages'), {
+    text, uid: currentUser.uid, nom: currentUser.displayName, createdAt: serverTimestamp()
+  });
+};
+
+// ── CLASSEMENT ──
+async function chargerClassement() {
+  // Teams (données statiques pour l'instant, évoluera avec les vraies données)
+  const teams = [
+    { nom: 'Team Titleist', abr: 'TIT', pts: 8724, color: 'var(--blue)', trend: '+124' },
+    { nom: 'Team TaylorMade', abr: 'TM', pts: 8412, color: 'var(--green)', trend: '+89' },
+    { nom: 'Team Callaway', abr: 'CAL', pts: 7991, color: '#4ade80', trend: '=' },
+    { nom: 'Team Ping', abr: 'PIN', pts: 7234, color: 'var(--gold)', trend: '-41' },
+    { nom: 'Team Cobra', abr: 'COB', pts: 6812, color: 'var(--red)', trend: '-12' },
+  ];
+  const medals = ['🥇','🥈','🥉','4','5'];
+  const userTeam = document.querySelector('.user-team')?.textContent;
+  document.getElementById('arena-teams').innerHTML = teams.map((t,i) => `
+    <div class="lbr" style="${t.nom.includes(userTeam)?'background:rgba(46,204,113,0.04)':''}">
+      <div style="font-size:${i<3?20:15}px;min-width:26px;text-align:center">${medals[i]}</div>
+      <div class="av-sq" style="background:rgba(255,255,255,.07);color:${t.color}">${t.abr}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">${t.nom}</div>${t.nom.includes(userTeam)?'<div style="font-size:10px;color:var(--green);font-weight:600">Ta team ★</div>':''}</div>
+      <div style="text-align:right"><div style="font-size:14px;font-weight:700;color:var(--t)">${t.pts.toLocaleString('fr')}</div><div style="font-size:10px;color:${t.trend.startsWith('+')?'var(--green)':t.trend==='='?'var(--t3)':'var(--red)'}">${t.trend.startsWith('-')?'▼':t.trend==='='?'→':'▲'} ${t.trend}</div></div>
+    </div>`).join('');
+
+  // Global - top joueurs Firestore
+  try {
+    const q = query(collection(db, 'users'), orderBy('points', 'desc'), limit(10));
+    const snap = await getDocs(q);
+    const el = document.getElementById('arena-global');
+    if (snap.empty) { el.innerHTML = '<div class="empty-state">Aucun joueur encore.<br>Sois le premier !</div>'; return; }
+    const meds = ['🥇','🥈','🥉'];
+    el.innerHTML = snap.docs.map((d, i) => {
+      const u = d.data();
+      const isMe = d.id === currentUser?.uid;
+      const initials = (u.nom||'?').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+      return `<div class="lbr" style="${isMe?'background:rgba(46,204,113,0.04)':''}">
+        <div style="font-size:${i<3?20:14}px;min-width:26px;text-align:center;font-weight:700;color:${i<3?'inherit':'var(--t3)'}">${i<3?meds[i]:i+1}</div>
+        <div class="av-r" style="background:${isMe?'var(--gdim)':'rgba(255,255,255,.07)'};color:${isMe?'var(--green)':'var(--t2)'};${isMe?'border:1px solid var(--green)':''}">${initials}</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;color:${isMe?'var(--green)':'var(--t)'}">${isMe?'Toi ★':u.nom}</div><div style="font-size:10px;color:var(--t3)">Hcp ${u.handicap??'—'} · ${u.team||'—'}</div></div>
+        <div style="font-size:14px;font-weight:700;color:var(--t)">${u.points||0} pts</div>
+      </div>`;
+    }).join('');
+  } catch(e) { console.log(e); }
+}
+
+</script>
+</body>
+</html>
