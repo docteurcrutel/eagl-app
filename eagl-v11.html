@@ -142,13 +142,10 @@ select.input-field option{background:var(--bg3);color:var(--t)}
 
     
     <!-- GOLFS PRÈS DE TOI -->
-    <div class="sl" style="margin-top:8px">Golfs près de toi</div>
-    <div id="golfs-container" style="margin:0 14px 16px">
+    <div class="sl" style="margin-top:4px">Golfs près de toi 📍</div>
+    <div style="margin:0 14px 16px" id="golfs-wrap">
       <div id="golfs-list" style="display:flex;flex-direction:column;gap:10px">
-        <div style="text-align:center;padding:20px;color:var(--t3);font-size:13px">
-          <div class="spinner" style="margin:0 auto 10px"></div>
-          Localisation en cours...
-        </div>
+        <div style="text-align:center;padding:20px;color:var(--t3);font-size:13px"><div class="spinner" style="margin:0 auto 10px"></div>Localisation...</div>
       </div>
     </div>
 
@@ -821,111 +818,43 @@ window.doPwdReset=async function(){
 };
 
 
-// ══ GOLFS PRÈS DE TOI (OpenStreetMap) ══
-var _userLat = null, _userLng = null;
 
-function haversine(lat1, lon1, lat2, lon2) {
-  var R = 6371;
-  var dLat = (lat2-lat1)*Math.PI/180;
-  var dLon = (lon2-lon1)*Math.PI/180;
-  var a = Math.sin(dLat/2)*Math.sin(dLat/2) +
-    Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*
-    Math.sin(dLon/2)*Math.sin(dLon/2);
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-}
-
-async function chargerGolfs() {
-  var el = document.getElementById('golfs-list');
-  if (!el) return;
-  
-  // Vérifier France uniquement
-  if (!navigator.geolocation) {
-    el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Géolocalisation non disponible</div>';
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(async function(pos) {
-    _userLat = pos.coords.latitude;
-    _userLng = pos.coords.longitude;
-
-    // Vérifier que c'est en France (bounding box approximatif)
-    if (_userLat < 41 || _userLat > 51.5 || _userLng < -5.5 || _userLng > 9.6) {
-      el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">🌍 Eagl est disponible uniquement en France</div>';
-      return;
-    }
-
-    // Requête Overpass API - golfs dans 50km
-    var radius = 50000;
-    var query = '[out:json][timeout:25];(node["leisure"="golf_course"](around:' + radius + ',' + _userLat + ',' + _userLng + ');way["leisure"="golf_course"](around:' + radius + ',' + _userLat + ',' + _userLng + ');relation["leisure"="golf_course"](around:' + radius + ',' + _userLat + ',' + _userLng + '););out center tags;';
-    
-    try {
-      var resp = await fetch('https://overpass-api.de/api/interpreter', {
-        method: 'POST',
-        body: 'data=' + encodeURIComponent(query)
+// ══ GOLFS PRÈS DE TOI ══
+var _uLat=null, _uLng=null, _golfsLoaded=false;
+function haversine(a,b,x,y){var R=6371,d=(x-a)*Math.PI/180,e=(y-b)*Math.PI/180,f=Math.sin(d/2)*Math.sin(d/2)+Math.cos(a*Math.PI/180)*Math.cos(x*Math.PI/180)*Math.sin(e/2)*Math.sin(e/2);return R*2*Math.atan2(Math.sqrt(f),Math.sqrt(1-f));}
+function chargerGolfs(){
+  if(_golfsLoaded)return;
+  var el=document.getElementById('golfs-list');
+  if(!el)return;
+  if(!navigator.geolocation){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Géolocalisation non disponible</div>';return;}
+  navigator.geolocation.getCurrentPosition(async function(p){
+    _uLat=p.coords.latitude; _uLng=p.coords.longitude;
+    if(_uLat<41||_uLat>51.5||_uLng<-5.5||_uLng>9.6){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">🌍 Eagl est disponible en France uniquement</div>';return;}
+    try{
+      var q='[out:json][timeout:25];(node["leisure"="golf_course"](around:40000,'+_uLat+','+_uLng+');way["leisure"="golf_course"](around:40000,'+_uLat+','+_uLng+'););out center tags;';
+      var r=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:'data='+encodeURIComponent(q)});
+      var d=await r.json();
+      var gs=(d.elements||[]).map(function(e){
+        var lt=e.lat||(e.center&&e.center.lat),ln=e.lon||(e.center&&e.center.lon);
+        return{name:e.tags.name||null,phone:e.tags.phone||e.tags['contact:phone']||null,web:e.tags.website||e.tags['contact:website']||null,holes:e.tags.holes||null,access:e.tags.access||null,dist:lt?haversine(_uLat,_uLng,lt,ln):999};
+      }).filter(function(g){return g.name;}).sort(function(a,b){return a.dist-b.dist;}).slice(0,8);
+      if(!gs.length){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Aucun golf trouvé dans 40km</div>';return;}
+      var h='';
+      gs.forEach(function(g){
+        var ds=g.dist<1?Math.round(g.dist*1000)+'m':g.dist.toFixed(1)+'km';
+        var badge=g.access==='private'?'<span style="font-size:9px;background:rgba(255,82,82,0.15);color:#FF5252;padding:2px 8px;border-radius:6px;font-weight:600">Privé</span>':'<span style="font-size:9px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:6px;font-weight:600;border:0.5px solid var(--gring)">Public</span>';
+        h+='<div style="background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">';
+        h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><div style="font-size:13px;font-weight:600;color:var(--t);margin-bottom:3px">'+g.name+'</div><div style="font-size:11px;color:var(--t3)">'+(g.holes?'⛳ '+g.holes+' trous · ':'')+' 📍 '+ds+'</div></div>'+badge+'</div>';
+        if(g.phone||g.web){h+='<div style="display:flex;gap:6px;margin-bottom:8px">';if(g.phone)h+='<a href="tel:'+g.phone+'" style="flex:1;text-align:center;padding:7px;background:var(--bg3);border-radius:9px;font-size:11px;color:var(--t2);text-decoration:none">📞 Appeler</a>';if(g.web)h+='<a href="'+g.web+'" target="_blank" style="flex:1;text-align:center;padding:7px;background:var(--gdim);border-radius:9px;font-size:11px;color:var(--green);text-decoration:none;border:0.5px solid var(--gring)">🌐 Site web</a>';h+='</div>';}
+        h+='<button onclick="voirPartiesGolf(\''+g.name.replace(/'/g,"\\'")+'')" style="width:100%;padding:9px;border:0.5px solid var(--gring);border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;background:transparent;color:var(--green)">Voir les parties Eagl →</button>';
+        h+='</div>';
       });
-      var data = await resp.json();
-      var elements = data.elements || [];
-
-      // Calculer distances et trier
-      var golfs = elements.map(function(e) {
-        var lat = e.lat || (e.center && e.center.lat);
-        var lon = e.lon || (e.center && e.center.lon);
-        var dist = (lat && lon) ? haversine(_userLat, _userLng, lat, lon) : 999;
-        return { name: e.tags.name || 'Golf sans nom', phone: e.tags.phone || e.tags['contact:phone'] || null, website: e.tags.website || e.tags['contact:website'] || null, holes: e.tags.holes || null, access: e.tags.access || null, dist: dist };
-      }).filter(function(g){ return g.name !== 'Golf sans nom' || g.phone; })
-        .sort(function(a,b){ return a.dist - b.dist; })
-        .slice(0, 8);
-
-      if (golfs.length === 0) {
-        el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Aucun golf trouvé dans un rayon de 50km</div>';
-        return;
-      }
-
-      var html = '';
-      golfs.forEach(function(g) {
-        var distStr = g.dist < 1 ? Math.round(g.dist*1000) + ' m' : g.dist.toFixed(1) + ' km';
-        var badge = g.access === 'private' ? '<span style="font-size:9px;background:rgba(255,82,82,0.15);color:var(--red);padding:2px 7px;border-radius:6px;font-weight:600;border:0.5px solid var(--red)">Privé</span>' : '<span style="font-size:9px;background:var(--gdim);color:var(--green);padding:2px 7px;border-radius:6px;font-weight:600;border:0.5px solid var(--gring)">Public</span>';
-        var holes = g.holes ? '⛳ ' + g.holes + ' trous · ' : '';
-        var phoneBtn = g.phone ? '<a href="tel:' + g.phone + '" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--t2);text-decoration:none;padding:6px 10px;background:var(--bg3);border-radius:8px;flex:1">📞 ' + g.phone + '</a>' : '';
-        var webBtn = g.website ? '<a href="' + g.website + '" target="_blank" style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green);text-decoration:none;padding:6px 10px;background:var(--gdim);border-radius:8px;border:0.5px solid var(--gring);flex:1">🌐 Site web</a>' : '';
-        var actions = (phoneBtn || webBtn) ? '<div style="display:flex;gap:6px;margin-top:8px">' + phoneBtn + webBtn + '</div>' : '';
-
-        html += '<div style="background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">';
-        html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px">';
-        html += '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t);margin-bottom:4px">' + g.name + '</div>';
-        html += '<div style="font-size:11px;color:var(--t3)">' + holes + '📍 ' + distStr + '</div></div>';
-        html += '<div style="margin-left:8px">' + badge + '</div></div>';
-        html += actions;
-        html += '<button onclick="filtrerPartiesGolf('' + g.name.replace(/'/g,"\'") + '')" style="width:100%;margin-top:8px;padding:9px;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:var(--bg3);color:var(--green);border:0.5px solid var(--gring)">Voir les parties Eagl →</button>';
-        html += '</div>';
-      });
-      el.innerHTML = html;
-
-    } catch(err) {
-      el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Impossible de charger les golfs.<br>Vérifie ta connexion.</div>';
-    }
-
-  }, function() {
-    el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">📍 Autorise la localisation<br>pour voir les golfs près de toi</div>';
-  }, { timeout: 10000 });
+      el.innerHTML=h; _golfsLoaded=true;
+    }catch(e){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Erreur de chargement</div>';}
+  },function(){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">📍 Autorise la localisation pour voir les golfs</div>';},{timeout:10000});
 }
-
-window.filtrerPartiesGolf = function(nomGolf) {
-  goTo('s-jouer');
-  var input = document.getElementById('search-parties');
-  if(input) { input.value = nomGolf; }
-  showToast('Parties à ' + nomGolf);
-};
-
-// Charger les golfs quand on arrive sur Home
-var _origGoToGolfs = window.goTo;
-window.goTo = function(id) {
-  _origGoToGolfs(id);
-  if(id === 's-home' && !_userLat) chargerGolfs();
-};
-// Charger au démarrage si déjà sur home
-setTimeout(function(){ if(document.getElementById('golfs-list')) chargerGolfs(); }, 2000);
-
+window.voirPartiesGolf=function(n){goTo('s-jouer');showToast('Golfs : '+n);};
+setTimeout(function(){chargerGolfs();},2500);
 </script>
 </body>
 </html>
