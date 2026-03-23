@@ -76,7 +76,7 @@ select.input-field option{background:var(--bg3);color:var(--t)}
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- ââ LOGIN ââ -->
+<!-- ══ LOGIN ══ -->
 <div class="screen active" id="s-login" style="justify-content:center;align-items:center;padding:32px;overflow-y:auto">
   <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;letter-spacing:6px;color:var(--t);line-height:.9;margin-bottom:8px;text-align:center">EAGL<span style="color:var(--green)">.</span></div>
   <div style="font-size:14px;color:var(--t2);margin-bottom:32px;text-align:center;line-height:1.7">Trouve tes partenaires de golf.<br>Joue. Progresse. Domine.</div>
@@ -99,9 +99,9 @@ select.input-field option{background:var(--bg3);color:var(--t)}
   <div class="hdr">
     <div style="display:flex;align-items:center;gap:10px">
       <div class="av user-initials" onclick="goTo('s-profile')">TM</div>
-      <div style="font-size:13px;font-weight:600;color:var(--t)">Bonjour, <span class="user-firstname">Thomas</span> ð</div>
+      <div style="font-size:13px;font-weight:600;color:var(--t)">Bonjour, <span class="user-firstname">Thomas</span> 👋</div>
     </div>
-    <div style="width:34px;height:34px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer" onclick="showToast('Notifications bientÃ´t disponibles')">ð</div>
+    <div style="width:34px;height:34px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer" onclick="showToast('Notifications bientôt disponibles')">🔔</div>
   </div>
   <div class="scroll">
     <!-- STATS -->
@@ -111,33 +111,33 @@ select.input-field option{background:var(--bg3);color:var(--t)}
         <div class="stat-val user-parties" style="color:var(--green)">0</div>
         <div class="stat-sub">cette saison</div>
         <div class="stat-bar"><div class="stat-fill user-parties-bar" style="background:var(--green);width:0%"></div></div>
-        <div class="stat-trend" style="color:var(--green)">â² actif</div>
+        <div class="stat-trend" style="color:var(--green)">▲ actif</div>
       </div>
       <div class="stat-card" onclick="goTo('s-arena')">
         <div class="stat-label">Handicap</div>
-        <div class="stat-val user-hcp" style="color:var(--gold)">â</div>
+        <div class="stat-val user-hcp" style="color:var(--gold)">—</div>
         <div class="stat-sub">index FFGolf</div>
         <div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:55%"></div></div>
-        <div class="stat-trend" style="color:var(--green)">â¼ en baisse</div>
+        <div class="stat-trend" style="color:var(--green)">▼ en baisse</div>
       </div>
       <div class="stat-card" onclick="goTo('s-arena')">
         <div class="stat-label">Arena</div>
         <div class="stat-val user-pts" style="color:var(--blue)">0</div>
-        <div class="stat-sub">pts Â· <span class="user-team">TaylorMade</span></div>
+        <div class="stat-sub">pts · <span class="user-team">TaylorMade</span></div>
         <div class="stat-bar"><div class="stat-fill user-pts-bar" style="background:var(--blue);width:0%"></div></div>
-        <div class="stat-trend" style="color:var(--green)">â² joue !</div>
+        <div class="stat-trend" style="color:var(--green)">▲ joue !</div>
       </div>
     </div>
 
     <!-- TEAM BANNER -->
     <div style="margin:0 14px 16px;background:rgba(46,204,113,0.07);border:0.5px solid var(--gring);border-radius:16px;padding:14px 15px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="goTo('s-arena')">
-      <div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">ðï¸</div>
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🏌️</div>
       <div style="flex:1">
-        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:3px">Team <span class="user-team">TaylorMade</span> Â· Arena</div>
+        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:3px">Team <span class="user-team">TaylorMade</span> · Arena</div>
         <div style="font-size:13px;font-weight:600;color:var(--t)">Joue pour gagner des points !</div>
         <div class="pbar" style="margin-top:6px"><div class="pbar-g" style="width:40%"></div></div>
       </div>
-      <div style="font-size:20px;color:var(--t3)">âº</div>
+      <div style="font-size:20px;color:var(--t3)">›</div>
     </div>
 
     <!-- PARTIES LIVE -->
@@ -146,32 +146,32 @@ select.input-field option{background:var(--bg3);color:var(--t)}
       <div style="text-align:center;padding:24px;color:var(--t3)"><div class="spinner"></div><div style="margin-top:8px;font-size:12px">Chargement...</div></div>
     </div>
 
-    <!-- CRÃER UNE PARTIE CTA -->
+    <!-- CRÉER UNE PARTIE CTA -->
     <div style="margin:0 14px 16px;background:var(--bg3);border:1px dashed var(--gring);border-radius:16px;padding:16px;cursor:pointer;text-align:center" onclick="goTo('s-creer')">
       <div style="font-size:22px;margin-bottom:5px;color:var(--green)">+</div>
-      <div style="font-size:13px;font-weight:600;color:var(--t)">CrÃ©er une partie</div>
+      <div style="font-size:13px;font-weight:600;color:var(--t)">Créer une partie</div>
       <div style="font-size:11px;color:var(--t3);margin-top:2px">Trouve tes partenaires maintenant</div>
     </div>
   </div>
   <nav class="bnav">
-    <button class="ni active" onclick="goTo('s-home')"><span class="ni-ico">ð </span><span class="ni-lbl">Accueil</span></button>
-    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">â³</span><span class="ni-lbl">Jouer</span></button>
-    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">ð¥</span><span class="ni-lbl">Arena</span></button>
-    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">ð</span><span class="ni-lbl">Pros</span></button>
-    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">ð¤</span><span class="ni-lbl">Profil</span></button>
+    <button class="ni active" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
   </nav>
 </div>
 
-<!-- ââ CRÃER PARTIE ââ -->
+<!-- ══ CRÉER PARTIE ══ -->
 <div class="screen" id="s-creer">
   <div class="sb"><span>9:41</span><span></span></div>
-  <div class="hdr"><div class="back-btn" onclick="goTo('s-home')">â</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)">CrÃ©er une partie</div><div></div></div>
+  <div class="hdr"><div class="back-btn" onclick="goTo('s-home')">←</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)">Créer une partie</div><div></div></div>
   <div class="scroll" style="padding:0 14px 88px">
     <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Golf</div>
     <input class="input-field" id="input-golf" placeholder="Ex: Golf National, Versailles..." type="text">
     <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Date</div>
     <input class="input-field" id="input-date" type="date">
-    <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Heure de dÃ©part</div>
+    <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Heure de départ</div>
     <input class="input-field" id="input-heure" type="time" value="09:00">
     <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Format</div>
     <select class="input-field" id="input-trous">
@@ -185,15 +185,15 @@ select.input-field option{background:var(--bg3);color:var(--t)}
       <option value="4" selected>4 joueurs</option>
     </select>
     <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Message (optionnel)</div>
-    <input class="input-field" id="input-msg" placeholder="Ex: niveau intermÃ©diaire bienvenu..." type="text">
-    <button class="btn btn-g" id="btn-creer" onclick="creerPartie()" style="margin-top:8px">CrÃ©er la partie ðï¸</button>
+    <input class="input-field" id="input-msg" placeholder="Ex: niveau intermédiaire bienvenu..." type="text">
+    <button class="btn btn-g" id="btn-creer" onclick="creerPartie()" style="margin-top:8px">Créer la partie 🏌️</button>
   </div>
 </div>
 
-<!-- ââ JOUER (liste parties) ââ -->
+<!-- ══ JOUER (liste parties) ══ -->
 <div class="screen" id="s-jouer">
   <div class="sb"><span>9:41</span><span></span></div>
-  <div class="hdr"><div class="back-btn" onclick="goTo('s-home')">â</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--t)">Parties ouvertes</div><div style="font-size:11px;color:var(--green);font-weight:600;cursor:pointer" onclick="goTo('s-creer')">+ CrÃ©er</div></div>
+  <div class="hdr"><div class="back-btn" onclick="goTo('s-home')">←</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--t)">Parties ouvertes</div><div style="font-size:11px;color:var(--green);font-weight:600;cursor:pointer" onclick="goTo('s-creer')">+ Créer</div></div>
   <div class="scroll">
     <div class="sl">Toutes les parties</div>
     <div id="liste-parties-jouer">
@@ -201,18 +201,18 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     </div>
   </div>
   <nav class="bnav">
-    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">ð </span><span class="ni-lbl">Accueil</span></button>
-    <button class="ni active"><span class="ni-ico">â³</span><span class="ni-lbl">Jouer</span></button>
-    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">ð¥</span><span class="ni-lbl">Arena</span></button>
-    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">ð</span><span class="ni-lbl">Pros</span></button>
-    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">ð¤</span><span class="ni-lbl">Profil</span></button>
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni active"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
   </nav>
 </div>
 
-<!-- ââ DETAIL PARTIE ââ -->
+<!-- ══ DETAIL PARTIE ══ -->
 <div class="screen" id="s-partie">
   <div class="sb"><span>9:41</span><span></span></div>
-  <div class="hdr"><div class="back-btn" onclick="goTo('s-jouer')">â</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)" id="partie-titre">Partie</div><div id="partie-statut" class="tag-live">Ouverte</div></div>
+  <div class="hdr"><div class="back-btn" onclick="goTo('s-jouer')">←</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)" id="partie-titre">Partie</div><div id="partie-statut" class="tag-live">Ouverte</div></div>
   <div class="scroll">
     <div style="margin:0 14px 14px;background:linear-gradient(135deg,#0a1a0d,#0d2814);border:0.5px solid var(--gring);border-radius:18px;padding:18px" id="partie-header">
     </div>
@@ -223,19 +223,19 @@ select.input-field option{background:var(--bg3);color:var(--t)}
       <div id="chat-messages" style="min-height:80px;max-height:200px;overflow-y:auto"></div>
       <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
         <input class="input-field" id="chat-input" placeholder="Message..." style="margin-bottom:0;flex:1;padding:10px 14px" onkeypress="if(event.key==='Enter')envoyerMessage()">
-        <div style="width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;color:#000;font-weight:700;flex-shrink:0" onclick="envoyerMessage()">â</div>
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;color:#000;font-weight:700;flex-shrink:0" onclick="envoyerMessage()">→</div>
       </div>
     </div>
     <div style="margin:0 14px" id="btn-rejoindre-container">
-      <button class="btn btn-g" onclick="rejoindrePartie()">Rejoindre cette partie ðï¸</button>
+      <button class="btn btn-g" onclick="rejoindrePartie()">Rejoindre cette partie 🏌️</button>
     </div>
   </div>
 </div>
 
-<!-- ââ ARENA ââ -->
+<!-- ══ ARENA ══ -->
 <div class="screen" id="s-arena">
   <div class="sb"><span>9:41</span><span></span></div>
-  <div class="hdr"><div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--t)">EAGL<span style="color:var(--green)">.</span> ARENA</div><div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="arena-semaine">SEM â</div></div>
+  <div class="hdr"><div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--t)">EAGL<span style="color:var(--green)">.</span> ARENA</div><div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="arena-semaine">SEM —</div></div>
   <div class="scroll">
     <div class="stats-row" style="padding:8px 14px 14px">
       <div class="stat-card">
@@ -243,21 +243,21 @@ select.input-field option{background:var(--bg3);color:var(--t)}
         <div class="stat-val user-pts" style="color:var(--green)">0</div>
         <div class="stat-sub">cette semaine</div>
         <div class="stat-bar"><div class="stat-fill user-pts-bar" style="background:var(--green);width:0%"></div></div>
-        <div class="stat-trend" style="color:var(--green)">â² joue !</div>
+        <div class="stat-trend" style="color:var(--green)">▲ joue !</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Team</div>
-        <div class="stat-val user-team-pts" style="color:var(--gold)">â</div>
+        <div class="stat-val user-team-pts" style="color:var(--gold)">—</div>
         <div class="stat-sub"><span class="user-team">TaylorMade</span></div>
         <div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:60%"></div></div>
-        <div class="stat-trend" style="color:var(--green)">â² actif</div>
+        <div class="stat-trend" style="color:var(--green)">▲ actif</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Rang</div>
-        <div class="stat-val user-rang" style="color:var(--blue)">â</div>
+        <div class="stat-val user-rang" style="color:var(--blue)">—</div>
         <div class="stat-sub">classement</div>
         <div class="stat-bar"><div class="stat-fill" style="background:var(--blue);width:30%"></div></div>
-        <div class="stat-trend" style="color:var(--t2)">â joue !</div>
+        <div class="stat-trend" style="color:var(--t2)">→ joue !</div>
       </div>
     </div>
     <div class="tabs">
@@ -281,34 +281,34 @@ select.input-field option{background:var(--bg3);color:var(--t)}
       <div style="margin:0 14px;background:rgba(46,204,113,0.05);border:0.5px solid var(--gring);border-radius:13px;padding:14px">
         <div style="font-size:13px;font-weight:600;color:var(--green);margin-bottom:10px">Comment gagner des points</div>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">â³ Jouer une partie</span><span style="color:var(--green);font-weight:700">+10 pts</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">ð¦ Eagle</span><span style="color:var(--green);font-weight:700">+50 pts</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">ð¦ Birdie</span><span style="color:var(--green);font-weight:700">+15 pts</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">ð Gagner une compÃ©t</span><span style="color:var(--green);font-weight:700">+100 pts</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">ð¤ Inviter un ami</span><span style="color:var(--green);font-weight:700">+25 pts</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">ð Baisser son handicap</span><span style="color:var(--green);font-weight:700">+30 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">⛳ Jouer une partie</span><span style="color:var(--green);font-weight:700">+10 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">🦅 Eagle</span><span style="color:var(--green);font-weight:700">+50 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">🐦 Birdie</span><span style="color:var(--green);font-weight:700">+15 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">🏆 Gagner une compét</span><span style="color:var(--green);font-weight:700">+100 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">🤝 Inviter un ami</span><span style="color:var(--green);font-weight:700">+25 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">📉 Baisser son handicap</span><span style="color:var(--green);font-weight:700">+30 pts</span></div>
         </div>
       </div>
     </div>
   </div>
   <nav class="bnav">
-    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">ð </span><span class="ni-lbl">Accueil</span></button>
-    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">â³</span><span class="ni-lbl">Jouer</span></button>
-    <button class="ni active"><span class="ni-ico">ð¥</span><span class="ni-lbl">Arena</span></button>
-    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">ð</span><span class="ni-lbl">Pros</span></button>
-    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">ð¤</span><span class="ni-lbl">Profil</span></button>
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni active"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
   </nav>
 </div>
 
-<!-- ââ PROS ââ -->
+<!-- ══ PROS ══ -->
 <div class="screen" id="s-pros">
-  <div class="sb"><span id="time-pros">9:41</span><span>âââ 78%</span></div>
+  <div class="sb"><span id="time-pros">9:41</span><span>███ 78%</span></div>
   <div class="hdr">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--t)">CompÃ©titions</div>
-    <div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="comp-badge">ð¡ FFGolf Live</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--t)">Compétitions</div>
+    <div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="comp-badge">📡 FFGolf Live</div>
   </div>
   <div style="padding:0 14px 8px">
-    <input class="inp" id="comp-input" placeholder="ð  Nom du golf, ville..." type="text" style="margin:0" oninput="afficherComps()">
+    <input class="inp" id="comp-input" placeholder="🔍  Nom du golf, ville..." type="text" style="margin:0" oninput="afficherComps()">
   </div>
   <div class="chips">
     <div class="chip chip-on" id="cf-all" onclick="setFormatComp('',this)">Toutes</div>
@@ -319,33 +319,33 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     <div class="chip chip-off" id="cf-9" onclick="setFormatComp('9',this)">9 trous</div>
   </div>
   <div class="scroll">
-    <div id="comp-list"><div class="empty-state" id="comp-loading">Chargement... â³</div></div>
+    <div id="comp-list"><div class="empty-state" id="comp-loading">Chargement... ⛳</div></div>
     <div style="margin:0 14px 14px;background:var(--bg3);border:0.5px dashed var(--gring);border-radius:16px;padding:16px;cursor:pointer;text-align:center" onclick="window.open('https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats','_blank')">
-      <div style="font-size:18px;margin-bottom:6px">ð</div>
+      <div style="font-size:18px;margin-bottom:6px">🏆</div>
       <div style="font-size:13px;font-weight:600;color:var(--t)">Calendrier complet FFGolf</div>
-      <div style="font-size:11px;color:var(--t3);margin-top:2px">Toutes les compÃ©titions officielles â</div>
+      <div style="font-size:11px;color:var(--t3);margin-top:2px">Toutes les compétitions officielles →</div>
     </div>
   </div>
   <nav class="bnav">
-    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">ð </span><span class="ni-lbl">Accueil</span></button>
-    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">â³</span><span class="ni-lbl">Jouer</span></button>
-    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">ð¥</span><span class="ni-lbl">Arena</span></button>
-    <button class="ni active"><span class="ni-ico">ð</span><span class="ni-lbl">CompÃ©t.</span></button>
-    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">ð¤</span><span class="ni-lbl">Profil</span></button>
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni active"><span class="ni-ico">🏆</span><span class="ni-lbl">Compét.</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
   </nav>
 </div>
 
 <div class="screen" id="s-profile">
   <div class="sb"><span>9:41</span><span></span></div>
-  <div class="hdr"><div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:var(--t)">Profil</div><div style="font-size:20px;cursor:pointer" onclick="logout()">ðª</div></div>
+  <div class="hdr"><div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:var(--t)">Profil</div><div style="font-size:20px;cursor:pointer" onclick="logout()">🚪</div></div>
   <div class="scroll">
     <div style="margin:0 14px 14px;display:flex;align-items:center;gap:14px;padding:16px;background:var(--bg2);border:0.5px solid var(--line);border-radius:18px">
       <div style="width:60px;height:60px;border-radius:50%;background:var(--gdim);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--green);flex-shrink:0" id="profil-av">TM</div>
       <div>
         <div style="font-size:18px;font-weight:600;color:var(--t)" id="profil-nom">Thomas Martin</div>
-        <div style="font-size:11px;color:var(--t2);margin-top:2px">Hcp <span class="user-hcp">â</span> Â· <span class="user-parties">0</span> parties</div>
+        <div style="font-size:11px;color:var(--t2);margin-top:2px">Hcp <span class="user-hcp">—</span> · <span class="user-parties">0</span> parties</div>
         <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap">
-          <span style="font-size:9px;padding:2px 9px;border-radius:8px;background:var(--gdim);color:var(--green);font-weight:600;border:0.5px solid var(--gring)">â¡ Eagl Member</span>
+          <span style="font-size:9px;padding:2px 9px;border-radius:8px;background:var(--gdim);color:var(--green);font-weight:600;border:0.5px solid var(--gring)">⚡ Eagl Member</span>
           <span style="font-size:9px;padding:2px 9px;border-radius:8px;background:var(--bg3);color:var(--t3)" id="profil-team">TaylorMade</span>
         </div>
       </div>
@@ -370,25 +370,25 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     <div class="sl">Mon sac</div>
     <div style="margin:0 14px 12px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">
       <div style="display:flex;flex-direction:column;gap:9px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Driver</span><span style="color:var(--t);font-weight:600" id="sac-driver">Ã complÃ©ter</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Fers</span><span style="color:var(--t);font-weight:600" id="sac-fers">Ã complÃ©ter</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Balle</span><span style="color:var(--t);font-weight:600" id="sac-balle">Ã complÃ©ter</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Putter</span><span style="color:var(--t);font-weight:600" id="sac-putter">Ã complÃ©ter</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Driver</span><span style="color:var(--t);font-weight:600" id="sac-driver">À compléter</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Fers</span><span style="color:var(--t);font-weight:600" id="sac-fers">À compléter</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Balle</span><span style="color:var(--t);font-weight:600" id="sac-balle">À compléter</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Putter</span><span style="color:var(--t);font-weight:600" id="sac-putter">À compléter</span></div>
       </div>
     </div>
   </div>
   <nav class="bnav">
-    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">ð </span><span class="ni-lbl">Accueil</span></button>
-    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">â³</span><span class="ni-lbl">Jouer</span></button>
-    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">ð¥</span><span class="ni-lbl">Arena</span></button>
-    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">ð</span><span class="ni-lbl">Pros</span></button>
-    <button class="ni active"><span class="ni-ico">ð¤</span><span class="ni-lbl">Profil</span></button>
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🎓</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni active"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
   </nav>
 </div>
 
 </div><!-- phone -->
 
-<!-- ââ FIREBASE SDK ââ -->
+<!-- ══ FIREBASE SDK ══ -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
@@ -412,7 +412,7 @@ let currentPartieId = null;
 let unsubChat = null;
 let unsubParties = null;
 
-// ââ UTILS ââ
+// ── UTILS ──
 window.showToast = (msg) => {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
@@ -432,8 +432,13 @@ window.arenaTab = (n) => {
   }
 };
 
-// ââ AUTH ââ
-
+// ── AUTH ──
+window.loginGoogle = async () => {
+  const btn = document.getElementById('btn-login');
+  btn.innerHTML = '<div class="spinner"></div> Connexion...';
+  try { await signInWithPopup(auth, provider); }
+  catch(e) { btn.innerHTML = '🔑 Continuer avec Google'; showToast('Erreur de connexion'); }
+};
 
 window.logout = async () => {
   if(unsubParties) unsubParties();
@@ -448,18 +453,18 @@ onAuthStateChanged(auth, async (user) => {
     const initiales = (user.displayName||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
     const prenom = (user.displayName||'').split(' ')[0];
 
-    // Charger ou crÃ©er profil
+    // Charger ou créer profil
     const userRef = doc(db, 'users', user.uid);
     const snap = await getDoc(userRef);
     let profil = { nom: user.displayName, email: user.email, handicap: null, team: 'TaylorMade', points: 0, parties: 0 };
     if (snap.exists()) profil = { ...profil, ...snap.data() };
     else await setDoc(userRef, { ...profil, createdAt: serverTimestamp() });
 
-    // Mettre Ã  jour UI
+    // Mettre à jour UI
     document.querySelectorAll('.user-initials').forEach(el => el.textContent = initiales);
     document.querySelectorAll('.user-firstname').forEach(el => el.textContent = prenom);
     document.querySelectorAll('.user-name').forEach(el => el.textContent = profil.nom);
-    document.querySelectorAll('.user-hcp').forEach(el => el.textContent = profil.handicap ?? 'â');
+    document.querySelectorAll('.user-hcp').forEach(el => el.textContent = profil.handicap ?? '—');
     document.querySelectorAll('.user-team').forEach(el => el.textContent = profil.team || 'TaylorMade');
     document.querySelectorAll('.user-pts').forEach(el => el.textContent = profil.points || 0);
     document.querySelectorAll('.user-parties').forEach(el => el.textContent = profil.parties || 0);
@@ -483,7 +488,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// ââ PARTIES ââ
+// ── PARTIES ──
 window.chargerParties = () => {
   const q = query(collection(db, 'parties'), orderBy('createdAt', 'desc'), limit(20));
   if(unsubParties) unsubParties();
@@ -501,16 +506,16 @@ window.chargerParties = () => {
             <div style="width:42px;height:42px;border-radius:11px;background:var(--gdim);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--green);flex-shrink:0">${initGolf}</div>
             <div style="flex:1">
               <div style="font-size:13px;font-weight:600;color:var(--t)">${p.golf}</div>
-              <div style="font-size:11px;color:var(--t2);margin-top:2px">${p.dateAffichage||''} Â· ${p.heure} Â· ${p.trous} trous</div>
+              <div style="font-size:11px;color:var(--t2);margin-top:2px">${p.dateAffichage||''} · ${p.heure} · ${p.trous} trous</div>
             </div>
-            <span style="font-size:10px;background:var(--gdim);color:var(--green);padding:3px 9px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">${estMembre?'â Rejoint':places>0?places+' place'+(places>1?'s':''):'Complet'}</span>
+            <span style="font-size:10px;background:var(--gdim);color:var(--green);padding:3px 9px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">${estMembre?'✓ Rejoint':places>0?places+' place'+(places>1?'s':''):'Complet'}</span>
           </div>
           ${p.message?`<div style="font-size:11px;color:var(--t2);margin-bottom:10px;font-style:italic">"${p.message}"</div>`:''}
-          <button class="btn ${places>0&&!estMembre?'btn-g':'btn-d'}" onclick="event.stopPropagation();voirPartie('${docSnap.id}')">${estMembre?'Voir le chat ð¬':places>0?'Rejoindre':'Voir la partie'}</button>
+          <button class="btn ${places>0&&!estMembre?'btn-g':'btn-d'}" onclick="event.stopPropagation();voirPartie('${docSnap.id}')">${estMembre?'Voir le chat 💬':places>0?'Rejoindre':'Voir la partie'}</button>
         </div>`;
       partiesHTML.push(html);
     });
-    const html = partiesHTML.length ? partiesHTML.join('') : '<div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">Aucune partie ouverte.<br>Sois le premier Ã  en crÃ©er une ! ðï¸</div>';
+    const html = partiesHTML.length ? partiesHTML.join('') : '<div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">Aucune partie ouverte.<br>Sois le premier à en créer une ! 🏌️</div>';
     const h = document.getElementById('liste-parties-home');
     const j = document.getElementById('liste-parties-jouer');
     if(h) h.innerHTML = html;
@@ -533,7 +538,7 @@ window.creerPartie = async () => {
 
   const d = new Date(date+'T'+heure);
   const jours=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-  const mois=['jan','fÃ©v','mar','avr','mai','jun','jul','aoÃ»','sep','oct','nov','dÃ©c'];
+  const mois=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
   const dateAff = jours[d.getDay()]+' '+d.getDate()+' '+mois[d.getMonth()];
 
   try {
@@ -546,14 +551,14 @@ window.creerPartie = async () => {
     });
     // +10 pts Arena
     await updateDoc(doc(db,'users',currentUser.uid), { parties: (await getDoc(doc(db,'users',currentUser.uid))).data().parties+1||1, points: (await getDoc(doc(db,'users',currentUser.uid))).data().points+10||10 });
-    showToast('Partie crÃ©Ã©e ! +10 pts Arena ð');
-    btn.innerHTML = 'CrÃ©er la partie ðï¸';
+    showToast('Partie créée ! +10 pts Arena 🏆');
+    btn.innerHTML = 'Créer la partie 🏌️';
     document.getElementById('input-golf').value='';
     document.getElementById('input-msg').value='';
     goTo('s-jouer');
   } catch(e) {
     showToast('Erreur : '+e.message);
-    btn.innerHTML = 'CrÃ©er la partie ðï¸';
+    btn.innerHTML = 'Créer la partie 🏌️';
   }
 };
 
@@ -570,16 +575,16 @@ window.voirPartie = async (partieId) => {
   document.getElementById('partie-statut').textContent = places>0?'Ouverte':'Complet';
 
   document.getElementById('partie-header').innerHTML = `
-    <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:4px">${p.dateAffichage} Â· ${p.heure}</div>
+    <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:4px">${p.dateAffichage} · ${p.heure}</div>
     <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;margin-bottom:3px">${p.golf}</div>
-    <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:14px">${p.trous} Â· ${places} place${places>1?'s':''} restante${places>1?'s':''}</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:14px">${p.trous} · ${places} place${places>1?'s':''} restante${places>1?'s':''}</div>
     ${p.message?`<div style="font-size:12px;color:rgba(255,255,255,.6);font-style:italic">"${p.message}"</div>`:''}`;
 
   document.getElementById('partie-joueurs').innerHTML = joueurs.map(j=>`
     <div style="display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line)">
       <div style="width:40px;height:40px;border-radius:50%;background:var(--gdim);color:var(--green);border:${j.uid===p.hote?.uid?'1.5px solid var(--green)':'none'};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">${(j.nom||'?').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</div>
       <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">${j.nom}</div></div>
-      ${j.uid===p.hote?.uid?'<span style="font-size:10px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">HÃ´te</span>':''}
+      ${j.uid===p.hote?.uid?'<span style="font-size:10px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">Hôte</span>':''}
     </div>`).join('');
 
   // Chat live
@@ -587,7 +592,7 @@ window.voirPartie = async (partieId) => {
   const chatQ = query(chatRef, orderBy('createdAt'));
   unsubChat = onSnapshot(chatQ, (snap) => {
     const chatEl = document.getElementById('chat-messages');
-    chatEl.innerHTML = snap.empty ? '<div style="text-align:center;color:var(--t3);font-size:12px;padding:16px">Soyez le premier Ã  Ã©crire !</div>' : '';
+    chatEl.innerHTML = snap.empty ? '<div style="text-align:center;color:var(--t3);font-size:12px;padding:16px">Soyez le premier à écrire !</div>' : '';
     snap.forEach(m => {
       const msg = m.data();
       const isMoi = msg.uid === currentUser?.uid;
@@ -601,7 +606,7 @@ window.voirPartie = async (partieId) => {
   });
 
   const btnC = document.getElementById('btn-rejoindre-container');
-  btnC.innerHTML = estMembre ? '' : places>0 ? '<button class="btn btn-g" onclick="rejoindrePartie()">Rejoindre cette partie ðï¸</button>' : '<div style="text-align:center;color:var(--t3);font-size:13px;padding:12px">Partie complÃ¨te</div>';
+  btnC.innerHTML = estMembre ? '' : places>0 ? '<button class="btn btn-g" onclick="rejoindrePartie()">Rejoindre cette partie 🏌️</button>' : '<div style="text-align:center;color:var(--t3);font-size:13px;padding:12px">Partie complète</div>';
 
   goTo('s-partie');
 };
@@ -612,11 +617,11 @@ window.rejoindrePartie = async () => {
   const snap = await getDoc(partieRef);
   const p = snap.data();
   const joueurs = p.joueurs||[];
-  if(joueurs.some(j=>j.uid===currentUser.uid)) { showToast('Tu es dÃ©jÃ  dans cette partie !'); return; }
-  if(joueurs.length>=(p.maxJoueurs||4)) { showToast('Partie complÃ¨te !'); return; }
+  if(joueurs.some(j=>j.uid===currentUser.uid)) { showToast('Tu es déjà dans cette partie !'); return; }
+  if(joueurs.length>=(p.maxJoueurs||4)) { showToast('Partie complète !'); return; }
   await updateDoc(partieRef, { joueurs: [...joueurs, {uid:currentUser.uid,nom:currentUser.displayName}] });
   await updateDoc(doc(db,'users',currentUser.uid), { parties: ((await getDoc(doc(db,'users',currentUser.uid))).data().parties||0)+1, points: ((await getDoc(doc(db,'users',currentUser.uid))).data().points||0)+10 });
-  showToast('Tu as rejoint la partie ! +10 pts ð');
+  showToast('Tu as rejoint la partie ! +10 pts 🎉');
   voirPartie(currentPartieId);
 };
 
@@ -630,7 +635,7 @@ window.envoyerMessage = async () => {
   });
 };
 
-// ââ CLASSEMENTS ââ
+// ── CLASSEMENTS ──
 window.chargerClassement = async () => {
   // Teams
   const teams = { TaylorMade:0, Titleist:0, Callaway:0, Ping:0, Cobra:0 };
@@ -644,7 +649,7 @@ window.chargerClassement = async () => {
 
   // Teams classement
   const teamsSorted = Object.entries(teams).sort((a,b)=>b[1]-a[1]);
-  const medals = ['ð¥','ð¥','ð¥','4','5'];
+  const medals = ['🥇','🥈','🥉','4','5'];
   const teamsHTML = teamsSorted.map((t,i)=>`
     <div class="lbr">
       <div style="font-size:${i<3?20:15}px;min-width:26px;text-align:center;${i>=3?'color:var(--t3);font-weight:700':''}">${medals[i]}</div>
@@ -656,7 +661,7 @@ window.chargerClassement = async () => {
 
   // Global top users
   const globalSorted = allUsers.sort((a,b)=>(b.points||0)-(a.points||0)).slice(0,10);
-  const myRank = globalSorted.findIndex(u=>u.id===currentUser?.uid)+1||'â';
+  const myRank = globalSorted.findIndex(u=>u.id===currentUser?.uid)+1||'—';
   document.querySelectorAll('.user-rang').forEach(el=>el.textContent=myRank<=10?myRank+'e':'100+');
   const teamPts = teams[currentUser ? (await getDoc(doc(db,'users',currentUser.uid))).data().team : 'TaylorMade']||0;
   document.querySelectorAll('.user-team-pts').forEach(el=>el.textContent=teamPts.toLocaleString());
@@ -665,22 +670,22 @@ window.chargerClassement = async () => {
     <div class="lbr" ${u.id===currentUser?.uid?'style="background:rgba(46,204,113,0.04)"':''}>
       <div style="font-size:${i<3?20:15}px;min-width:26px;text-align:center;${i>=3?'color:var(--t3);font-weight:700':''}">${medals[i]||i+1}</div>
       <div class="av-r" style="background:var(--gdim);color:var(--green)">${(u.nom||'?').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:${u.id===currentUser?.uid?'var(--green)':'var(--t)'}">${u.nom||'Golfeur'}${u.id===currentUser?.uid?' â':''}</div><div style="font-size:10px;color:var(--t3)">${u.team||'â'} Â· Hcp ${u.handicap||'â'}</div></div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:${u.id===currentUser?.uid?'var(--green)':'var(--t)'}">${u.nom||'Golfeur'}${u.id===currentUser?.uid?' ★':''}</div><div style="font-size:10px;color:var(--t3)">${u.team||'—'} · Hcp ${u.handicap||'—'}</div></div>
       <div style="font-size:14px;font-weight:700;color:var(--t)">${(u.points||0)} pts</div>
     </div>`).join('');
-  document.getElementById('classement-global').innerHTML = globalHTML||'<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Pas encore de joueurs classÃ©s</div>';
+  document.getElementById('classement-global').innerHTML = globalHTML||'<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Pas encore de joueurs classés</div>';
 };
 
-// ââ PROFIL ââ
+// ── PROFIL ──
 window.sauvegarderProfil = async () => {
   if(!currentUser) return;
   const hcp = parseFloat(document.getElementById('edit-hcp').value);
   const team = document.getElementById('edit-team').value;
   await updateDoc(doc(db,'users',currentUser.uid), { handicap: isNaN(hcp)?null:hcp, team });
-  document.querySelectorAll('.user-hcp').forEach(el=>el.textContent=isNaN(hcp)?'â':hcp);
+  document.querySelectorAll('.user-hcp').forEach(el=>el.textContent=isNaN(hcp)?'—':hcp);
   document.querySelectorAll('.user-team').forEach(el=>el.textContent=team);
   document.getElementById('profil-team').textContent=team;
-  showToast('Profil sauvegardÃ© ! â');
+  showToast('Profil sauvegardé ! ✓');
 };
 
 // Heure
@@ -692,7 +697,7 @@ setInterval(()=>{
 },1000);
 
 
-// âââ COMPÃTITIONS FFGOLF âââ
+// ━━━ COMPÉTITIONS FFGOLF ━━━
 var _compFormat = '';
 var _compData = [];
 
@@ -713,24 +718,24 @@ window.afficherComps = function() {
     return matchQ && matchF;
   });
   if (filtered.length === 0) {
-    el.innerHTML = '<div class="empty-state">Aucune compÃ©tition.<br><br><button class="btn btn-d" style="padding:10px;font-size:12px" onclick="window.open(\'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats\',\'_blank\')">Voir sur FFGolf â</button></div>';
+    el.innerHTML = '<div class="empty-state">Aucune compétition.<br><br><button class="btn btn-d" style="padding:10px;font-size:12px" onclick="window.open(\'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats\',\'_blank\')">Voir sur FFGolf →</button></div>';
     return;
   }
   var colors = {'Stableford':'var(--green)','Medal':'var(--gold)','Quatre balles':'var(--blue)','Scramble':'#a78bfa'};
   var html = '';
   filtered.forEach(function(c) {
     var color = colors[c.format] || 'var(--green)';
-    var lieuHtml = c.lieu ? '<div style="font-size:10px;color:var(--t3);margin-top:1px">ð ' + c.lieu + '</div>' : '';
+    var lieuHtml = c.lieu ? '<div style="font-size:10px;color:var(--t3);margin-top:1px">📍 ' + c.lieu + '</div>' : '';
     html += '<div style="margin:0 14px 10px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:15px;cursor:pointer" onclick="window.open(\'' + c.lien + '\',\'_blank\')">';
     html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">';
-    html += '<div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">ð</div>';
+    html += '<div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🏆</div>';
     html += '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--t)">' + c.nom + '</div>';
     html += '<div style="font-size:11px;color:var(--t2);margin-top:2px">' + c.club + '</div>' + lieuHtml + '</div>';
     html += '<div style="text-align:right;flex-shrink:0"><div style="font-size:14px;font-weight:700;color:var(--t)">' + c.date + '</div>';
     html += '<div style="font-size:10px;color:var(--t3);margin-top:2px">' + c.trous + ' trous</div></div></div>';
     html += '<div style="display:flex;justify-content:space-between;align-items:center">';
     html += '<span style="font-size:10px;background:var(--gdim);color:' + color + ';padding:3px 10px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">' + c.format + '</span>';
-    html += '<span style="font-size:11px;color:var(--green);font-weight:600">S\'inscrire â</span></div></div>';
+    html += '<span style="font-size:11px;color:var(--green);font-weight:600">S\'inscrire →</span></div></div>';
   });
   el.innerHTML = html;
 };
@@ -746,7 +751,7 @@ function chargerComps() {
     {nom:'Open de Fontainebleau', club:'Golf de Fontainebleau', lieu:'Fontainebleau (77)', date:fmt(dd(3)), format:'Medal', trous:'18', lien:lien},
     {nom:'Quatre Balles du Club', club:'Golf de Chantilly', lieu:'Chantilly (60)', date:fmt(dd(5)), format:'Quatre balles', trous:'18', lien:lien},
     {nom:'Challenge Scramble', club:'Golf Bluegreen Nantes', lieu:'Nantes (44)', date:fmt(dd(6)), format:'Scramble', trous:'18', lien:lien},
-    {nom:'TrophÃ©e Hardelot', club:"Golf d'Hardelot", lieu:'Hardelot (62)', date:fmt(dd(8)), format:'Stableford', trous:'18', lien:lien},
+    {nom:'Trophée Hardelot', club:"Golf d'Hardelot", lieu:'Hardelot (62)', date:fmt(dd(8)), format:'Stableford', trous:'18', lien:lien},
     {nom:'Open 9 trous Cergy', club:'Garden Golf de Cergy', lieu:'Cergy (95)', date:fmt(dd(9)), format:'Stableford', trous:'9', lien:lien},
     {nom:'Championnat du Club', club:'Golf de Saint-Cloud', lieu:'Saint-Cloud (92)', date:fmt(dd(12)), format:'Medal', trous:'18', lien:lien},
     {nom:'Scramble des Amis', club:'Golf de Bondues', lieu:'Bondues (59)', date:fmt(dd(14)), format:'Scramble', trous:'18', lien:lien},
@@ -755,7 +760,7 @@ function chargerComps() {
   var loading = document.getElementById('comp-loading');
   if (loading) loading.remove();
   var badge = document.getElementById('comp-badge');
-  if (badge) badge.textContent = 'ð¡ FFGolf Live';
+  if (badge) badge.textContent = '📡 FFGolf Live';
   afficherComps();
 }
 
