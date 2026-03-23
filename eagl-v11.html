@@ -141,14 +141,12 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     </div>
 
     
-    <!-- GOLFS PRÈS DE TOI -->
     <div class="sl" style="margin-top:4px">Golfs près de toi 📍</div>
-    <div style="margin:0 14px 16px" id="golfs-wrap">
+    <div style="margin:0 14px 16px">
       <div id="golfs-list" style="display:flex;flex-direction:column;gap:10px">
         <div style="text-align:center;padding:20px;color:var(--t3);font-size:13px"><div class="spinner" style="margin:0 auto 10px"></div>Localisation...</div>
       </div>
     </div>
-
     <!-- PARTIES LIVE -->
     <div class="sl">Parties ouvertes</div>
     <div id="liste-parties-home">
@@ -817,18 +815,17 @@ window.doPwdReset=async function(){
   catch(e){er.style.color='var(--red)';er.textContent='Email non trouvé';er.style.display='block';}
 };
 
+</script>
 
-
-// ══ GOLFS PRÈS DE TOI ══
-var _uLat=null, _uLng=null, _golfsLoaded=false;
+<script>
+var _uLat=null,_uLng=null,_golfsOk=false;
 function haversine(a,b,x,y){var R=6371,d=(x-a)*Math.PI/180,e=(y-b)*Math.PI/180,f=Math.sin(d/2)*Math.sin(d/2)+Math.cos(a*Math.PI/180)*Math.cos(x*Math.PI/180)*Math.sin(e/2)*Math.sin(e/2);return R*2*Math.atan2(Math.sqrt(f),Math.sqrt(1-f));}
 function chargerGolfs(){
-  if(_golfsLoaded)return;
-  var el=document.getElementById('golfs-list');
-  if(!el)return;
+  if(_golfsOk)return;
+  var el=document.getElementById('golfs-list');if(!el)return;
   if(!navigator.geolocation){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Géolocalisation non disponible</div>';return;}
   navigator.geolocation.getCurrentPosition(async function(p){
-    _uLat=p.coords.latitude; _uLng=p.coords.longitude;
+    _uLat=p.coords.latitude;_uLng=p.coords.longitude;
     if(_uLat<41||_uLat>51.5||_uLng<-5.5||_uLng>9.6){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">🌍 Eagl est disponible en France uniquement</div>';return;}
     try{
       var q='[out:json][timeout:25];(node["leisure"="golf_course"](around:40000,'+_uLat+','+_uLng+');way["leisure"="golf_course"](around:40000,'+_uLat+','+_uLng+'););out center tags;';
@@ -836,25 +833,25 @@ function chargerGolfs(){
       var d=await r.json();
       var gs=(d.elements||[]).map(function(e){
         var lt=e.lat||(e.center&&e.center.lat),ln=e.lon||(e.center&&e.center.lon);
-        return{name:e.tags.name||null,phone:e.tags.phone||e.tags['contact:phone']||null,web:e.tags.website||e.tags['contact:website']||null,holes:e.tags.holes||null,access:e.tags.access||null,dist:lt?haversine(_uLat,_uLng,lt,ln):999};
+        return{name:e.tags.name,phone:e.tags.phone||e.tags['contact:phone']||null,web:e.tags.website||e.tags['contact:website']||null,holes:e.tags.holes||null,access:e.tags.access||null,dist:lt?haversine(_uLat,_uLng,lt,ln):999};
       }).filter(function(g){return g.name;}).sort(function(a,b){return a.dist-b.dist;}).slice(0,8);
       if(!gs.length){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Aucun golf trouvé dans 40km</div>';return;}
       var h='';
       gs.forEach(function(g){
         var ds=g.dist<1?Math.round(g.dist*1000)+'m':g.dist.toFixed(1)+'km';
-        var badge=g.access==='private'?'<span style="font-size:9px;background:rgba(255,82,82,0.15);color:#FF5252;padding:2px 8px;border-radius:6px;font-weight:600">Privé</span>':'<span style="font-size:9px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:6px;font-weight:600;border:0.5px solid var(--gring)">Public</span>';
-        h+='<div style="background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">';
-        h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div><div style="font-size:13px;font-weight:600;color:var(--t);margin-bottom:3px">'+g.name+'</div><div style="font-size:11px;color:var(--t3)">'+(g.holes?'⛳ '+g.holes+' trous · ':'')+' 📍 '+ds+'</div></div>'+badge+'</div>';
-        if(g.phone||g.web){h+='<div style="display:flex;gap:6px;margin-bottom:8px">';if(g.phone)h+='<a href="tel:'+g.phone+'" style="flex:1;text-align:center;padding:7px;background:var(--bg3);border-radius:9px;font-size:11px;color:var(--t2);text-decoration:none">📞 Appeler</a>';if(g.web)h+='<a href="'+g.web+'" target="_blank" style="flex:1;text-align:center;padding:7px;background:var(--gdim);border-radius:9px;font-size:11px;color:var(--green);text-decoration:none;border:0.5px solid var(--gring)">🌐 Site web</a>';h+='</div>';}
-        h+='<button onclick="voirPartiesGolf(\''+g.name.replace(/'/g,"\\'")+'')" style="width:100%;padding:9px;border:0.5px solid var(--gring);border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;background:transparent;color:var(--green)">Voir les parties Eagl →</button>';
+        var badge=g.access==='private'?'<span style="font-size:9px;background:rgba(255,82,82,0.15);color:#FF5252;padding:2px 8px;border-radius:6px;font-weight:600">Privé</span>':'<span style="font-size:9px;background:rgba(46,204,113,0.12);color:#2ecc71;padding:2px 8px;border-radius:6px;font-weight:600;border:0.5px solid rgba(46,204,113,0.3)">Public</span>';
+        h+='<div style="background:#20262e;border:0.5px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px">';
+        h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:3px">'+g.name+'</div><div style="font-size:11px;color:rgba(255,255,255,0.25)">'+(g.holes?'⛳ '+g.holes+' trous · ':'')+' 📍 '+ds+'</div></div><div style="margin-left:8px">'+badge+'</div></div>';
+        if(g.phone||g.web){h+='<div style="display:flex;gap:6px;margin-bottom:8px">';if(g.phone)h+='<a href="tel:'+g.phone+'" style="flex:1;text-align:center;padding:7px;background:#262d36;border-radius:9px;font-size:11px;color:rgba(255,255,255,0.55);text-decoration:none">📞 Appeler</a>';if(g.web)h+='<a href="'+g.web+'" target="_blank" rel="noopener" style="flex:1;text-align:center;padding:7px;background:rgba(46,204,113,0.12);border-radius:9px;font-size:11px;color:#2ecc71;text-decoration:none;border:0.5px solid rgba(46,204,113,0.3)">🌐 Site web</a>';h+='</div>';}
+        h+='<button onclick="voirPartiesGolf(this.dataset.n)" data-n="'+g.name.replace(/"/g,'&quot;')+'" style="width:100%;padding:9px;border:0.5px solid rgba(46,204,113,0.3);border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:#2ecc71">Voir les parties Eagl →</button>';
         h+='</div>';
       });
-      el.innerHTML=h; _golfsLoaded=true;
-    }catch(e){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Erreur de chargement</div>';}
-  },function(){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">📍 Autorise la localisation pour voir les golfs</div>';},{timeout:10000});
+      el.innerHTML=h;_golfsOk=true;
+    }catch(e){el.innerHTML='<div style="padding:16px;text-align:center;color:rgba(255,255,255,0.25);font-size:12px">Erreur de chargement. Réessaie.</div>';}
+  },function(){el.innerHTML='<div style="padding:16px;text-align:center;color:rgba(255,255,255,0.25);font-size:12px">📍 Autorise la localisation pour voir les golfs proches</div>';},{timeout:10000});
 }
-window.voirPartiesGolf=function(n){goTo('s-jouer');showToast('Golfs : '+n);};
-setTimeout(function(){chargerGolfs();},2500);
+function voirPartiesGolf(n){if(window.goTo)goTo('s-jouer');if(window.showToast)showToast('⛳ '+n);}
+window.addEventListener('load',function(){setTimeout(chargerGolfs,2000);});
 </script>
 </body>
 </html>
