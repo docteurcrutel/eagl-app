@@ -82,8 +82,8 @@ select.input-field option{background:var(--bg3);color:var(--t)}
 <!-- ONBOARDING -->
 <div class="login-screen" id="s-onboarding" style="display:none;z-index:150;overflow-y:auto;padding:40px 24px;justify-content:flex-start">
   <div style="font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:3px;color:var(--t);margin-bottom:4px">Bienvenue sur EAGL<span style="color:var(--green)">.</span></div>
-  <div style="font-size:13px;color:var(--t2);margin-bottom:24px;line-height:1.6">ComplÃÂ¨te ton profil pour rejoindre<br>la communautÃÂ© de golfers Ã¢ÂÂ³</div>
-  <input class="inp" id="ob-prenom" placeholder="PrÃÂ©nom *" type="text">
+  <div style="font-size:13px;color:var(--t2);margin-bottom:24px;line-height:1.6">ComplÃÂÃÂ¨te ton profil pour rejoindre<br>la communautÃÂÃÂ© de golfers ÃÂ¢ÃÂÃÂ³</div>
+  <input class="inp" id="ob-prenom" placeholder="PrÃÂÃÂ©nom *" type="text">
   <input class="inp" id="ob-nom" placeholder="Nom *" type="text">
   <input class="inp" id="ob-pseudo" placeholder="Pseudo * (ex: virgil_eagle)" type="text">
   <input class="inp" id="ob-hcp" placeholder="Index FFGolf (ex: 12.4)" type="number" step="0.1">
@@ -96,12 +96,12 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     <option value="Ping">Team Ping</option>
     <option value="Cobra">Team Cobra</option>
   </select>
-  <button class="btn btn-g" id="btn-ob" onclick="validerOnboarding()" style="margin-top:4px">CrÃÂ©er mon profil Ã¢ÂÂ</button>
+  <button class="btn btn-g" id="btn-ob" onclick="validerOnboarding()" style="margin-top:4px">CrÃÂÃÂ©er mon profil ÃÂ¢ÃÂÃÂ</button>
   <div style="font-size:11px;color:var(--t3);text-align:center;margin-top:12px">* champs obligatoires</div>
 </div>
 
 
-<!-- Ã¢ÂÂÃ¢ÂÂ LOGIN Ã¢ÂÂÃ¢ÂÂ -->
+<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ LOGIN ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
 <div class="screen active" id="s-login" style="justify-content:center;align-items:center;padding:32px;overflow-y:auto">
   <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;letter-spacing:6px;color:var(--t);line-height:.9;margin-bottom:8px;text-align:center">EAGL<span style="color:var(--green)">.</span></div>
   <div style="font-size:14px;color:var(--t2);margin-bottom:32px;text-align:center;line-height:1.7">Trouve tes partenaires de golf.<br>Joue. Progresse. Domine.</div>
@@ -109,29 +109,29 @@ select.input-field option{background:var(--bg3);color:var(--t)}
   <!-- TABS CONNEXION / INSCRIPTION -->
   <div style="display:flex;background:var(--bg3);border-radius:12px;padding:3px;gap:2px;margin-bottom:20px;width:100%">
     <button id="tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:var(--green);color:#000">Se connecter</button>
-    <button id="tab-signup" onclick="switchAuthTab('signup')" style="flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:transparent;color:var(--t3)">Créer un compte</button>
+    <button id="tab-signup" onclick="switchAuthTab('signup')" style="flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:transparent;color:var(--t3)">CrÃ©er un compte</button>
   </div>
 
   <!-- FORMULAIRE -->
   <div style="width:100%;display:flex;flex-direction:column;gap:0">
     <input class="inp" id="auth-email" placeholder="Email" type="email" style="margin-bottom:10px">
-    <input class="inp" id="auth-password" placeholder="Mot de passe (6 caractères min.)" type="password" style="margin-bottom:10px">
+    <input class="inp" id="auth-password" placeholder="Mot de passe (6 caractÃ¨res min.)" type="password" style="margin-bottom:10px">
     <div id="auth-error" style="font-size:12px;color:var(--red);margin-bottom:8px;display:none"></div>
     <button class="btn btn-g" id="btn-auth" onclick="submitAuth()" style="margin-bottom:12px">Se connecter</button>
-    <div id="forgot-pwd" style="text-align:center;font-size:12px;color:var(--green);cursor:pointer" onclick="resetPassword()">Mot de passe oublié ?</div>
+    <div id="forgot-pwd" style="text-align:center;font-size:12px;color:var(--green);cursor:pointer" onclick="resetPassword()">Mot de passe oubliÃ© ?</div>
   </div>
-  <div style="font-size:11px;color:var(--t3);text-align:center;margin-top:20px">100% gratuit · Aucune carte requise</div>
+  <div style="font-size:11px;color:var(--t3);text-align:center;margin-top:20px">100% gratuit Â· Aucune carte requise</div>
 </div>
 
-<!-- Ã¢ÂÂÃ¢ÂÂ HOME Ã¢ÂÂÃ¢ÂÂ -->
+<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ HOME ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
 <div class="screen" id="s-home">
   <div class="sb"><span>9:41</span><span id="time-home"></span></div>
   <div class="hdr">
     <div style="display:flex;align-items:center;gap:10px">
       <div class="av user-initials" onclick="goTo('s-profile')">TM</div>
-      <div style="font-size:13px;font-weight:600;color:var(--t)">Bonjour, <span class="user-firstname">Thomas</span> Ã°ÂÂÂ</div>
+      <div style="font-size:13px;font-weight:600;color:var(--t)">Bonjour, <span class="user-firstname">Thomas</span> ÃÂ°ÃÂÃÂÃÂ</div>
     </div>
-    <div style="width:34px;height:34px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer" onclick="showToast('Notifications bientÃÂ´t disponibles')">Ã°ÂÂÂ</div>
+    <div style="width:34px;height:34px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer" onclick="showToast('Notifications bientÃÂÃÂ´t disponibles')">ÃÂ°ÃÂÃÂÃÂ</div>
   </div>
   <div class="scroll">
     <!-- STATS -->
@@ -141,33 +141,33 @@ select.input-field option{background:var(--bg3);color:var(--t)}
         <div class="stat-val user-parties" style="color:var(--green)">0</div>
         <div class="stat-sub">cette saison</div>
         <div class="stat-bar"><div class="stat-fill user-parties-bar" style="background:var(--green);width:0%"></div></div>
-        <div class="stat-trend" style="color:var(--green)">Ã¢ÂÂ² actif</div>
+        <div class="stat-trend" style="color:var(--green)">ÃÂ¢ÃÂÃÂ² actif</div>
       </div>
       <div class="stat-card" onclick="goTo('s-arena')">
         <div class="stat-label">Handicap</div>
-        <div class="stat-val user-hcp" style="color:var(--gold)">Ã¢ÂÂ</div>
+        <div class="stat-val user-hcp" style="color:var(--gold)">ÃÂ¢ÃÂÃÂ</div>
         <div class="stat-sub">index FFGolf</div>
         <div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:55%"></div></div>
-        <div class="stat-trend" style="color:var(--green)">Ã¢ÂÂ¼ en baisse</div>
+        <div class="stat-trend" style="color:var(--green)">ÃÂ¢ÃÂÃÂ¼ en baisse</div>
       </div>
       <div class="stat-card" onclick="goTo('s-arena')">
         <div class="stat-label">Arena</div>
         <div class="stat-val user-pts" style="color:var(--blue)">0</div>
-        <div class="stat-sub">pts ÃÂ· <span class="user-team">TaylorMade</span></div>
+        <div class="stat-sub">pts ÃÂÃÂ· <span class="user-team">TaylorMade</span></div>
         <div class="stat-bar"><div class="stat-fill user-pts-bar" style="background:var(--blue);width:0%"></div></div>
-        <div class="stat-trend" style="color:var(--green)">Ã¢ÂÂ² joue !</div>
+        <div class="stat-trend" style="color:var(--green)">ÃÂ¢ÃÂÃÂ² joue !</div>
       </div>
     </div>
 
     <!-- TEAM BANNER -->
     <div style="margin:0 14px 16px;background:rgba(46,204,113,0.07);border:0.5px solid var(--gring);border-radius:16px;padding:14px 15px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="goTo('s-arena')">
-      <div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">Ã°ÂÂÂÃ¯Â¸Â</div>
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">ÃÂ°ÃÂÃÂÃÂÃÂ¯ÃÂ¸ÃÂ</div>
       <div style="flex:1">
-        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:3px">Team <span class="user-team">TaylorMade</span> ÃÂ· Arena</div>
+        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:3px">Team <span class="user-team">TaylorMade</span> ÃÂÃÂ· Arena</div>
         <div style="font-size:13px;font-weight:600;color:var(--t)">Joue pour gagner des points !</div>
         <div class="pbar" style="margin-top:6px"><div class="pbar-g" style="width:40%"></div></div>
       </div>
-      <div style="font-size:20px;color:var(--t3)">Ã¢ÂÂº</div>
+      <div style="font-size:20px;color:var(--t3)">ÃÂ¢ÃÂÃÂº</div>
     </div>
 
     <!-- PARTIES LIVE -->
@@ -176,32 +176,32 @@ select.input-field option{background:var(--bg3);color:var(--t)}
       <div style="text-align:center;padding:24px;color:var(--t3)"><div class="spinner"></div><div style="margin-top:8px;font-size:12px">Chargement...</div></div>
     </div>
 
-    <!-- CRÃÂER UNE PARTIE CTA -->
+    <!-- CRÃÂÃÂER UNE PARTIE CTA -->
     <div style="margin:0 14px 16px;background:var(--bg3);border:1px dashed var(--gring);border-radius:16px;padding:16px;cursor:pointer;text-align:center" onclick="goTo('s-creer')">
       <div style="font-size:22px;margin-bottom:5px;color:var(--green)">+</div>
-      <div style="font-size:13px;font-weight:600;color:var(--t)">CrÃÂ©er une partie</div>
+      <div style="font-size:13px;font-weight:600;color:var(--t)">CrÃÂÃÂ©er une partie</div>
       <div style="font-size:11px;color:var(--t3);margin-top:2px">Trouve tes partenaires maintenant</div>
     </div>
   </div>
   <nav class="bnav">
-    <button class="ni active" onclick="goTo('s-home')"><span class="ni-ico">Ã°ÂÂÂ </span><span class="ni-lbl">Accueil</span></button>
-    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">Ã¢ÂÂ³</span><span class="ni-lbl">Jouer</span></button>
-    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">Ã°ÂÂÂ¥</span><span class="ni-lbl">Arena</span></button>
-    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">Ã°ÂÂÂ</span><span class="ni-lbl">Pros</span></button>
-    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">Ã°ÂÂÂ¤</span><span class="ni-lbl">Profil</span></button>
+    <button class="ni active" onclick="goTo('s-home')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ </span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">ÃÂ¢ÃÂÃÂ³</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ¥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ¤</span><span class="ni-lbl">Profil</span></button>
   </nav>
 </div>
 
-<!-- Ã¢ÂÂÃ¢ÂÂ CRÃÂER PARTIE Ã¢ÂÂÃ¢ÂÂ -->
+<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ CRÃÂÃÂER PARTIE ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
 <div class="screen" id="s-creer">
   <div class="sb"><span>9:41</span><span></span></div>
-  <div class="hdr"><div class="back-btn" onclick="goTo('s-home')">Ã¢ÂÂ</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)">CrÃÂ©er une partie</div><div></div></div>
+  <div class="hdr"><div class="back-btn" onclick="goTo('s-home')">ÃÂ¢ÃÂÃÂ</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)">CrÃÂÃÂ©er une partie</div><div></div></div>
   <div class="scroll" style="padding:0 14px 88px">
     <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Golf</div>
     <input class="input-field" id="input-golf" placeholder="Ex: Golf National, Versailles..." type="text">
     <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Date</div>
     <input class="input-field" id="input-date" type="date">
-    <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Heure de dÃÂ©part</div>
+    <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Heure de dÃÂÃÂ©part</div>
     <input class="input-field" id="input-heure" type="time" value="09:00">
     <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Format</div>
     <select class="input-field" id="input-trous">
@@ -215,15 +215,15 @@ select.input-field option{background:var(--bg3);color:var(--t)}
       <option value="4" selected>4 joueurs</option>
     </select>
     <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Message (optionnel)</div>
-    <input class="input-field" id="input-msg" placeholder="Ex: niveau intermÃÂ©diaire bienvenu..." type="text">
-    <button class="btn btn-g" id="btn-creer" onclick="creerPartie()" style="margin-top:8px">CrÃÂ©er la partie Ã°ÂÂÂÃ¯Â¸Â</button>
+    <input class="input-field" id="input-msg" placeholder="Ex: niveau intermÃÂÃÂ©diaire bienvenu..." type="text">
+    <button class="btn btn-g" id="btn-creer" onclick="creerPartie()" style="margin-top:8px">CrÃÂÃÂ©er la partie ÃÂ°ÃÂÃÂÃÂÃÂ¯ÃÂ¸ÃÂ</button>
   </div>
 </div>
 
-<!-- Ã¢ÂÂÃ¢ÂÂ JOUER (liste parties) Ã¢ÂÂÃ¢ÂÂ -->
+<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ JOUER (liste parties) ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
 <div class="screen" id="s-jouer">
   <div class="sb"><span>9:41</span><span></span></div>
-  <div class="hdr"><div class="back-btn" onclick="goTo('s-home')">Ã¢ÂÂ</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--t)">Parties ouvertes</div><div style="font-size:11px;color:var(--green);font-weight:600;cursor:pointer" onclick="goTo('s-creer')">+ CrÃÂ©er</div></div>
+  <div class="hdr"><div class="back-btn" onclick="goTo('s-home')">ÃÂ¢ÃÂÃÂ</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--t)">Parties ouvertes</div><div style="font-size:11px;color:var(--green);font-weight:600;cursor:pointer" onclick="goTo('s-creer')">+ CrÃÂÃÂ©er</div></div>
   <div class="scroll">
     <div class="sl">Toutes les parties</div>
     <div id="liste-parties-jouer">
@@ -231,18 +231,18 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     </div>
   </div>
   <nav class="bnav">
-    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">Ã°ÂÂÂ </span><span class="ni-lbl">Accueil</span></button>
-    <button class="ni active"><span class="ni-ico">Ã¢ÂÂ³</span><span class="ni-lbl">Jouer</span></button>
-    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">Ã°ÂÂÂ¥</span><span class="ni-lbl">Arena</span></button>
-    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">Ã°ÂÂÂ</span><span class="ni-lbl">Pros</span></button>
-    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">Ã°ÂÂÂ¤</span><span class="ni-lbl">Profil</span></button>
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ </span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni active"><span class="ni-ico">ÃÂ¢ÃÂÃÂ³</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ¥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ¤</span><span class="ni-lbl">Profil</span></button>
   </nav>
 </div>
 
-<!-- Ã¢ÂÂÃ¢ÂÂ DETAIL PARTIE Ã¢ÂÂÃ¢ÂÂ -->
+<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ DETAIL PARTIE ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
 <div class="screen" id="s-partie">
   <div class="sb"><span>9:41</span><span></span></div>
-  <div class="hdr"><div class="back-btn" onclick="goTo('s-jouer')">Ã¢ÂÂ</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)" id="partie-titre">Partie</div><div id="partie-statut" class="tag-live">Ouverte</div></div>
+  <div class="hdr"><div class="back-btn" onclick="goTo('s-jouer')">ÃÂ¢ÃÂÃÂ</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)" id="partie-titre">Partie</div><div id="partie-statut" class="tag-live">Ouverte</div></div>
   <div class="scroll">
     <div style="margin:0 14px 14px;background:linear-gradient(135deg,#0a1a0d,#0d2814);border:0.5px solid var(--gring);border-radius:18px;padding:18px" id="partie-header">
     </div>
@@ -253,19 +253,19 @@ select.input-field option{background:var(--bg3);color:var(--t)}
       <div id="chat-messages" style="min-height:80px;max-height:200px;overflow-y:auto"></div>
       <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
         <input class="input-field" id="chat-input" placeholder="Message..." style="margin-bottom:0;flex:1;padding:10px 14px" onkeypress="if(event.key==='Enter')envoyerMessage()">
-        <div style="width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;color:#000;font-weight:700;flex-shrink:0" onclick="envoyerMessage()">Ã¢ÂÂ</div>
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;color:#000;font-weight:700;flex-shrink:0" onclick="envoyerMessage()">ÃÂ¢ÃÂÃÂ</div>
       </div>
     </div>
     <div style="margin:0 14px" id="btn-rejoindre-container">
-      <button class="btn btn-g" onclick="rejoindrePartie()">Rejoindre cette partie Ã°ÂÂÂÃ¯Â¸Â</button>
+      <button class="btn btn-g" onclick="rejoindrePartie()">Rejoindre cette partie ÃÂ°ÃÂÃÂÃÂÃÂ¯ÃÂ¸ÃÂ</button>
     </div>
   </div>
 </div>
 
-<!-- Ã¢ÂÂÃ¢ÂÂ ARENA Ã¢ÂÂÃ¢ÂÂ -->
+<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ ARENA ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
 <div class="screen" id="s-arena">
   <div class="sb"><span>9:41</span><span></span></div>
-  <div class="hdr"><div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--t)">EAGL<span style="color:var(--green)">.</span> ARENA</div><div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="arena-semaine">SEM Ã¢ÂÂ</div></div>
+  <div class="hdr"><div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--t)">EAGL<span style="color:var(--green)">.</span> ARENA</div><div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="arena-semaine">SEM ÃÂ¢ÃÂÃÂ</div></div>
   <div class="scroll">
     <div class="stats-row" style="padding:8px 14px 14px">
       <div class="stat-card">
@@ -273,21 +273,21 @@ select.input-field option{background:var(--bg3);color:var(--t)}
         <div class="stat-val user-pts" style="color:var(--green)">0</div>
         <div class="stat-sub">cette semaine</div>
         <div class="stat-bar"><div class="stat-fill user-pts-bar" style="background:var(--green);width:0%"></div></div>
-        <div class="stat-trend" style="color:var(--green)">Ã¢ÂÂ² joue !</div>
+        <div class="stat-trend" style="color:var(--green)">ÃÂ¢ÃÂÃÂ² joue !</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Team</div>
-        <div class="stat-val user-team-pts" style="color:var(--gold)">Ã¢ÂÂ</div>
+        <div class="stat-val user-team-pts" style="color:var(--gold)">ÃÂ¢ÃÂÃÂ</div>
         <div class="stat-sub"><span class="user-team">TaylorMade</span></div>
         <div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:60%"></div></div>
-        <div class="stat-trend" style="color:var(--green)">Ã¢ÂÂ² actif</div>
+        <div class="stat-trend" style="color:var(--green)">ÃÂ¢ÃÂÃÂ² actif</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Rang</div>
-        <div class="stat-val user-rang" style="color:var(--blue)">Ã¢ÂÂ</div>
+        <div class="stat-val user-rang" style="color:var(--blue)">ÃÂ¢ÃÂÃÂ</div>
         <div class="stat-sub">classement</div>
         <div class="stat-bar"><div class="stat-fill" style="background:var(--blue);width:30%"></div></div>
-        <div class="stat-trend" style="color:var(--t2)">Ã¢ÂÂ joue !</div>
+        <div class="stat-trend" style="color:var(--t2)">ÃÂ¢ÃÂÃÂ joue !</div>
       </div>
     </div>
     <div class="tabs">
@@ -311,34 +311,34 @@ select.input-field option{background:var(--bg3);color:var(--t)}
       <div style="margin:0 14px;background:rgba(46,204,113,0.05);border:0.5px solid var(--gring);border-radius:13px;padding:14px">
         <div style="font-size:13px;font-weight:600;color:var(--green);margin-bottom:10px">Comment gagner des points</div>
         <div style="display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Ã¢ÂÂ³ Jouer une partie</span><span style="color:var(--green);font-weight:700">+10 pts</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Ã°ÂÂ¦Â Eagle</span><span style="color:var(--green);font-weight:700">+50 pts</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Ã°ÂÂÂ¦ Birdie</span><span style="color:var(--green);font-weight:700">+15 pts</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Ã°ÂÂÂ Gagner une compÃÂ©t</span><span style="color:var(--green);font-weight:700">+100 pts</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Ã°ÂÂ¤Â Inviter un ami</span><span style="color:var(--green);font-weight:700">+25 pts</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Ã°ÂÂÂ Baisser son handicap</span><span style="color:var(--green);font-weight:700">+30 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">ÃÂ¢ÃÂÃÂ³ Jouer une partie</span><span style="color:var(--green);font-weight:700">+10 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">ÃÂ°ÃÂÃÂ¦ÃÂ Eagle</span><span style="color:var(--green);font-weight:700">+50 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">ÃÂ°ÃÂÃÂÃÂ¦ Birdie</span><span style="color:var(--green);font-weight:700">+15 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">ÃÂ°ÃÂÃÂÃÂ Gagner une compÃÂÃÂ©t</span><span style="color:var(--green);font-weight:700">+100 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">ÃÂ°ÃÂÃÂ¤ÃÂ Inviter un ami</span><span style="color:var(--green);font-weight:700">+25 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">ÃÂ°ÃÂÃÂÃÂ Baisser son handicap</span><span style="color:var(--green);font-weight:700">+30 pts</span></div>
         </div>
       </div>
     </div>
   </div>
   <nav class="bnav">
-    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">Ã°ÂÂÂ </span><span class="ni-lbl">Accueil</span></button>
-    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">Ã¢ÂÂ³</span><span class="ni-lbl">Jouer</span></button>
-    <button class="ni active"><span class="ni-ico">Ã°ÂÂÂ¥</span><span class="ni-lbl">Arena</span></button>
-    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">Ã°ÂÂÂ</span><span class="ni-lbl">Pros</span></button>
-    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">Ã°ÂÂÂ¤</span><span class="ni-lbl">Profil</span></button>
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ </span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">ÃÂ¢ÃÂÃÂ³</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni active"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ¥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ</span><span class="ni-lbl">Pros</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ¤</span><span class="ni-lbl">Profil</span></button>
   </nav>
 </div>
 
-<!-- Ã¢ÂÂÃ¢ÂÂ PROS Ã¢ÂÂÃ¢ÂÂ -->
+<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ PROS ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
 <div class="screen" id="s-pros">
-  <div class="sb"><span id="time-pros">9:41</span><span>Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ 78%</span></div>
+  <div class="sb"><span id="time-pros">9:41</span><span>ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ 78%</span></div>
   <div class="hdr">
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--t)">CompÃÂ©titions</div>
-    <div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="comp-badge">Ã°ÂÂÂ¡ FFGolf Live</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--t)">CompÃÂÃÂ©titions</div>
+    <div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="comp-badge">ÃÂ°ÃÂÃÂÃÂ¡ FFGolf Live</div>
   </div>
   <div style="padding:0 14px 8px">
-    <input class="inp" id="comp-input" placeholder="Ã°ÂÂÂ  Nom du golf, ville..." type="text" style="margin:0" oninput="afficherComps()">
+    <input class="inp" id="comp-input" placeholder="ÃÂ°ÃÂÃÂÃÂ  Nom du golf, ville..." type="text" style="margin:0" oninput="afficherComps()">
   </div>
   <div class="chips">
     <div class="chip chip-on" id="cf-all" onclick="setFormatComp('',this)">Toutes</div>
@@ -349,66 +349,66 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     <div class="chip chip-off" id="cf-9" onclick="setFormatComp('9',this)">9 trous</div>
   </div>
   <div class="scroll">
-    <div id="comp-list"><div class="empty-state" id="comp-loading">Chargement... Ã¢ÂÂ³</div></div>
+    <div id="comp-list"><div class="empty-state" id="comp-loading">Chargement... ÃÂ¢ÃÂÃÂ³</div></div>
     <div style="margin:0 14px 14px;background:var(--bg3);border:0.5px dashed var(--gring);border-radius:16px;padding:16px;cursor:pointer;text-align:center" onclick="window.open('https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats','_blank')">
-      <div style="font-size:18px;margin-bottom:6px">Ã°ÂÂÂ</div>
+      <div style="font-size:18px;margin-bottom:6px">ÃÂ°ÃÂÃÂÃÂ</div>
       <div style="font-size:13px;font-weight:600;color:var(--t)">Calendrier complet FFGolf</div>
-      <div style="font-size:11px;color:var(--t3);margin-top:2px">Toutes les compÃÂ©titions officielles Ã¢ÂÂ</div>
+      <div style="font-size:11px;color:var(--t3);margin-top:2px">Toutes les compÃÂÃÂ©titions officielles ÃÂ¢ÃÂÃÂ</div>
     </div>
   </div>
   <nav class="bnav">
-    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">Ã°ÂÂÂ </span><span class="ni-lbl">Accueil</span></button>
-    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">Ã¢ÂÂ³</span><span class="ni-lbl">Jouer</span></button>
-    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">Ã°ÂÂÂ¥</span><span class="ni-lbl">Arena</span></button>
-    <button class="ni active"><span class="ni-ico">Ã°ÂÂÂ</span><span class="ni-lbl">CompÃÂ©t.</span></button>
-    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">Ã°ÂÂÂ¤</span><span class="ni-lbl">Profil</span></button>
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ </span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">ÃÂ¢ÃÂÃÂ³</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ¥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni active"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ</span><span class="ni-lbl">CompÃÂÃÂ©t.</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ¤</span><span class="ni-lbl">Profil</span></button>
   </nav>
 </div>
 
 <div class="screen" id="s-profile">
-  <div class="sb"><span id="time-profile">9:41</span><span>Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ 78%</span></div>
+  <div class="sb"><span id="time-profile">9:41</span><span>ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ 78%</span></div>
   <div class="hdr">
     <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:var(--t)">Profil</div>
-    <div style="font-size:11px;color:var(--red);font-weight:600;cursor:pointer" onclick="logout()">DÃÂ©connexion</div>
+    <div style="font-size:11px;color:var(--red);font-weight:600;cursor:pointer" onclick="logout()">DÃÂÃÂ©connexion</div>
   </div>
   <div class="scroll">
     <div style="margin:0 14px 14px;display:flex;align-items:center;gap:14px;padding:16px;background:var(--bg2);border:0.5px solid var(--line);border-radius:18px">
       <div style="width:60px;height:60px;border-radius:50%;background:var(--gdim);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--green);flex-shrink:0;overflow:hidden" id="profile-avatar">TM</div>
       <div>
-        <div id="profile-name" style="font-size:18px;font-weight:600;color:var(--t)">Ã¢ÂÂ</div>
-        <div id="profile-pseudo" style="font-size:13px;color:var(--green);font-weight:600;margin-top:2px">@Ã¢ÂÂ</div>
-        <div style="font-size:11px;color:var(--t2);margin-top:2px">Hcp <span class="user-hcp">Ã¢ÂÂ</span> ÃÂ· <span class="user-club">Ã¢ÂÂ</span></div>
+        <div id="profile-name" style="font-size:18px;font-weight:600;color:var(--t)">ÃÂ¢ÃÂÃÂ</div>
+        <div id="profile-pseudo" style="font-size:13px;color:var(--green);font-weight:600;margin-top:2px">@ÃÂ¢ÃÂÃÂ</div>
+        <div style="font-size:11px;color:var(--t2);margin-top:2px">Hcp <span class="user-hcp">ÃÂ¢ÃÂÃÂ</span> ÃÂÃÂ· <span class="user-club">ÃÂ¢ÃÂÃÂ</span></div>
         <div style="display:flex;gap:5px;margin-top:7px">
-          <span style="font-size:9px;padding:2px 9px;border-radius:8px;background:var(--gdim);color:var(--green);font-weight:600;border:0.5px solid var(--gring)">Ã¢ÂÂ³ Eagl Member</span>
+          <span style="font-size:9px;padding:2px 9px;border-radius:8px;background:var(--gdim);color:var(--green);font-weight:600;border:0.5px solid var(--gring)">ÃÂ¢ÃÂÃÂ³ Eagl Member</span>
           <span id="profile-parties-badge" style="font-size:9px;padding:2px 9px;border-radius:8px;background:var(--bg3);color:var(--t3)">0 parties</span>
         </div>
       </div>
     </div>
     <div class="stats-row" style="padding:0 14px 14px">
-      <div class="stat-card"><div class="stat-label">Drive</div><div class="stat-val" style="color:var(--green)" id="stat-drive">Ã¢ÂÂ</div><div class="stat-sub">mÃÂ¨tres moy.</div><div class="stat-bar"><div class="stat-fill" style="background:var(--green);width:65%"></div></div></div>
-      <div class="stat-card"><div class="stat-label">GIR</div><div class="stat-val" style="color:var(--gold)" id="stat-gir">Ã¢ÂÂ</div><div class="stat-sub">greens/trou</div><div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:55%"></div></div></div>
-      <div class="stat-card"><div class="stat-label">Putts</div><div class="stat-val" style="color:var(--blue)" id="stat-putts">Ã¢ÂÂ</div><div class="stat-sub">par green</div><div class="stat-bar"><div class="stat-fill" style="background:var(--blue);width:60%"></div></div></div>
+      <div class="stat-card"><div class="stat-label">Drive</div><div class="stat-val" style="color:var(--green)" id="stat-drive">ÃÂ¢ÃÂÃÂ</div><div class="stat-sub">mÃÂÃÂ¨tres moy.</div><div class="stat-bar"><div class="stat-fill" style="background:var(--green);width:65%"></div></div></div>
+      <div class="stat-card"><div class="stat-label">GIR</div><div class="stat-val" style="color:var(--gold)" id="stat-gir">ÃÂ¢ÃÂÃÂ</div><div class="stat-sub">greens/trou</div><div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:55%"></div></div></div>
+      <div class="stat-card"><div class="stat-label">Putts</div><div class="stat-val" style="color:var(--blue)" id="stat-putts">ÃÂ¢ÃÂÃÂ</div><div class="stat-sub">par green</div><div class="stat-bar"><div class="stat-fill" style="background:var(--blue);width:60%"></div></div></div>
     </div>
     <div class="sl">Mes amis</div>
     <div style="margin:0 14px 12px">
-      <input class="inp" id="ami-search" placeholder="Ã°ÂÂÂ  Chercher par pseudo (@virgil...)" type="text" style="margin-bottom:8px" oninput="rechercherAmis()">
+      <input class="inp" id="ami-search" placeholder="ÃÂ°ÃÂÃÂÃÂ  Chercher par pseudo (@virgil...)" type="text" style="margin-bottom:8px" oninput="rechercherAmis()">
       <div id="ami-resultats"></div>
       <div id="ami-liste" style="background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;overflow:hidden">
-        <div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Tes amis apparaÃÂ®tront ici</div>
+        <div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Tes amis apparaÃÂÃÂ®tront ici</div>
       </div>
     </div>
     <div class="sl">Mon sac</div>
     <div style="margin:0 14px 12px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">
       <div style="display:flex;flex-direction:column;gap:9px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Driver</span><span style="color:var(--t);font-weight:600" id="sac-driver">Ã¢ÂÂ</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Fers</span><span style="color:var(--t);font-weight:600" id="sac-fers">Ã¢ÂÂ</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Balle</span><span style="color:var(--t);font-weight:600" id="sac-balle">Ã¢ÂÂ</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Putter</span><span style="color:var(--t);font-weight:600" id="sac-putter">Ã¢ÂÂ</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Driver</span><span style="color:var(--t);font-weight:600" id="sac-driver">ÃÂ¢ÃÂÃÂ</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Fers</span><span style="color:var(--t);font-weight:600" id="sac-fers">ÃÂ¢ÃÂÃÂ</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Balle</span><span style="color:var(--t);font-weight:600" id="sac-balle">ÃÂ¢ÃÂÃÂ</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Putter</span><span style="color:var(--t);font-weight:600" id="sac-putter">ÃÂ¢ÃÂÃÂ</span></div>
       </div>
     </div>
     <div class="sl">Modifier mon profil</div>
     <div style="padding:0 14px 14px;display:flex;flex-direction:column;gap:0">
-      <input class="inp" id="edit-prenom" placeholder="PrÃÂ©nom" type="text">
+      <input class="inp" id="edit-prenom" placeholder="PrÃÂÃÂ©nom" type="text">
       <input class="inp" id="edit-nom" placeholder="Nom" type="text">
       <input class="inp" id="edit-pseudo" placeholder="Pseudo (ex: virgil_eagle)" type="text">
       <input class="inp" id="edit-hcp" placeholder="Index FFGolf (ex: 12.4)" type="number" step="0.1">
@@ -417,21 +417,21 @@ select.input-field option{background:var(--bg3);color:var(--t)}
       <select class="inp" id="edit-team"><option value="TaylorMade">Team TaylorMade</option><option value="Titleist">Team Titleist</option><option value="Callaway">Team Callaway</option><option value="Ping">Team Ping</option><option value="Cobra">Team Cobra</option></select>
       <input class="inp" id="edit-driver" placeholder="Driver (ex: TaylorMade Qi10)" type="text">
       <input class="inp" id="edit-balle" placeholder="Balle (ex: Pro V1x)" type="text">
-      <button class="btn btn-g" onclick="sauvegarderProfil()">Sauvegarder Ã¢ÂÂ</button>
+      <button class="btn btn-g" onclick="sauvegarderProfil()">Sauvegarder ÃÂ¢ÃÂÃÂ</button>
     </div>
   </div>
   <nav class="bnav">
-    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">Ã°ÂÂÂ </span><span class="ni-lbl">Accueil</span></button>
-    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">Ã¢ÂÂ³</span><span class="ni-lbl">Jouer</span></button>
-    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">Ã°ÂÂÂ¥</span><span class="ni-lbl">Arena</span></button>
-    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">Ã°ÂÂÂ</span><span class="ni-lbl">CompÃÂ©t.</span></button>
-    <button class="ni active"><span class="ni-ico">Ã°ÂÂÂ¤</span><span class="ni-lbl">Profil</span></button>
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ </span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">ÃÂ¢ÃÂÃÂ³</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ¥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ</span><span class="ni-lbl">CompÃÂÃÂ©t.</span></button>
+    <button class="ni active"><span class="ni-ico">ÃÂ°ÃÂÃÂÃÂ¤</span><span class="ni-lbl">Profil</span></button>
   </nav>
 </div>
 
 </div><!-- phone -->
 
-<!-- Ã¢ÂÂÃ¢ÂÂ FIREBASE SDK Ã¢ÂÂÃ¢ÂÂ -->
+<!-- ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ FIREBASE SDK ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ -->
 <link rel="preconnect" href="https://www.gstatic.com">
 <link rel="preconnect" href="https://firestore.googleapis.com">
 <link rel="preconnect" href="https://identitytoolkit.googleapis.com">
@@ -456,11 +456,11 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 
-    // Mettre ÃÂ  jour UI
+    // Mettre ÃÂÃÂ  jour UI
     document.querySelectorAll('.user-initials').forEach(el => el.textContent = initiales);
     document.querySelectorAll('.user-firstname').forEach(el => el.textContent = prenom);
     document.querySelectorAll('.user-name').forEach(el => el.textContent = profil.nom);
-    document.querySelectorAll('.user-hcp').forEach(el => el.textContent = profil.handicap ?? 'Ã¢ÂÂ');
+    document.querySelectorAll('.user-hcp').forEach(el => el.textContent = profil.handicap ?? 'ÃÂ¢ÃÂÃÂ');
     document.querySelectorAll('.user-team').forEach(el => el.textContent = profil.team || 'TaylorMade');
     document.querySelectorAll('.user-pts').forEach(el => el.textContent = profil.points || 0);
     document.querySelectorAll('.user-parties').forEach(el => el.textContent = profil.parties || 0);
@@ -491,7 +491,7 @@ const db = getFirestore(app);
   }
 });
 
-// Ã¢ÂÂÃ¢ÂÂ PARTIES Ã¢ÂÂÃ¢ÂÂ
+// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ PARTIES ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
 window.chargerParties = () => {
   const q = query(collection(db, 'parties'), orderBy('createdAt', 'desc'), limit(20));
   if(unsubParties) unsubParties();
@@ -509,16 +509,16 @@ window.chargerParties = () => {
             <div style="width:42px;height:42px;border-radius:11px;background:var(--gdim);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--green);flex-shrink:0">${initGolf}</div>
             <div style="flex:1">
               <div style="font-size:13px;font-weight:600;color:var(--t)">${p.golf}</div>
-              <div style="font-size:11px;color:var(--t2);margin-top:2px">${p.dateAffichage||''} ÃÂ· ${p.heure} ÃÂ· ${p.trous} trous</div>
+              <div style="font-size:11px;color:var(--t2);margin-top:2px">${p.dateAffichage||''} ÃÂÃÂ· ${p.heure} ÃÂÃÂ· ${p.trous} trous</div>
             </div>
-            <span style="font-size:10px;background:var(--gdim);color:var(--green);padding:3px 9px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">${estMembre?'Ã¢ÂÂ Rejoint':places>0?places+' place'+(places>1?'s':''):'Complet'}</span>
+            <span style="font-size:10px;background:var(--gdim);color:var(--green);padding:3px 9px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">${estMembre?'ÃÂ¢ÃÂÃÂ Rejoint':places>0?places+' place'+(places>1?'s':''):'Complet'}</span>
           </div>
           ${p.message?`<div style="font-size:11px;color:var(--t2);margin-bottom:10px;font-style:italic">"${p.message}"</div>`:''}
-          <button class="btn ${places>0&&!estMembre?'btn-g':'btn-d'}" onclick="event.stopPropagation();voirPartie('${docSnap.id}')">${estMembre?'Voir le chat Ã°ÂÂÂ¬':places>0?'Rejoindre':'Voir la partie'}</button>
+          <button class="btn ${places>0&&!estMembre?'btn-g':'btn-d'}" onclick="event.stopPropagation();voirPartie('${docSnap.id}')">${estMembre?'Voir le chat ÃÂ°ÃÂÃÂÃÂ¬':places>0?'Rejoindre':'Voir la partie'}</button>
         </div>`;
       partiesHTML.push(html);
     });
-    const html = partiesHTML.length ? partiesHTML.join('') : '<div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">Aucune partie ouverte.<br>Sois le premier ÃÂ  en crÃÂ©er une ! Ã°ÂÂÂÃ¯Â¸Â</div>';
+    const html = partiesHTML.length ? partiesHTML.join('') : '<div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">Aucune partie ouverte.<br>Sois le premier ÃÂÃÂ  en crÃÂÃÂ©er une ! ÃÂ°ÃÂÃÂÃÂÃÂ¯ÃÂ¸ÃÂ</div>';
     const h = document.getElementById('liste-parties-home');
     const j = document.getElementById('liste-parties-jouer');
     if(h) h.innerHTML = html;
@@ -541,7 +541,7 @@ window.creerPartie = async () => {
 
   const d = new Date(date+'T'+heure);
   const jours=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-  const mois=['jan','fÃÂ©v','mar','avr','mai','jun','jul','aoÃÂ»','sep','oct','nov','dÃÂ©c'];
+  const mois=['jan','fÃÂÃÂ©v','mar','avr','mai','jun','jul','aoÃÂÃÂ»','sep','oct','nov','dÃÂÃÂ©c'];
   const dateAff = jours[d.getDay()]+' '+d.getDate()+' '+mois[d.getMonth()];
 
   try {
@@ -554,14 +554,14 @@ window.creerPartie = async () => {
     });
     // +10 pts Arena
     await updateDoc(doc(db,'users',currentUser.uid), { parties: (await getDoc(doc(db,'users',currentUser.uid))).data().parties+1||1, points: (await getDoc(doc(db,'users',currentUser.uid))).data().points+10||10 });
-    showToast('Partie crÃÂ©ÃÂ©e ! +10 pts Arena Ã°ÂÂÂ');
-    btn.innerHTML = 'CrÃÂ©er la partie Ã°ÂÂÂÃ¯Â¸Â';
+    showToast('Partie crÃÂÃÂ©ÃÂÃÂ©e ! +10 pts Arena ÃÂ°ÃÂÃÂÃÂ');
+    btn.innerHTML = 'CrÃÂÃÂ©er la partie ÃÂ°ÃÂÃÂÃÂÃÂ¯ÃÂ¸ÃÂ';
     document.getElementById('input-golf').value='';
     document.getElementById('input-msg').value='';
     goTo('s-jouer');
   } catch(e) {
     showToast('Erreur : '+e.message);
-    btn.innerHTML = 'CrÃÂ©er la partie Ã°ÂÂÂÃ¯Â¸Â';
+    btn.innerHTML = 'CrÃÂÃÂ©er la partie ÃÂ°ÃÂÃÂÃÂÃÂ¯ÃÂ¸ÃÂ';
   }
 };
 
@@ -578,16 +578,16 @@ window.voirPartie = async (partieId) => {
   document.getElementById('partie-statut').textContent = places>0?'Ouverte':'Complet';
 
   document.getElementById('partie-header').innerHTML = `
-    <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:4px">${p.dateAffichage} ÃÂ· ${p.heure}</div>
+    <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:4px">${p.dateAffichage} ÃÂÃÂ· ${p.heure}</div>
     <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;margin-bottom:3px">${p.golf}</div>
-    <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:14px">${p.trous} ÃÂ· ${places} place${places>1?'s':''} restante${places>1?'s':''}</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:14px">${p.trous} ÃÂÃÂ· ${places} place${places>1?'s':''} restante${places>1?'s':''}</div>
     ${p.message?`<div style="font-size:12px;color:rgba(255,255,255,.6);font-style:italic">"${p.message}"</div>`:''}`;
 
   document.getElementById('partie-joueurs').innerHTML = joueurs.map(j=>`
     <div style="display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line)">
       <div style="width:40px;height:40px;border-radius:50%;background:var(--gdim);color:var(--green);border:${j.uid===p.hote?.uid?'1.5px solid var(--green)':'none'};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">${(j.nom||'?').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</div>
       <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">${j.nom}</div></div>
-      ${j.uid===p.hote?.uid?'<span style="font-size:10px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">HÃÂ´te</span>':''}
+      ${j.uid===p.hote?.uid?'<span style="font-size:10px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">HÃÂÃÂ´te</span>':''}
     </div>`).join('');
 
   // Chat live
@@ -595,7 +595,7 @@ window.voirPartie = async (partieId) => {
   const chatQ = query(chatRef, orderBy('createdAt'));
   unsubChat = onSnapshot(chatQ, (snap) => {
     const chatEl = document.getElementById('chat-messages');
-    chatEl.innerHTML = snap.empty ? '<div style="text-align:center;color:var(--t3);font-size:12px;padding:16px">Soyez le premier ÃÂ  ÃÂ©crire !</div>' : '';
+    chatEl.innerHTML = snap.empty ? '<div style="text-align:center;color:var(--t3);font-size:12px;padding:16px">Soyez le premier ÃÂÃÂ  ÃÂÃÂ©crire !</div>' : '';
     snap.forEach(m => {
       const msg = m.data();
       const isMoi = msg.uid === currentUser?.uid;
@@ -609,7 +609,7 @@ window.voirPartie = async (partieId) => {
   });
 
   const btnC = document.getElementById('btn-rejoindre-container');
-  btnC.innerHTML = estMembre ? '' : places>0 ? '<button class="btn btn-g" onclick="rejoindrePartie()">Rejoindre cette partie Ã°ÂÂÂÃ¯Â¸Â</button>' : '<div style="text-align:center;color:var(--t3);font-size:13px;padding:12px">Partie complÃÂ¨te</div>';
+  btnC.innerHTML = estMembre ? '' : places>0 ? '<button class="btn btn-g" onclick="rejoindrePartie()">Rejoindre cette partie ÃÂ°ÃÂÃÂÃÂÃÂ¯ÃÂ¸ÃÂ</button>' : '<div style="text-align:center;color:var(--t3);font-size:13px;padding:12px">Partie complÃÂÃÂ¨te</div>';
 
   goTo('s-partie');
 };
@@ -620,11 +620,11 @@ window.rejoindrePartie = async () => {
   const snap = await getDoc(partieRef);
   const p = snap.data();
   const joueurs = p.joueurs||[];
-  if(joueurs.some(j=>j.uid===currentUser.uid)) { showToast('Tu es dÃÂ©jÃÂ  dans cette partie !'); return; }
-  if(joueurs.length>=(p.maxJoueurs||4)) { showToast('Partie complÃÂ¨te !'); return; }
+  if(joueurs.some(j=>j.uid===currentUser.uid)) { showToast('Tu es dÃÂÃÂ©jÃÂÃÂ  dans cette partie !'); return; }
+  if(joueurs.length>=(p.maxJoueurs||4)) { showToast('Partie complÃÂÃÂ¨te !'); return; }
   await updateDoc(partieRef, { joueurs: [...joueurs, {uid:currentUser.uid,nom:currentUser.displayName}] });
   await updateDoc(doc(db,'users',currentUser.uid), { parties: ((await getDoc(doc(db,'users',currentUser.uid))).data().parties||0)+1, points: ((await getDoc(doc(db,'users',currentUser.uid))).data().points||0)+10 });
-  showToast('Tu as rejoint la partie ! +10 pts Ã°ÂÂÂ');
+  showToast('Tu as rejoint la partie ! +10 pts ÃÂ°ÃÂÃÂÃÂ');
   voirPartie(currentPartieId);
 };
 
@@ -638,7 +638,7 @@ window.envoyerMessage = async () => {
   });
 };
 
-// Ã¢ÂÂÃ¢ÂÂ CLASSEMENTS Ã¢ÂÂÃ¢ÂÂ
+// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ CLASSEMENTS ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
 window.chargerClassement = async () => {
   // Teams
   const teams = { TaylorMade:0, Titleist:0, Callaway:0, Ping:0, Cobra:0 };
@@ -652,7 +652,7 @@ window.chargerClassement = async () => {
 
   // Teams classement
   const teamsSorted = Object.entries(teams).sort((a,b)=>b[1]-a[1]);
-  const medals = ['Ã°ÂÂ¥Â','Ã°ÂÂ¥Â','Ã°ÂÂ¥Â','4','5'];
+  const medals = ['ÃÂ°ÃÂÃÂ¥ÃÂ','ÃÂ°ÃÂÃÂ¥ÃÂ','ÃÂ°ÃÂÃÂ¥ÃÂ','4','5'];
   const teamsHTML = teamsSorted.map((t,i)=>`
     <div class="lbr">
       <div style="font-size:${i<3?20:15}px;min-width:26px;text-align:center;${i>=3?'color:var(--t3);font-weight:700':''}">${medals[i]}</div>
@@ -664,7 +664,7 @@ window.chargerClassement = async () => {
 
   // Global top users
   const globalSorted = allUsers.sort((a,b)=>(b.points||0)-(a.points||0)).slice(0,10);
-  const myRank = globalSorted.findIndex(u=>u.id===currentUser?.uid)+1||'Ã¢ÂÂ';
+  const myRank = globalSorted.findIndex(u=>u.id===currentUser?.uid)+1||'ÃÂ¢ÃÂÃÂ';
   document.querySelectorAll('.user-rang').forEach(el=>el.textContent=myRank<=10?myRank+'e':'100+');
   const teamPts = teams[currentUser ? (await getDoc(doc(db,'users',currentUser.uid))).data().team : 'TaylorMade']||0;
   document.querySelectorAll('.user-team-pts').forEach(el=>el.textContent=teamPts.toLocaleString());
@@ -673,13 +673,13 @@ window.chargerClassement = async () => {
     <div class="lbr" ${u.id===currentUser?.uid?'style="background:rgba(46,204,113,0.04)"':''}>
       <div style="font-size:${i<3?20:15}px;min-width:26px;text-align:center;${i>=3?'color:var(--t3);font-weight:700':''}">${medals[i]||i+1}</div>
       <div class="av-r" style="background:var(--gdim);color:var(--green)">${(u.nom||'?').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div>
-      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:${u.id===currentUser?.uid?'var(--green)':'var(--t)'}">${u.nom||'Golfeur'}${u.id===currentUser?.uid?' Ã¢ÂÂ':''}</div><div style="font-size:10px;color:var(--t3)">${u.team||'Ã¢ÂÂ'} ÃÂ· Hcp ${u.handicap||'Ã¢ÂÂ'}</div></div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:${u.id===currentUser?.uid?'var(--green)':'var(--t)'}">${u.nom||'Golfeur'}${u.id===currentUser?.uid?' ÃÂ¢ÃÂÃÂ':''}</div><div style="font-size:10px;color:var(--t3)">${u.team||'ÃÂ¢ÃÂÃÂ'} ÃÂÃÂ· Hcp ${u.handicap||'ÃÂ¢ÃÂÃÂ'}</div></div>
       <div style="font-size:14px;font-weight:700;color:var(--t)">${(u.points||0)} pts</div>
     </div>`).join('');
-  document.getElementById('classement-global').innerHTML = globalHTML||'<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Pas encore de joueurs classÃÂ©s</div>';
+  document.getElementById('classement-global').innerHTML = globalHTML||'<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Pas encore de joueurs classÃÂÃÂ©s</div>';
 };
 
-// Ã¢ÂÂÃ¢ÂÂ PROFIL Ã¢ÂÂÃ¢ÂÂ
+// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ PROFIL ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
 window.sauvegarderProfil = async () => {
   if (!currentUser) return;
   var prenom = (document.getElementById('edit-prenom').value||'').trim();
@@ -706,7 +706,7 @@ window.sauvegarderProfil = async () => {
   if (prenom||nom) { var pn=document.getElementById('profile-name'); if(pn) pn.textContent=prenom+' '+nom; }
   if (club) document.querySelectorAll('.user-club').forEach(function(el){el.textContent=club;});
   if (hcp) document.querySelectorAll('.user-hcp').forEach(function(el){el.textContent=hcp;});
-  toast('Profil sauvegardÃÂ© Ã¢ÂÂ');
+  toast('Profil sauvegardÃÂÃÂ© ÃÂ¢ÃÂÃÂ');
 };
 
 // Heure
@@ -718,7 +718,7 @@ setInterval(()=>{
 },1000);
 
 
-// Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ COMPÃÂTITIONS FFGOLF Ã¢ÂÂÃ¢ÂÂÃ¢ÂÂ
+// ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ COMPÃÂÃÂTITIONS FFGOLF ÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂÃÂ¢ÃÂÃÂ
 var _compFormat = '';
 var _compData = [];
 
@@ -739,24 +739,24 @@ window.afficherComps = function() {
     return matchQ && matchF;
   });
   if (filtered.length === 0) {
-    el.innerHTML = '<div class="empty-state">Aucune compÃÂ©tition.<br><br><button class="btn btn-d" style="padding:10px;font-size:12px" onclick="window.open(\'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats\',\'_blank\')">Voir sur FFGolf Ã¢ÂÂ</button></div>';
+    el.innerHTML = '<div class="empty-state">Aucune compÃÂÃÂ©tition.<br><br><button class="btn btn-d" style="padding:10px;font-size:12px" onclick="window.open(\'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats\',\'_blank\')">Voir sur FFGolf ÃÂ¢ÃÂÃÂ</button></div>';
     return;
   }
   var colors = {'Stableford':'var(--green)','Medal':'var(--gold)','Quatre balles':'var(--blue)','Scramble':'#a78bfa'};
   var html = '';
   filtered.forEach(function(c) {
     var color = colors[c.format] || 'var(--green)';
-    var lieuHtml = c.lieu ? '<div style="font-size:10px;color:var(--t3);margin-top:1px">Ã°ÂÂÂ ' + c.lieu + '</div>' : '';
+    var lieuHtml = c.lieu ? '<div style="font-size:10px;color:var(--t3);margin-top:1px">ÃÂ°ÃÂÃÂÃÂ ' + c.lieu + '</div>' : '';
     html += '<div style="margin:0 14px 10px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:15px;cursor:pointer" onclick="window.open(\'' + c.lien + '\',\'_blank\')">';
     html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">';
-    html += '<div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">Ã°ÂÂÂ</div>';
+    html += '<div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">ÃÂ°ÃÂÃÂÃÂ</div>';
     html += '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--t)">' + c.nom + '</div>';
     html += '<div style="font-size:11px;color:var(--t2);margin-top:2px">' + c.club + '</div>' + lieuHtml + '</div>';
     html += '<div style="text-align:right;flex-shrink:0"><div style="font-size:14px;font-weight:700;color:var(--t)">' + c.date + '</div>';
     html += '<div style="font-size:10px;color:var(--t3);margin-top:2px">' + c.trous + ' trous</div></div></div>';
     html += '<div style="display:flex;justify-content:space-between;align-items:center">';
     html += '<span style="font-size:10px;background:var(--gdim);color:' + color + ';padding:3px 10px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">' + c.format + '</span>';
-    html += '<span style="font-size:11px;color:var(--green);font-weight:600">S\'inscrire Ã¢ÂÂ</span></div></div>';
+    html += '<span style="font-size:11px;color:var(--green);font-weight:600">S\'inscrire ÃÂ¢ÃÂÃÂ</span></div></div>';
   });
   el.innerHTML = html;
 };
@@ -772,7 +772,7 @@ function chargerComps() {
     {nom:'Open de Fontainebleau', club:'Golf de Fontainebleau', lieu:'Fontainebleau (77)', date:fmt(dd(3)), format:'Medal', trous:'18', lien:lien},
     {nom:'Quatre Balles du Club', club:'Golf de Chantilly', lieu:'Chantilly (60)', date:fmt(dd(5)), format:'Quatre balles', trous:'18', lien:lien},
     {nom:'Challenge Scramble', club:'Golf Bluegreen Nantes', lieu:'Nantes (44)', date:fmt(dd(6)), format:'Scramble', trous:'18', lien:lien},
-    {nom:'TrophÃÂ©e Hardelot', club:"Golf d'Hardelot", lieu:'Hardelot (62)', date:fmt(dd(8)), format:'Stableford', trous:'18', lien:lien},
+    {nom:'TrophÃÂÃÂ©e Hardelot', club:"Golf d'Hardelot", lieu:'Hardelot (62)', date:fmt(dd(8)), format:'Stableford', trous:'18', lien:lien},
     {nom:'Open 9 trous Cergy', club:'Garden Golf de Cergy', lieu:'Cergy (95)', date:fmt(dd(9)), format:'Stableford', trous:'9', lien:lien},
     {nom:'Championnat du Club', club:'Golf de Saint-Cloud', lieu:'Saint-Cloud (92)', date:fmt(dd(12)), format:'Medal', trous:'18', lien:lien},
     {nom:'Scramble des Amis', club:'Golf de Bondues', lieu:'Bondues (59)', date:fmt(dd(14)), format:'Scramble', trous:'18', lien:lien},
@@ -781,7 +781,7 @@ function chargerComps() {
   var loading = document.getElementById('comp-loading');
   if (loading) loading.remove();
   var badge = document.getElementById('comp-badge');
-  if (badge) badge.textContent = 'Ã°ÂÂÂ¡ FFGolf Live';
+  if (badge) badge.textContent = 'ÃÂ°ÃÂÃÂÃÂ¡ FFGolf Live';
   afficherComps();
 }
 
@@ -798,9 +798,9 @@ window.validerOnboarding = async function() {
   var prenom = (document.getElementById('ob-prenom').value||'').trim();
   var nom = (document.getElementById('ob-nom').value||'').trim();
   var pseudo = (document.getElementById('ob-pseudo').value||'').trim().toLowerCase().replace(/[^a-z0-9_]/g,'');
-  if (!prenom || !nom || !pseudo) { toast('Remplis prÃÂ©nom, nom et pseudo !'); return; }
+  if (!prenom || !nom || !pseudo) { toast('Remplis prÃÂÃÂ©nom, nom et pseudo !'); return; }
   var btn = document.getElementById('btn-ob');
-  btn.textContent = 'CrÃÂ©ation...'; btn.disabled = true;
+  btn.textContent = 'CrÃÂÃÂ©ation...'; btn.disabled = true;
   var hcp = parseFloat(document.getElementById('ob-hcp').value)||null;
   var club = (document.getElementById('ob-club').value||'').trim();
   var ville = (document.getElementById('ob-ville').value||'').trim();
@@ -813,11 +813,11 @@ window.validerOnboarding = async function() {
     await setDoc(doc(db,'users',currentUser.uid), data, {merge:true});
     await setDoc(doc(db,'pseudos',pseudo), {uid:currentUser.uid, prenom:prenom, nom:nom, club:club||''});
     document.getElementById('s-onboarding').style.display = 'none';
-    toast('Bienvenue ' + prenom + ' ! Profil crÃÂ©ÃÂ© Ã°ÂÂÂÃ¯Â¸Â');
+    toast('Bienvenue ' + prenom + ' ! Profil crÃÂÃÂ©ÃÂÃÂ© ÃÂ°ÃÂÃÂÃÂÃÂ¯ÃÂ¸ÃÂ');
     goTo('s-home');
     chargerParties();
     chargerClassement();
-  } catch(e) { toast('Erreur: ' + e.message); btn.textContent = 'CrÃÂ©er mon profil Ã¢ÂÂ'; btn.disabled = false; }
+  } catch(e) { toast('Erreur: ' + e.message); btn.textContent = 'CrÃÂÃÂ©er mon profil ÃÂ¢ÃÂÃÂ'; btn.disabled = false; }
 };
 
 // === AMIS ===
@@ -828,7 +828,7 @@ window.rechercherAmis = async function() {
   el.innerHTML = '<div style="font-size:12px;color:var(--t3);padding:8px 0">Recherche...</div>';
   try {
     var snap = await getDocs(query(collection(db,'users'), where('pseudo','>=',q), where('pseudo','<=',q+'\uf8ff'), limit(5)));
-    if (snap.empty) { el.innerHTML = '<div style="font-size:12px;color:var(--t3);padding:8px 0">Aucun utilisateur trouvÃÂ©</div>'; return; }
+    if (snap.empty) { el.innerHTML = '<div style="font-size:12px;color:var(--t3);padding:8px 0">Aucun utilisateur trouvÃÂÃÂ©</div>'; return; }
     var html = '';
     snap.forEach(function(d) {
       if (d.id === currentUser.uid) return;
@@ -843,7 +843,7 @@ window.rechercherAmis = async function() {
       html += '<button class="btn btn-g" style="width:auto;padding:8px 14px;font-size:11px" onclick="ajouterAmi(\''+d.id+'\',\''+u.pseudo+'\')">+ Ami</button>';
       html += '</div>';
     });
-    el.innerHTML = html || '<div style="font-size:12px;color:var(--t3);padding:8px 0">Aucun rÃÂ©sultat</div>';
+    el.innerHTML = html || '<div style="font-size:12px;color:var(--t3);padding:8px 0">Aucun rÃÂÃÂ©sultat</div>';
   } catch(e) { el.innerHTML = '<div style="font-size:12px;color:var(--t3);padding:8px 0">Erreur</div>'; }
 };
 
@@ -851,7 +851,7 @@ window.ajouterAmi = async function(amiUid, amiPseudo) {
   if (!currentUser) return;
   try {
     await updateDoc(doc(db,'users',currentUser.uid), { amis: arrayUnion(amiUid) });
-    toast('@'+amiPseudo+' ajoutÃÂ© en ami Ã°ÂÂ¤Â');
+    toast('@'+amiPseudo+' ajoutÃÂÃÂ© en ami ÃÂ°ÃÂÃÂ¤ÃÂ');
     document.getElementById('ami-search').value = '';
     document.getElementById('ami-resultats').innerHTML = '';
     chargerAmis(currentUser.uid);
@@ -865,7 +865,7 @@ async function chargerAmis(uid) {
   try {
     var snap = await getDoc(doc(db,'users',uid));
     var amis = (snap.data()||{}).amis || [];
-    if (amis.length === 0) { el.innerHTML = '<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Cherche des amis par pseudo Ã°ÂÂÂ</div>'; return; }
+    if (amis.length === 0) { el.innerHTML = '<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Cherche des amis par pseudo ÃÂ°ÃÂÃÂÃÂ</div>'; return; }
     var html = '';
     for (var i = 0; i < Math.min(amis.length,10); i++) {
       var aSnap = await getDoc(doc(db,'users',amis[i]));
@@ -875,14 +875,74 @@ async function chargerAmis(uid) {
       html += '<div style="display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line)">';
       html += '<div style="width:38px;height:38px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--green);flex-shrink:0">'+initials+'</div>';
       html += '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(u.prenom||'')+' '+(u.nom||'')+'</div>';
-      html += '<div style="font-size:11px;color:var(--green)">@'+(u.pseudo||'Ã¢ÂÂ')+'</div>';
+      html += '<div style="font-size:11px;color:var(--green)">@'+(u.pseudo||'ÃÂ¢ÃÂÃÂ')+'</div>';
       if (u.club) html += '<div style="font-size:10px;color:var(--t3)">'+u.club+'</div>';
-      html += '</div><div style="text-align:right"><div style="font-size:11px;color:var(--t3)">Hcp '+(u.handicap!=null?u.handicap:'Ã¢ÂÂ')+'</div>';
+      html += '</div><div style="text-align:right"><div style="font-size:11px;color:var(--t3)">Hcp '+(u.handicap!=null?u.handicap:'ÃÂ¢ÃÂÃÂ')+'</div>';
       html += '<div style="font-size:10px;color:var(--t3)">'+(u.points||0)+' pts</div></div></div>';
     }
     el.innerHTML = html || '<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Aucun ami</div>';
   } catch(e) { console.log(e); }
 }
+
+
+// === AUTH EMAIL/PASSWORD ===
+var _authMode = 'login';
+
+window.switchAuthTab = function(mode) {
+  _authMode = mode;
+  var tl = document.getElementById('tab-login');
+  var ts = document.getElementById('tab-signup');
+  var ba = document.getElementById('btn-auth');
+  var err = document.getElementById('auth-error');
+  if(err) { err.style.display='none'; err.style.color='var(--red)'; }
+  if(mode==='login') {
+    if(tl){tl.style.background='var(--green)';tl.style.color='#000';}
+    if(ts){ts.style.background='transparent';ts.style.color='var(--t3)';}
+    if(ba) ba.textContent='Se connecter';
+  } else {
+    if(ts){ts.style.background='var(--green)';ts.style.color='#000';}
+    if(tl){tl.style.background='transparent';tl.style.color='var(--t3)';}
+    if(ba) ba.textContent='Créer mon compte';
+  }
+};
+
+window.submitAuth = async function() {
+  var email = (document.getElementById('auth-email').value||'').trim();
+  var pwd = (document.getElementById('auth-password').value||'').trim();
+  var errEl = document.getElementById('auth-error');
+  var btn = document.getElementById('btn-auth');
+  if(!email||!pwd) { if(errEl){errEl.textContent='Remplis email et mot de passe';errEl.style.display='block';} return; }
+  if(pwd.length<6) { if(errEl){errEl.textContent='Mot de passe trop court (6 min.)';errEl.style.display='block';} return; }
+  if(errEl) errEl.style.display='none';
+  if(btn){btn.textContent='Chargement...';btn.disabled=true;}
+  try {
+    if(_authMode==='signup') {
+      await createUserWithEmailAndPassword(auth, email, pwd);
+    } else {
+      await signInWithEmailAndPassword(auth, email, pwd);
+    }
+  } catch(e) {
+    var msg = 'Erreur de connexion';
+    if(e.code==='auth/user-not-found'||e.code==='auth/wrong-password'||e.code==='auth/invalid-credential') msg='Email ou mot de passe incorrect';
+    else if(e.code==='auth/email-already-in-use') msg='Email déjà utilisé';
+    else if(e.code==='auth/invalid-email') msg='Email invalide';
+    else if(e.code==='auth/weak-password') msg='Mot de passe trop faible';
+    if(errEl){errEl.textContent=msg;errEl.style.display='block';}
+    if(btn){btn.textContent=_authMode==='signup'?'Créer mon compte':'Se connecter';btn.disabled=false;}
+  }
+};
+
+window.resetPassword = async function() {
+  var email = (document.getElementById('auth-email').value||'').trim();
+  var errEl = document.getElementById('auth-error');
+  if(!email){if(errEl){errEl.textContent='Entre ton email d abord';errEl.style.display='block';}return;}
+  try {
+    await sendPasswordResetEmail(auth, email);
+    if(errEl){errEl.style.color='var(--green)';errEl.textContent='Email de réinitialisation envoyé !';errEl.style.display='block';}
+  } catch(e) {
+    if(errEl){errEl.style.color='var(--red)';errEl.textContent='Email non trouvé';errEl.style.display='block';}
+  }
+};
 
 </script>
 </body>
