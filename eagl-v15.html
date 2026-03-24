@@ -649,6 +649,35 @@ select.input-field option{background:var(--bg3);color:var(--t)}
   </div>
 </div>
 
+<!-- ██ LEADERBOARD ██ -->
+<div class="screen" id="s-leaderboard">
+  <div class="sb"><span>9:41</span><span>███</span></div>
+  <div class="hdr">
+    <div class="back-btn" onclick="goTo(window._lbFrom||'s-home')">←</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)" id="lb-titre">Leaderboard</div>
+    <div style="width:36px"></div>
+  </div>
+  <!-- TABS GOLF -->
+  <div style="padding:0 14px 10px">
+    <input class="inp" id="lb-golf-input" placeholder="⛳ Chercher un golf..." type="text" style="margin:0" oninput="filtrerLbGolfs()">
+  </div>
+  <!-- CHIPS TROUS -->
+  <div class="chips" id="lb-trous-chips" style="padding:0 14px 10px;flex-wrap:wrap;gap:6px"></div>
+  <!-- CONTENU -->
+  <div class="scroll">
+    <div id="lb-content" style="padding:0 14px 80px">
+      <div style="text-align:center;padding:32px;color:var(--t3);font-size:13px"><div class="spinner" style="margin:0 auto 12px"></div>Chargement...</div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-feed')"><span class="ni-ico">📰</span><span class="ni-lbl">Feed</span></button>
+    <button class="ni" onclick="goTo('s-clubs')"><span class="ni-ico">🏌️</span><span class="ni-lbl">Clubs</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
 </div><!-- phone -->
 
 <!-- ══ FIREBASE SDK ══ -->
@@ -1397,6 +1426,60 @@ document.addEventListener('eagl-rejoindre-club', async function(e) {
     document.dispatchEvent(new CustomEvent('eagl-load-club', {detail:{id:e.detail.id}}));
   } catch(err) { showToast('Erreur'); }
 });
+
+// ══ LEADERBOARD FIREBASE ══
+document.addEventListener('eagl-load-lb', async function(e) {
+  if(!currentUser) return;
+  var golf = e.detail.golf || '';
+  var trou = e.detail.trou || 0;
+  try {
+    var q;
+    if(golf) {
+      q = query(collection(db,'scores'), where('golf','>=',golf), where('golf','<=',golf+'\uf8ff'), orderBy('golf'), orderBy('total','asc'), limit(50));
+    } else {
+      q = query(collection(db,'scores'), orderBy('total','asc'), limit(50));
+    }
+    var snap = await getDocs(q);
+    var scores = [];
+    snap.forEach(function(d){ scores.push(Object.assign({id:d.id},d.data())); });
+    if(window.afficherLeaderboard) afficherLeaderboard(scores, trou);
+  } catch(err) {
+    // Fallback : charger depuis les parties
+    try {
+      var snap2 = await getDocs(query(collection(db,'parties'), orderBy('createdAt','desc'), limit(20)));
+      var scores2 = [];
+      snap2.forEach(function(d){
+        var p = d.data();
+        if(!p.golf) return;
+        (p.joueurs||[p.hote]).forEach(function(uid){
+          var total = p['total_'+uid];
+          if(total) scores2.push({uid:uid, prenom:p.hoteNom||'Joueur', nom:'', golf:p.golf, total:total, scores:p['scores_'+uid]||{}});
+        });
+      });
+      if(window.afficherLeaderboard) afficherLeaderboard(scores2, trou);
+    } catch(e2) { if(window.afficherLeaderboard) afficherLeaderboard([],trou); }
+  }
+});
+
+// Sauvegarder score dans collection "scores" quand on poste un scorecard
+var _origSaveScore = null;
+document.addEventListener('eagl-save-score-post', async function(e) {
+  if(!currentUser) return;
+  try {
+    var me = await getDoc(doc(db,'users',currentUser.uid));
+    var meData = me.data()||{};
+    await setDoc(doc(db,'scores',currentUser.uid+'_'+e.detail.partieId), {
+      uid: currentUser.uid,
+      prenom: meData.prenom||'',
+      nom: meData.nom||'',
+      handicap: meData.handicap||null,
+      golf: e.detail.golf||'',
+      total: e.detail.total,
+      scores: e.detail.scores,
+      date: serverTimestamp()
+    }, {merge:true});
+  } catch(err) {}
+});
 </script>
 
 <script>
@@ -1680,6 +1763,103 @@ window.afficherBadges=function(badges){
 
 
 var _clubActif = null, _clubTab = 'membres';
+
+
+var _lbGolf = '', _lbTrou = 0, _lbFrom = 's-home';
+var _lbAllScores = [];
+
+window.ouvrirLeaderboard = function(golf, trou, from) {
+  _lbGolf = golf || '';
+  _lbTrou = trou || 0;
+  _lbFrom = from || 's-home';
+  window._lbFrom = _lbFrom;
+  // Titre
+  var titreEl = document.getElementById('lb-titre');
+  if(titreEl) titreEl.textContent = golf ? 'Leaderboard · '+golf : 'Leaderboard';
+  if(golf) document.getElementById('lb-golf-input').value = golf;
+  goTo('s-leaderboard');
+  document.dispatchEvent(new CustomEvent('eagl-load-lb', {detail:{golf:golf,trou:trou}}));
+};
+
+window.filtrerLbGolfs = function() {
+  var q = (document.getElementById('lb-golf-input').value||'').trim();
+  _lbGolf = q;
+  document.dispatchEvent(new CustomEvent('eagl-load-lb', {detail:{golf:q, trou:_lbTrou}}));
+};
+
+window.setLbTrou = function(trou, el) {
+  _lbTrou = trou;
+  document.querySelectorAll('.lb-chip').forEach(function(c){c.className='chip chip-off lb-chip';});
+  if(el) el.className = 'chip chip-on lb-chip';
+  afficherLeaderboard(_lbAllScores, trou);
+};
+
+window.afficherLeaderboard = function(scores, trou) {
+  _lbAllScores = scores;
+  var el = document.getElementById('lb-content');
+  if(!el) return;
+
+  // Générer chips trous
+  var chipsEl = document.getElementById('lb-trous-chips');
+  if(chipsEl && chipsEl.children.length === 0) {
+    var h = '<div class="chip '+(trou===0?'chip-on':'chip-off')+' lb-chip" onclick="setLbTrou(0,this)">Global</div>';
+    for(var t=1;t<=18;t++) {
+      h += '<div class="chip '+(trou===t?'chip-on':'chip-off')+' lb-chip" onclick="setLbTrou('+t+',this)">T'+t+'</div>';
+    }
+    chipsEl.innerHTML = h;
+  }
+
+  if(!scores || !scores.length) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--t3);font-size:13px">Aucun score pour ce golf encore.<br><br>Sois le premier à jouer et poster un scorecard ! 🏌️</div>';
+    return;
+  }
+
+  // Filtrer par trou si besoin
+  var filtered = trou === 0 ? scores : scores.filter(function(s){ return s.trou === trou || s.scores; });
+
+  // Trier : meilleur score = plus bas
+  var sorted = filtered.slice().sort(function(a,b) {
+    var sa = trou===0 ? (a.total||99) : (a.scores && a.scores[trou] ? a.scores[trou] : 99);
+    var sb = trou===0 ? (b.total||99) : (b.scores && b.scores[trou] ? b.scores[trou] : 99);
+    return sa - sb;
+  });
+
+  var pars = {1:4,2:3,3:5,4:4,5:4,6:3,7:5,8:4,9:4,10:4,11:3,12:5,13:4,14:4,15:3,16:5,17:4,18:4};
+  var h = '';
+  
+  if(trou === 0) {
+    // Header
+    h += '<div style="display:grid;grid-template-columns:32px 1fr auto auto;gap:8px;padding:8px 12px;font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:1px">';
+    h += '<span>#</span><span>Joueur</span><span>Score</span><span>Golf</span></div>';
+  } else {
+    var par = pars[trou] || 4;
+    h += '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;margin-bottom:8px;background:var(--bg3);border-radius:12px">';
+    h += '<div style="font-size:13px;color:var(--t2)">Trou '+trou+'</div>';
+    h += '<div style="font-size:13px;font-weight:600;color:var(--t)">Par '+par+'</div></div>';
+  }
+
+  var medals = ['🥇','🥈','🥉'];
+  sorted.forEach(function(s, i) {
+    var scoreVal = trou===0 ? (s.total||'—') : (s.scores && s.scores[trou] ? s.scores[trou] : '—');
+    var par = trou===0 ? 72 : (pars[trou]||4);
+    var diff = typeof scoreVal === 'number' ? scoreVal - par : null;
+    var diffColor = diff===null?'var(--t3)':diff<0?'var(--green)':diff===0?'var(--gold)':'var(--red)';
+    var diffTxt = diff===null?'':diff<0?diff+'':diff===0?'E':'+'+diff;
+    var init = ((s.prenom||'?')[0]).toUpperCase();
+    var isMe = s.uid === window._currentUid;
+
+    h += '<div style="display:flex;align-items:center;gap:10px;padding:12px;background:'+(isMe?'rgba(46,204,113,0.06)':'var(--bg2)')+';border:0.5px solid '+(isMe?'var(--gring)':'var(--line)')+';border-radius:14px;margin-bottom:8px;cursor:pointer" onclick="ouvrirProfilPublic(\''+s.uid+'\',\'s-leaderboard\')">';
+    h += '<div style="width:28px;text-align:center;font-size:'+(i<3?'18':'13')+'px;font-weight:700;color:var(--t3);flex-shrink:0">'+(i<3?medals[i]:(i+1)+'')+'</div>';
+    h += '<div style="width:38px;height:38px;border-radius:50%;background:var(--gdim);border:1.5px solid '+(isMe?'var(--green)':'rgba(255,255,255,0.1)')+';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--green);flex-shrink:0">'+init+'</div>';
+    h += '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(s.prenom||'')+' '+(s.nom||'')+(isMe?' 👈':'')+'</div>';
+    h += '<div style="font-size:11px;color:var(--t3)">Hcp '+(s.handicap||'—')+' · '+(s.golf||'—')+'</div></div>';
+    h += '<div style="text-align:right"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;color:var(--t)">'+scoreVal+'</div>';
+    if(diffTxt) h += '<div style="font-size:11px;font-weight:700;color:'+diffColor+'">'+diffTxt+'</div>';
+    h += '</div></div>';
+  });
+
+  el.innerHTML = h;
+};
 
 window.ouvrirCreerClub = function() {
   document.getElementById('modal-creer-club').style.display = 'flex';
