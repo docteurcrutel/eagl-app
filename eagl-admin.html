@@ -3,268 +3,449 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eagl. Admin</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>EAGL — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#F7F8FA;--bg2:#FFFFFF;--bg3:#F0F2F5;--bg4:#E8EAED;--green:#18c964;--gdim:rgba(24,201,100,0.10);--gold:#F59F00;--blue:#228BE6;--red:#FA5252;--orange:#FD7E14;--t:#1A1B1E;--t2:#495057;--t3:#ADB5BD;--shadow:0 2px 8px rgba(0,0,0,0.08)}
-body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--t);min-height:100vh}
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0a1628,#1a2a4a)}
-.login-box{background:#fff;border-radius:24px;padding:40px;width:100%;max-width:380px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.3)}
-.logo{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:4px;color:#1A1B1E}
+:root{--green:#18c964;--red:#FA5252;--gold:#F59F00;--blue:#228BE6;--bg:#F7F8FA;--bg2:#fff;--t:#1A1B1E;--t2:#495057;--t3:#ADB5BD;}
+body{background:#0f1117;display:flex;justify-content:center;align-items:center;min-height:100vh;font-family:'DM Sans',sans-serif}
+.container{width:100%;max-width:900px;padding:20px}
+/* LOGIN */
+#login-panel{background:var(--bg2);border-radius:20px;padding:40px;text-align:center;max-width:400px;margin:0 auto}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:4px;color:var(--t);margin-bottom:4px}
 .logo span{color:var(--green)}
-.login-sub{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin:4px 0 32px}
-.login-box input{width:100%;padding:14px 16px;border:1.5px solid var(--bg4);border-radius:12px;font-size:15px;outline:none;margin-bottom:12px;font-family:'DM Sans',sans-serif;color:var(--t)}
-.login-box input:focus{border-color:var(--green)}
-.login-btn{width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
-#login-error{font-size:13px;color:var(--red);margin-top:12px;display:none}
-#admin-app{display:none}
-.sidebar{width:240px;background:#1A1B1E;min-height:100vh;position:fixed;left:0;top:0;padding:24px 0;z-index:100}
-.sidebar-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#fff;padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,0.08)}
-.sidebar-logo span{color:var(--green)}
-.sidebar-logo sub{font-size:10px;font-family:'DM Sans',sans-serif;color:var(--t3);letter-spacing:1px;display:block}
-.nav-item{display:flex;align-items:center;gap:12px;padding:12px 24px;cursor:pointer;font-size:14px;font-weight:500;color:rgba(255,255,255,0.5);transition:all .2s}
-.nav-item:hover{color:#fff;background:rgba(255,255,255,0.05)}
-.nav-item.active{color:#fff;background:rgba(24,201,100,0.12);border-right:3px solid var(--green)}
-.nav-item .icon{font-size:18px;width:24px}
-.main{margin-left:240px;padding:32px;min-height:100vh}
-.page-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px}
-.page-sub{font-size:14px;color:var(--t3);margin:4px 0 28px}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
-.stat-card{background:var(--bg2);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
-.stat-label{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
-.stat-val{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;line-height:1}
-.stat-sub{font-size:12px;color:var(--t3);margin-top:4px}
-.card{background:var(--bg2);border-radius:16px;padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
-.card-title{font-size:15px;font-weight:700;margin-bottom:16px}
-table{width:100%;border-collapse:collapse}
-th{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:8px 12px;text-align:left;border-bottom:1.5px solid var(--bg4)}
-td{padding:12px;font-size:13px;border-bottom:1px solid var(--bg3);vertical-align:middle}
-tr:hover td{background:var(--bg3)}
-.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.badge-green{background:rgba(24,201,100,0.12);color:var(--green)}
-.badge-red{background:rgba(250,82,82,0.12);color:var(--red)}
-.badge-blue{background:rgba(34,139,230,0.12);color:var(--blue)}
-.badge-orange{background:rgba(253,126,20,0.12);color:var(--orange)}
-.action-btn{padding:5px 12px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
-.btn-danger{background:rgba(250,82,82,0.1);color:var(--red)}
-.btn-success{background:rgba(24,201,100,0.1);color:var(--green)}
-.btn-primary{background:rgba(34,139,230,0.1);color:var(--blue)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.form-group{display:flex;flex-direction:column;gap:6px}
-.form-group label{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:1px}
-.form-group input,.form-group select,.form-group textarea{padding:10px 14px;border:1.5px solid var(--bg4);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--t);outline:none;background:#fff}
-.form-group input:focus,.form-group select:focus{border-color:var(--green)}
-.form-group textarea{min-height:80px;resize:vertical}
-.btn-submit{padding:12px 24px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
-.page{display:none}
-.page.active{display:block}
-.toast{position:fixed;top:24px;right:24px;background:#1A1B1E;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
-.toast.show{opacity:1}
-.spinner{width:20px;height:20px;border:2px solid var(--bg4);border-top:2px solid var(--green);border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
-@keyframes spin{to{transform:rotate(360deg)}}
-.report-card{background:var(--bg2);border-radius:12px;padding:16px;box-shadow:var(--shadow);margin-bottom:12px;border-left:4px solid var(--orange)}
-.report-card.resolved{border-left-color:var(--green);opacity:0.6}
+/* ADMIN */
+#admin-panel{display:none}
+.header{background:#1a1e24;border-radius:16px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.header-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;letter-spacing:3px}
+.header-logo span{color:var(--green)}
+.badge{background:var(--green);color:#000;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700}
+/* TABS */
+.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab{padding:9px 18px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:#fff;color:var(--t2);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.tab.active{background:var(--green);color:#000}
+/* SECTIONS */
+.section{display:none;background:#fff;border-radius:16px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.section.active{display:block}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--t);margin-bottom:16px;letter-spacing:1px}
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--bg);border-radius:12px;padding:16px;text-align:center}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--green)}
+.stat-lbl{font-size:12px;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 12px;background:var(--bg);color:var(--t2);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+td{padding:10px 12px;border-bottom:1px solid #f0f2f5;color:var(--t)}
+tr:hover td{background:#fafbfc}
+/* BUTTONS */
+.btn{padding:8px 16px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-green{background:var(--green);color:#000}
+.btn-red{background:var(--red);color:#fff}
+.btn-grey{background:var(--bg);color:var(--t2)}
+/* FORMS */
+input,select,textarea{width:100%;padding:10px 14px;border:1.5px solid #E8EAED;border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;margin-bottom:10px;outline:none;color:var(--t)}
+input:focus,select:focus,textarea:focus{border-color:var(--green)}
+label{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* BADGE */
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.tag-green{background:rgba(24,201,100,0.12);color:#18c964}
+.tag-red{background:rgba(250,82,82,0.12);color:#FA5252}
+.tag-grey{background:#f0f2f5;color:#868e96}
 </style>
 </head>
 <body>
 
-<div id="login-screen">
-  <div class="login-box">
+<!-- LOGIN -->
+<div class="container">
+  <div id="login-panel">
     <div class="logo">EAGL<span>.</span></div>
-    <div class="login-sub">Panneau Administrateur</div>
-    <input type="email" id="login-email" placeholder="Email administrateur">
-    <input type="password" id="login-password" placeholder="Mot de passe">
-    <button class="login-btn" onclick="doAdminLogin()">Accéder au panneau →</button>
-    <div id="login-error">Email ou mot de passe incorrect</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:28px">Panneau d'administration</div>
+    <div style="text-align:left;margin-bottom:6px"><label>Email admin</label></div>
+    <input type="email" id="admin-email" placeholder="ton@email.com">
+    <div style="text-align:left;margin-bottom:6px"><label>Mot de passe</label></div>
+    <input type="password" id="admin-pwd" placeholder="••••••••" onkeypress="if(event.key==='Enter')loginAdmin()">
+    <div id="login-err" style="font-size:12px;color:var(--red);margin-bottom:10px;display:none"></div>
+    <button class="btn btn-green" style="width:100%;padding:12px;font-size:14px" onclick="loginAdmin()">Accéder au panneau →</button>
   </div>
-</div>
 
-<div id="admin-app">
-  <div class="sidebar">
-    <div class="sidebar-logo">EAGL<span>.</span><sub>Admin Panel</sub></div>
-    <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="icon">📊</span> Dashboard</div>
-    <div class="nav-item" onclick="showPage('users',this)"><span class="icon">👥</span> Utilisateurs</div>
-    <div class="nav-item" onclick="showPage('parties',this)"><span class="icon">⛳</span> Parties</div>
-    <div class="nav-item" onclick="showPage('defis',this)"><span class="icon">🎯</span> Défis</div>
-    <div class="nav-item" onclick="showPage('events',this)"><span class="icon">📅</span> Événements</div>
-    <div class="nav-item" onclick="showPage('signalements',this)"><span class="icon">🚨</span> Signalements <span id="nb-reports" style="background:var(--red);color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;margin-left:4px;display:none">0</span></div>
-    <div class="nav-item" onclick="showPage('moderation',this)"><span class="icon">🛡️</span> Modération</div>
-    <div class="nav-item" onclick="showPage('stats',this)"><span class="icon">📈</span> Statistiques</div>
-    <div style="position:absolute;bottom:24px;left:0;right:0;padding:0 24px">
-      <div onclick="adminLogout()" style="cursor:pointer;font-size:13px;color:rgba(255,255,255,0.4);padding:10px 0">🚪 Déconnexion</div>
+  <!-- ADMIN PANEL -->
+  <div id="admin-panel">
+    <div class="header">
+      <div class="header-logo">EAGL<span>.</span> ADMIN</div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="badge">⚡ Admin</span>
+        <button class="btn btn-grey" onclick="logoutAdmin()">Déconnexion</button>
+      </div>
     </div>
-  </div>
-  <div class="main">
-    <div id="page-dashboard" class="page active">
-      <div class="page-title">Dashboard</div><div class="page-sub">Vue d'ensemble de l'app Eagl</div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" onclick="setTab('stats',this)">📊 Stats</button>
+      <button class="tab" onclick="setTab('users',this)">👥 Utilisateurs</button>
+      <button class="tab" onclick="setTab('reports',this)">🚨 Signalements</button>
+      <button class="tab" onclick="setTab('challenges',this)">🎯 Défis</button>
+      <button class="tab" onclick="setTab('events',this)">📅 Événements</button>
+      <button class="tab" onclick="setTab('parties',this)">⛳ Parties</button>
+    </div>
+
+    <!-- STATS -->
+    <div class="section active" id="tab-stats">
+      <div class="section-title">Vue d'ensemble</div>
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-label">Utilisateurs</div><div class="stat-val" id="stat-users" style="color:var(--blue)"><div class="spinner"></div></div><div class="stat-sub">total</div></div>
-        <div class="stat-card"><div class="stat-label">Parties</div><div class="stat-val" id="stat-parties" style="color:var(--green)"><div class="spinner"></div></div><div class="stat-sub">créées</div></div>
-        <div class="stat-card"><div class="stat-label">Signalements</div><div class="stat-val" id="stat-reports" style="color:var(--orange)">0</div><div class="stat-sub">en attente</div></div>
-        <div class="stat-card"><div class="stat-label">Clubs</div><div class="stat-val" id="stat-clubs" style="color:var(--gold)"><div class="spinner"></div></div><div class="stat-sub">créés</div></div>
+        <div class="stat"><div class="stat-val" id="st-users">—</div><div class="stat-lbl">Utilisateurs</div></div>
+        <div class="stat"><div class="stat-val" id="st-parties">—</div><div class="stat-lbl">Parties créées</div></div>
+        <div class="stat"><div class="stat-val" id="st-messages">—</div><div class="stat-lbl">Messages</div></div>
+        <div class="stat"><div class="stat-val" id="st-reports">—</div><div class="stat-lbl">Signalements</div></div>
+        <div class="stat"><div class="stat-val" id="st-clubs">—</div><div class="stat-lbl">Clubs</div></div>
+        <div class="stat"><div class="stat-val" id="st-scores">—</div><div class="stat-lbl">Scores postés</div></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-        <div class="card"><div class="card-title">🆕 Derniers inscrits</div><div id="last-users"><div class="spinner"></div></div></div>
-        <div class="card"><div class="card-title">⛳ Dernières parties</div><div id="last-parties"><div class="spinner"></div></div></div>
-      </div>
-    </div>
-    <div id="page-users" class="page">
-      <div class="page-title">Utilisateurs</div><div class="page-sub">Gestion des comptes</div>
-      <div class="card">
-        <input type="text" placeholder="🔍 Rechercher..." id="search-users" oninput="filtrerUsers()" style="width:100%;padding:10px 14px;border:1.5px solid var(--bg4);border-radius:10px;font-size:14px;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:16px">
-        <table><thead><tr><th>Utilisateur</th><th>Hcp</th><th>Parties</th><th>Statut</th><th>Actions</th></tr></thead>
-        <tbody id="users-table"><tr><td colspan="5" style="text-align:center;padding:32px"><div class="spinner" style="margin:auto"></div></td></tr></tbody></table>
+      <div style="background:var(--bg);border-radius:12px;padding:16px">
+        <div style="font-size:13px;font-weight:600;color:var(--t);margin-bottom:8px">Derniers inscrits</div>
+        <div id="recent-users">Chargement...</div>
       </div>
     </div>
-    <div id="page-parties" class="page">
-      <div class="page-title">Parties</div><div class="page-sub">Toutes les parties</div>
-      <div class="card"><table><thead><tr><th>Golf</th><th>Date</th><th>Trous</th><th>Joueurs</th><th>Actions</th></tr></thead>
-      <tbody id="parties-table"><tr><td colspan="5" style="text-align:center;padding:32px"><div class="spinner" style="margin:auto"></div></td></tr></tbody></table></div>
+
+    <!-- USERS -->
+    <div class="section" id="tab-users">
+      <div class="section-title">Gestion des utilisateurs</div>
+      <div style="display:flex;gap:8px;margin-bottom:16px">
+        <input type="text" id="user-search" placeholder="🔍 Rechercher par email ou pseudo..." style="margin:0;flex:1" oninput="rechercherUsers()">
+      </div>
+      <table>
+        <tr><th>Utilisateur</th><th>Email</th><th>Handicap</th><th>Parties</th><th>Inscription</th><th>Actions</th></tr>
+        <tbody id="users-table"><tr><td colspan="6" style="text-align:center;padding:24px;color:var(--t2)">Chargement...</td></tr></tbody>
+      </table>
     </div>
-    <div id="page-defis" class="page">
-      <div class="page-title">Défis mensuels</div><div class="page-sub">Gérer les défis actifs</div>
-      <div class="card">
-        <div class="card-title">➕ Créer un défi</div>
-        <div class="form-grid">
-          <div class="form-group"><label>Icône</label><input type="text" id="defi-icon" value="🎯"></div>
-          <div class="form-group"><label>Titre</label><input type="text" id="defi-titre" placeholder="Titre du défi"></div>
-          <div class="form-group"><label>Description</label><input type="text" id="defi-desc" placeholder="Description"></div>
-          <div class="form-group"><label>Type</label><select id="defi-type"><option value="parties">Parties jouées</option><option value="rejoint">Rejoindre parties</option><option value="amis">Amis ajoutés</option><option value="scores">Scorecards</option><option value="notes">Notes données</option></select></div>
-          <div class="form-group"><label>Cible</label><input type="number" id="defi-cible" value="3"></div>
-          <div class="form-group"><label>Points</label><input type="number" id="defi-pts" value="50"></div>
-          <div class="form-group"><label>Mois</label><input type="month" id="defi-mois"></div>
-          <div class="form-group"><label>Badge</label><input type="text" id="defi-badge" placeholder="ex: ⛳ Expert"></div>
+
+    <!-- SIGNALEMENTS -->
+    <div class="section" id="tab-reports">
+      <div class="section-title">Signalements 🚨</div>
+      <table>
+        <tr><th>Type</th><th>Signalé par</th><th>Contenu</th><th>Date</th><th>Actions</th></tr>
+        <tbody id="reports-table"><tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t2)">Aucun signalement</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- DÉFIS -->
+    <div class="section" id="tab-challenges">
+      <div class="section-title">Gestion des défis 🎯</div>
+      <div style="background:var(--bg);border-radius:12px;padding:16px;margin-bottom:20px">
+        <div style="font-size:14px;font-weight:600;color:var(--t);margin-bottom:12px">Créer un nouveau défi</div>
+        <div class="form-row">
+          <div><label>Emoji</label><input type="text" id="ch-icon" placeholder="🏌️" style="font-size:20px"></div>
+          <div><label>Titre</label><input type="text" id="ch-titre" placeholder="Golfeur du mois"></div>
         </div>
-        <button class="btn-submit" style="margin-top:16px" onclick="creerDefi()">Créer →</button>
-      </div>
-      <div class="card"><div class="card-title">📋 Défis actifs</div><div id="defis-list"><div class="spinner" style="display:block;margin:20px auto"></div></div></div>
-    </div>
-    <div id="page-events" class="page">
-      <div class="page-title">Événements</div><div class="page-sub">Tournois et compétitions Eagl</div>
-      <div class="card">
-        <div class="card-title">➕ Créer un événement</div>
-        <div class="form-grid">
-          <div class="form-group"><label>Nom</label><input type="text" id="evt-nom" placeholder="Eagl Open Paris 2026"></div>
-          <div class="form-group"><label>Golf</label><input type="text" id="evt-golf" placeholder="Golf National"></div>
-          <div class="form-group"><label>Date</label><input type="date" id="evt-date"></div>
-          <div class="form-group"><label>Heure</label><input type="time" id="evt-heure" value="09:00"></div>
-          <div class="form-group"><label>Places</label><input type="number" id="evt-places" value="72"></div>
-          <div class="form-group"><label>Format</label><select id="evt-format"><option>Stableford</option><option>Medal</option><option>Scramble</option><option>Quatre balles</option></select></div>
-          <div class="form-group" style="grid-column:1/-1"><label>Description</label><textarea id="evt-desc" placeholder="Description..."></textarea></div>
+        <div class="form-row">
+          <div><label>Description</label><input type="text" id="ch-desc" placeholder="Joue 10 parties ce mois"></div>
+          <div><label>Objectif (nombre)</label><input type="number" id="ch-cible" placeholder="10"></div>
         </div>
-        <button class="btn-submit" style="margin-top:16px" onclick="creerEvenement()">Publier →</button>
-      </div>
-      <div class="card"><div class="card-title">📅 Événements publiés</div><div id="events-list"><div class="spinner" style="display:block;margin:20px auto"></div></div></div>
-    </div>
-    <div id="page-signalements" class="page">
-      <div class="page-title">Signalements 🚨</div><div class="page-sub">Messages et profils signalés</div>
-      <div id="reports-list"><div class="spinner" style="display:block;margin:40px auto"></div></div>
-    </div>
-    <div id="page-moderation" class="page">
-      <div class="page-title">Modération 🛡️</div><div class="page-sub">Mots bannis · Comptes bannis</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-        <div class="card">
-          <div class="card-title">🚫 Mots bannis</div>
-          <div id="mots-bannis-list" style="margin-bottom:16px;display:flex;flex-wrap:wrap;gap:8px;min-height:40px"></div>
-          <div style="display:flex;gap:8px">
-            <input type="text" id="new-mot" placeholder="Ajouter un mot..." style="flex:1;padding:8px 12px;border:1.5px solid var(--bg4);border-radius:8px;font-size:13px;outline:none;font-family:'DM Sans',sans-serif">
-            <button onclick="ajouterMotBanni()" style="padding:8px 16px;background:var(--red);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">+ Ajouter</button>
+        <div class="form-row">
+          <div><label>Type</label>
+            <select id="ch-type">
+              <option value="parties">Parties jouées</option>
+              <option value="rejoint">Parties rejointes</option>
+              <option value="amis">Amis ajoutés</option>
+              <option value="scores">Scorecards postés</option>
+              <option value="notes">Partenaires notés</option>
+              <option value="kudos">Kudos donnés</option>
+            </select>
+          </div>
+          <div><label>Points bonus</label><input type="number" id="ch-pts" placeholder="100"></div>
+        </div>
+        <div><label>Badge gagné</label><input type="text" id="ch-badge" placeholder="🏆 Champion du mois"></div>
+        <div class="form-row">
+          <div><label>Mois (ex: 2026-04)</label><input type="text" id="ch-mois" placeholder="2026-04"></div>
+          <div><label>Actif</label>
+            <select id="ch-actif"><option value="true">✅ Oui</option><option value="false">❌ Non</option></select>
           </div>
         </div>
-        <div class="card"><div class="card-title">⛔ Utilisateurs bannis</div><div id="users-bannis-list" style="min-height:40px"></div></div>
+        <button class="btn btn-green" onclick="creerDefi()">Créer le défi →</button>
       </div>
+      <div style="font-size:13px;font-weight:600;color:var(--t);margin-bottom:10px">Défis existants</div>
+      <div id="defis-liste">Chargement...</div>
     </div>
-    <div id="page-stats" class="page">
-      <div class="page-title">Statistiques 📈</div><div class="page-sub">Analyse de l'activité</div>
-      <div class="card"><div class="card-title">📊 Répartition par Team</div><div id="team-stats" style="display:flex;gap:16px;flex-wrap:wrap;padding:8px 0"></div></div>
-      <div class="card"><div class="card-title">🌍 Top golfs</div><div id="top-golfs"></div></div>
+
+    <!-- ÉVÉNEMENTS -->
+    <div class="section" id="tab-events">
+      <div class="section-title">Événements officiels 📅</div>
+      <div style="background:var(--bg);border-radius:12px;padding:16px;margin-bottom:20px">
+        <div style="font-size:14px;font-weight:600;color:var(--t);margin-bottom:12px">Créer un événement</div>
+        <div><label>Titre</label><input type="text" id="ev-titre" placeholder="Tournoi EAGL Paris 2026"></div>
+        <div class="form-row">
+          <div><label>Golf</label><input type="text" id="ev-golf" placeholder="Golf National"></div>
+          <div><label>Date</label><input type="date" id="ev-date"></div>
+        </div>
+        <div class="form-row">
+          <div><label>Places max</label><input type="number" id="ev-places" placeholder="32"></div>
+          <div><label>Format</label>
+            <select id="ev-format">
+              <option>Stableford</option><option>Medal</option><option>Scramble</option><option>4 balles</option>
+            </select>
+          </div>
+        </div>
+        <div><label>Description</label><textarea id="ev-desc" placeholder="Tournoi officiel EAGL..." rows="3" style="resize:vertical"></textarea></div>
+        <button class="btn btn-green" onclick="creerEvenement()">Publier l'événement →</button>
+      </div>
+      <div id="events-liste">Chargement...</div>
+    </div>
+
+    <!-- PARTIES -->
+    <div class="section" id="tab-parties">
+      <div class="section-title">Modération des parties ⛳</div>
+      <table>
+        <tr><th>Golf</th><th>Hôte</th><th>Date</th><th>Joueurs</th><th>Statut</th><th>Actions</th></tr>
+        <tbody id="parties-table"><tr><td colspan="6" style="text-align:center;padding:24px;color:var(--t2)">Chargement...</td></tr></tbody>
+      </table>
     </div>
   </div>
 </div>
 
-<div class="toast" id="admin-toast"></div>
-
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getFirestore, collection, addDoc, query, orderBy, serverTimestamp, doc, setDoc, getDoc, updateDoc, getDocs, limit, where, deleteDoc, increment } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, getDocs, doc, getDoc, updateDoc, addDoc, deleteDoc, query, orderBy, limit, where, serverTimestamp, increment } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
-const ADMIN_UID = 'IYWaAdcnsFVuFNDvIE4v07m77vf1';
-const app = initializeApp({apiKey:"AIzaSyAdu956Nu-vNvukznKYN52YgIPbhwf-Dt0",authDomain:"eagl-app.firebaseapp.com",projectId:"eagl-app",storageBucket:"eagl-app.appspot.com",messagingSenderId:"602608898506",appId:"1:602608898506:web:5aa3bc246f7a235ca5ff33"});
+const firebaseConfig = {
+  apiKey: "AIzaSyAdu956Nu-vNvukznKYN52YgIPbhwf-Dt0",
+  authDomain: "eagl-app.firebaseapp.com",
+  projectId: "eagl-app",
+  storageBucket: "eagl-app.appspot.com",
+  messagingSenderId: "602608898506",
+  appId: "1:602608898506:web:5aa3bc246f7a235ca5ff33"
+};
+
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-let allUsers = [];
 
-function toast(msg,color='var(--green)'){const t=document.getElementById('admin-toast');t.textContent=msg;t.style.background=color;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
-window.adminToast=toast;
+// UID admins autorisés
+const ADMIN_UIDS = ['IYWaAdcnsFVuFNDvIE4v07m'];
 
-window.doAdminLogin=async function(){
-  const email=document.getElementById('login-email').value.trim();
-  const pwd=document.getElementById('login-password').value;
-  try{const c=await signInWithEmailAndPassword(auth,email,pwd);if(c.user.uid!==ADMIN_UID){await signOut(auth);showErr('Accès refusé');return;}}catch(e){showErr('Email ou mot de passe incorrect');}
+window.loginAdmin = async function() {
+  var email = document.getElementById('admin-email').value;
+  var pwd = document.getElementById('admin-pwd').value;
+  var err = document.getElementById('login-err');
+  err.style.display = 'none';
+  try {
+    await signInWithEmailAndPassword(auth, email, pwd);
+  } catch(e) {
+    err.textContent = 'Email ou mot de passe incorrect';
+    err.style.display = 'block';
+  }
 };
-function showErr(m){const e=document.getElementById('login-error');e.style.display='block';e.textContent=m;}
 
-window.adminLogout=async function(){await signOut(auth);document.getElementById('admin-app').style.display='none';document.getElementById('login-screen').style.display='flex';};
+window.logoutAdmin = async function() {
+  await signOut(auth);
+  document.getElementById('login-panel').style.display = 'block';
+  document.getElementById('admin-panel').style.display = 'none';
+};
 
-onAuthStateChanged(auth,async(user)=>{
-  if(user&&user.uid===ADMIN_UID){
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('admin-app').style.display='block';
-    chargerDashboard();
-  }else if(user){await signOut(auth);}
+onAuthStateChanged(auth, async (user) => {
+  if(!user) return;
+  // Vérifier que c'est un admin
+  var isAdmin = ADMIN_UIDS.some(uid => user.uid.startsWith(uid.slice(0,10)));
+  if(!isAdmin) {
+    await signOut(auth);
+    document.getElementById('login-err').textContent = 'Accès non autorisé';
+    document.getElementById('login-err').style.display = 'block';
+    return;
+  }
+  document.getElementById('login-panel').style.display = 'none';
+  document.getElementById('admin-panel').style.display = 'block';
+  chargerStats();
+  chargerUsers();
+  chargerReports();
+  chargerDefis();
+  chargerEvents();
+  chargerParties();
 });
 
-window.showPage=function(page,el){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
-  if(el)el.classList.add('active');
-  const loaders={users:chargerUsers,parties:chargerParties,defis:chargerDefis,events:chargerEvents,signalements:chargerSignalements,moderation:chargerModeration,stats:chargerStats};
-  if(loaders[page])loaders[page]();
-};
-
-async function chargerDashboard(){
-  const [u,p,c,r]=await Promise.all([getDocs(collection(db,'users')),getDocs(collection(db,'parties')),getDocs(collection(db,'clubs')),getDocs(query(collection(db,'reports'),where('resolved','==',false)))]);
-  document.getElementById('stat-users').textContent=u.size;
-  document.getElementById('stat-parties').textContent=p.size;
-  document.getElementById('stat-clubs').textContent=c.size;
-  document.getElementById('stat-reports').textContent=r.size;
-  if(r.size>0){const nb=document.getElementById('nb-reports');nb.textContent=r.size;nb.style.display='inline';}
-  let uh='';u.forEach(d=>{const x=d.data();if(uh.split('</div>').length>5)return;uh+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bg3)"><div style="width:32px;height:32px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--green)">${((x.prenom||'?')[0]).toUpperCase()}</div><div><div style="font-size:13px;font-weight:600">${x.prenom||'—'} ${x.nom||''}</div><div style="font-size:11px;color:var(--t3)">@${x.pseudo||'—'}</div></div></div>`;});
-  document.getElementById('last-users').innerHTML=uh||'<div style="color:var(--t3);font-size:13px">Aucun utilisateur</div>';
-  let ph='';p.forEach(d=>{const x=d.data();if(ph.split('</div>').length>5)return;ph+=`<div style="padding:10px 0;border-bottom:1px solid var(--bg3)"><div style="font-size:13px;font-weight:600">⛳ ${x.golf||'—'}</div><div style="font-size:11px;color:var(--t3)">${x.date||'—'} · ${(x.joueurs||[]).length} joueurs</div></div>`;});
-  document.getElementById('last-parties').innerHTML=ph||'<div style="color:var(--t3);font-size:13px">Aucune partie</div>';
+// ── STATS ──
+async function chargerStats() {
+  try {
+    var [usSnap, paSnap, rpSnap, clSnap] = await Promise.all([
+      getDocs(collection(db,'users')),
+      getDocs(collection(db,'parties')),
+      getDocs(collection(db,'reports')),
+      getDocs(collection(db,'clubs'))
+    ]);
+    document.getElementById('st-users').textContent = usSnap.size;
+    document.getElementById('st-parties').textContent = paSnap.size;
+    document.getElementById('st-reports').textContent = rpSnap.size;
+    document.getElementById('st-clubs').textContent = clSnap.size;
+    // Récents
+    var recents = [];
+    usSnap.forEach(d => { var u=d.data(); recents.push({prenom:u.prenom||'?',nom:u.nom||'',email:u.email||'',date:u.createdAt}); });
+    recents = recents.slice(-5).reverse();
+    document.getElementById('recent-users').innerHTML = recents.map(u =>
+      '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f0f2f5"><span style="font-weight:600">'+(u.prenom+' '+u.nom).trim()+'</span><span style="color:var(--t2);font-size:12px">'+u.email+'</span></div>'
+    ).join('') || '<span style="color:var(--t2);font-size:13px">Aucun utilisateur</span>';
+  } catch(e) { console.log(e); }
 }
 
-async function chargerUsers(){const s=await getDocs(query(collection(db,'users'),orderBy('createdAt','desc'),limit(100)));allUsers=[];s.forEach(d=>allUsers.push({id:d.id,...d.data()}));renderUsers(allUsers);}
-function renderUsers(users){let h='';users.forEach(u=>{const b=u.banned||false;h+=`<tr><td><div style="font-weight:600">${u.prenom||'—'} ${u.nom||''}</div><div style="font-size:11px;color:var(--t3)">@${u.pseudo||'—'}</div></td><td>${u.handicap||'—'}</td><td>${u.parties||0}</td><td><span class="badge ${b?'badge-red':'badge-green'}">${b?'Banni':'Actif'}</span></td><td style="display:flex;gap:6px">${b?`<button class="action-btn btn-success" onclick="toggleBan('${u.id}',false)">Débannir</button>`:`<button class="action-btn btn-danger" onclick="toggleBan('${u.id}',true)">Bannir</button>`}</td></tr>`;});document.getElementById('users-table').innerHTML=h||'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucun utilisateur</td></tr>';}
-window.filtrerUsers=function(){const q=document.getElementById('search-users').value.toLowerCase();renderUsers(allUsers.filter(u=>(u.prenom||'').toLowerCase().includes(q)||(u.pseudo||'').toLowerCase().includes(q)));};
-window.toggleBan=async function(uid,ban){if(!confirm(ban?'Bannir ?':'Débannir ?'))return;await updateDoc(doc(db,'users',uid),{banned:ban});toast(ban?'⛔ Banni':'✅ Débanni',ban?'var(--red)':'var(--green)');chargerUsers();};
+// ── USERS ──
+window._allUsers = [];
+async function chargerUsers() {
+  try {
+    var snap = await getDocs(query(collection(db,'users'), orderBy('createdAt','desc'), limit(50)));
+    window._allUsers = [];
+    snap.forEach(d => { window._allUsers.push(Object.assign({uid:d.id},d.data())); });
+    afficherUsers(window._allUsers);
+  } catch(e) { console.log(e); }
+}
 
-async function chargerParties(){const s=await getDocs(query(collection(db,'parties'),orderBy('createdAt','desc'),limit(50)));let h='';s.forEach(d=>{const p=d.data();h+=`<tr><td><b>${p.golf||'—'}</b></td><td>${p.date||'—'}</td><td>${p.trous||18}</td><td>${(p.joueurs||[]).length}/${p.maxJoueurs||4}</td><td><button class="action-btn btn-danger" onclick="supprimerPartie('${d.id}')">Supprimer</button></td></tr>`;});document.getElementById('parties-table').innerHTML=h||'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucune partie</td></tr>';}
-window.supprimerPartie=async function(id){if(!confirm('Supprimer ?'))return;await deleteDoc(doc(db,'parties',id));toast('✅ Supprimée');chargerParties();};
+function afficherUsers(users) {
+  var tb = document.getElementById('users-table');
+  if(!users.length) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--t2)">Aucun utilisateur</td></tr>'; return; }
+  tb.innerHTML = users.map(u => {
+    var banned = u.banned ? '<span class="tag tag-red">Banni</span>' : '<span class="tag tag-green">Actif</span>';
+    var date = u.createdAt?.toDate ? u.createdAt.toDate().toLocaleDateString('fr-FR') : '—';
+    return '<tr><td><strong>'+(u.prenom||'?')+' '+(u.nom||'')+'</strong><br><small style="color:var(--t2)">@'+(u.pseudo||'—')+'</small></td><td style="font-size:12px">'+(u.email||'—')+'</td><td>'+(u.handicap||'—')+'</td><td>'+(u.parties||0)+'</td><td>'+date+'</td><td><button class="btn btn-red" style="font-size:11px;padding:5px 10px" onclick="banUser(\''+u.uid+'\','+!u.banned+')">'+(u.banned?'Débannir':'Bannir')+'</button></td></tr>';
+  }).join('');
+}
 
-async function chargerDefis(){const s=await getDocs(collection(db,'challenges'));let h='';if(s.empty)h='<div style="color:var(--t3);font-size:13px">Aucun défi personnalisé. Les 6 défis par défaut sont dans le code.</div>';else s.forEach(d=>{const c=d.data();h+=`<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg3);border-radius:12px;margin-bottom:8px"><div style="font-size:22px">${c.icon}</div><div style="flex:1"><div style="font-weight:600">${c.titre}</div><div style="font-size:12px;color:var(--t3)">${c.desc} · +${c.pts}pts</div></div><button class="action-btn btn-danger" onclick="supprimerDefi('${d.id}')">Supprimer</button></div>`;});document.getElementById('defis-list').innerHTML=h;}
-window.creerDefi=async function(){const data={icon:document.getElementById('defi-icon').value,titre:document.getElementById('defi-titre').value,desc:document.getElementById('defi-desc').value,type:document.getElementById('defi-type').value,cible:parseInt(document.getElementById('defi-cible').value),pts:parseInt(document.getElementById('defi-pts').value),mois:document.getElementById('defi-mois').value,badge:document.getElementById('defi-badge').value,createdAt:serverTimestamp()};if(!data.titre){toast('Remplis les champs !','var(--red)');return;}await addDoc(collection(db,'challenges'),data);toast('✅ Défi créé !');chargerDefis();};
-window.supprimerDefi=async function(id){if(!confirm('Supprimer ?'))return;await deleteDoc(doc(db,'challenges',id));toast('✅ Supprimé');chargerDefis();};
+window.rechercherUsers = function() {
+  var q = (document.getElementById('user-search').value||'').toLowerCase();
+  var filtered = window._allUsers.filter(u => 
+    (u.prenom||'').toLowerCase().includes(q) || (u.nom||'').toLowerCase().includes(q) || (u.pseudo||'').toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q)
+  );
+  afficherUsers(filtered);
+};
 
-async function chargerEvents(){const s=await getDocs(query(collection(db,'events'),orderBy('createdAt','desc'),limit(20)));let h='';s.forEach(d=>{const e=d.data();h+=`<div style="background:var(--bg3);border-radius:12px;padding:14px;margin-bottom:10px;display:flex;gap:12px"><div style="font-size:24px">🏆</div><div style="flex:1"><div style="font-weight:700">${e.nom}</div><div style="font-size:12px;color:var(--t3)">⛳ ${e.golf} · ${e.date} · ${e.format}</div></div><button class="action-btn btn-danger" onclick="supprimerEvent('${d.id}')">Supprimer</button></div>`;});document.getElementById('events-list').innerHTML=h||'<div style="color:var(--t3);font-size:13px">Aucun événement</div>';}
-window.creerEvenement=async function(){const data={nom:document.getElementById('evt-nom').value,golf:document.getElementById('evt-golf').value,date:document.getElementById('evt-date').value,heure:document.getElementById('evt-heure').value,places:parseInt(document.getElementById('evt-places').value)||72,format:document.getElementById('evt-format').value,desc:document.getElementById('evt-desc').value,inscrits:[],createdAt:serverTimestamp()};if(!data.nom||!data.golf||!data.date){toast('Remplis les champs !','var(--red)');return;}await addDoc(collection(db,'events'),data);toast('✅ Événement publié !');chargerEvents();};
-window.supprimerEvent=async function(id){if(!confirm('Supprimer ?'))return;await deleteDoc(doc(db,'events',id));toast('✅ Supprimé');chargerEvents();};
+window.banUser = async function(uid, ban) {
+  if(!confirm(ban ? 'Bannir cet utilisateur ?' : 'Débannir ?')) return;
+  await updateDoc(doc(db,'users',uid), {banned: ban});
+  chargerUsers();
+  alert(ban ? 'Utilisateur banni ✓' : 'Utilisateur débanni ✓');
+};
 
-async function chargerSignalements(){const s=await getDocs(query(collection(db,'reports'),orderBy('createdAt','desc'),limit(50)));let h='';if(s.empty)h='<div style="text-align:center;padding:40px;color:var(--t3)">🎉 Aucun signalement</div>';else s.forEach(d=>{const r=d.data();const resolved=r.resolved||false;h+=`<div class="report-card ${resolved?'resolved':''}"><div style="display:flex;gap:12px"><div style="font-size:22px">🚨</div><div style="flex:1"><div style="font-weight:700">${r.type||'Signalement'}</div><div style="font-size:13px;color:var(--t2);margin-top:4px">${r.message||'—'}</div><div style="font-size:11px;color:var(--t3);margin-top:6px">Par: ${r.reportedBy||'—'}</div></div>${!resolved?`<div style="display:flex;gap:8px"><button class="action-btn btn-success" onclick="resoudreSignalement('${d.id}')">✓ Résolu</button><button class="action-btn btn-danger" onclick="bannirSignalement('${d.id}','${r.targetId||''}')">Bannir</button></div>`:'<span class="badge badge-green">Résolu</span>'}</div></div>`;});document.getElementById('reports-list').innerHTML=h;}
-window.resoudreSignalement=async function(id){await updateDoc(doc(db,'reports',id),{resolved:true});toast('✅ Résolu');chargerSignalements();};
-window.bannirSignalement=async function(rid,targetId){if(!targetId||!confirm('Bannir ?'))return;await updateDoc(doc(db,'users',targetId),{banned:true});await updateDoc(doc(db,'reports',rid),{resolved:true,action:'banned'});toast('⛔ Banni','var(--red)');chargerSignalements();};
+// ── SIGNALEMENTS ──
+async function chargerReports() {
+  try {
+    var snap = await getDocs(query(collection(db,'reports'), orderBy('createdAt','desc'), limit(50)));
+    var reports = [];
+    snap.forEach(d => reports.push(Object.assign({id:d.id},d.data())));
+    var tb = document.getElementById('reports-table');
+    if(!reports.length) { tb.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t2)">Aucun signalement ✓</td></tr>'; return; }
+    tb.innerHTML = reports.map(r => {
+      var date = r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString('fr-FR') : '—';
+      return '<tr><td><span class="tag tag-red">'+r.type+'</span></td><td>'+r.reporterUid?.slice(0,8)+'...</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(r.contenu||'—')+'</td><td>'+date+'</td><td><button class="btn btn-red" style="font-size:11px;padding:5px 10px" onclick="supprimerReport(\''+r.id+'\')">Supprimer</button><button class="btn btn-grey" style="font-size:11px;padding:5px 10px;margin-left:4px" onclick="banUser(\''+r.cibleUid+'\',true)">Bannir user</button></td></tr>';
+    }).join('');
+  } catch(e) { console.log(e); }
+}
 
-async function chargerModeration(){const s=await getDoc(doc(db,'config','moderation'));const data=s.exists()?s.data():{};const mots=data.motsBannis||[];let mh=mots.map(m=>`<div style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(250,82,82,0.1);border-radius:20px"><span style="font-size:13px;color:var(--red);font-weight:600">${m}</span><span onclick="supprimerMot('${m}')" style="cursor:pointer;color:var(--t3);font-size:16px">×</span></div>`).join('');document.getElementById('mots-bannis-list').innerHTML=mh||'<div style="color:var(--t3);font-size:13px">Aucun mot</div>';const bs=await getDocs(query(collection(db,'users'),where('banned','==',true)));let bh='';bs.forEach(d=>{const u=d.data();bh+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bg3)"><div style="flex:1;font-size:13px;font-weight:600">${u.prenom||'—'} ${u.nom||''}</div><button class="action-btn btn-success" onclick="toggleBan('${d.id}',false)">Débannir</button></div>`;});document.getElementById('users-bannis-list').innerHTML=bh||'<div style="color:var(--t3);font-size:13px">Aucun utilisateur banni</div>';}
-window.ajouterMotBanni=async function(){const m=document.getElementById('new-mot').value.trim().toLowerCase();if(!m)return;const s=await getDoc(doc(db,'config','moderation'));const mots=s.exists()?(s.data().motsBannis||[]):[];if(!mots.includes(m)){mots.push(m);await setDoc(doc(db,'config','moderation'),{motsBannis:mots},{merge:true});toast('✅ Mot ajouté');document.getElementById('new-mot').value='';chargerModeration();}};
-window.supprimerMot=async function(mot){const s=await getDoc(doc(db,'config','moderation'));const mots=(s.data()?.motsBannis||[]).filter(m=>m!==mot);await setDoc(doc(db,'config','moderation'),{motsBannis:mots},{merge:true});toast('✅ Retiré');chargerModeration();};
+window.supprimerReport = async function(id) {
+  await deleteDoc(doc(db,'reports',id));
+  chargerReports();
+};
 
-async function chargerStats(){const s=await getDocs(collection(db,'users'));let tc={};s.forEach(d=>{const t=d.data().team||'Inconnu';tc[t]=(tc[t]||0)+1;});let th='';Object.entries(tc).sort((a,b)=>b[1]-a[1]).forEach(([t,n])=>{th+=`<div style="flex:1;min-width:100px;background:var(--bg3);border-radius:12px;padding:14px;text-align:center"><div style="font-size:13px;font-weight:700">${t}</div><div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--green);margin:6px 0">${n}</div></div>`;});document.getElementById('team-stats').innerHTML=th;const ps=await getDocs(collection(db,'parties'));let gs={};ps.forEach(d=>{const g=d.data().golf||'Inconnu';gs[g]=(gs[g]||0)+1;});let gh='<table style="width:100%"><thead><tr><th>#</th><th>Golf</th><th>Parties</th></tr></thead><tbody>';Object.entries(gs).sort((a,b)=>b[1]-a[1]).slice(0,10).forEach(([g,n],i)=>{gh+=`<tr><td>${i+1}</td><td>${g}</td><td><span class="badge badge-green">${n}</span></td></tr>`;});gh+='</tbody></table>';document.getElementById('top-golfs').innerHTML=gh;}
+// ── DÉFIS ──
+async function chargerDefis() {
+  try {
+    var snap = await getDocs(collection(db,'challenges'));
+    var defis = [];
+    snap.forEach(d => defis.push(Object.assign({id:d.id},d.data())));
+    var el = document.getElementById('defis-liste');
+    if(!defis.length) { el.innerHTML = '<p style="color:var(--t2);font-size:13px">Aucun défi créé — utilise le formulaire ci-dessus</p>'; return; }
+    el.innerHTML = defis.map(d => 
+      '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg);border-radius:10px;margin-bottom:8px"><div style="font-size:22px">'+(d.icon||'🎯')+'</div><div style="flex:1"><div style="font-weight:600">'+d.titre+'</div><div style="font-size:12px;color:var(--t2)">'+d.desc+' · Cible: '+d.cible+' · +'+d.pts+'pts</div></div><span class="tag '+(d.actif?'tag-green':'tag-grey')+'">'+(d.actif?'Actif':'Inactif')+'</span><button class="btn btn-red" style="font-size:11px;padding:5px 10px" onclick="supprimerDefi(\''+d.id+'\')">×</button></div>'
+    ).join('');
+  } catch(e) { console.log(e); }
+}
 
-document.getElementById('defi-mois').value=new Date().toISOString().slice(0,7);
+window.creerDefi = async function() {
+  var data = {
+    icon: document.getElementById('ch-icon').value||'🎯',
+    titre: document.getElementById('ch-titre').value,
+    desc: document.getElementById('ch-desc').value,
+    cible: parseInt(document.getElementById('ch-cible').value)||5,
+    type: document.getElementById('ch-type').value,
+    pts: parseInt(document.getElementById('ch-pts').value)||50,
+    badge: document.getElementById('ch-badge').value,
+    mois: document.getElementById('ch-mois').value,
+    actif: document.getElementById('ch-actif').value === 'true',
+    createdAt: serverTimestamp()
+  };
+  if(!data.titre) { alert('Entre un titre !'); return; }
+  await addDoc(collection(db,'challenges'), data);
+  alert('Défi créé ! ✓');
+  chargerDefis();
+};
+
+window.supprimerDefi = async function(id) {
+  if(!confirm('Supprimer ce défi ?')) return;
+  await deleteDoc(doc(db,'challenges',id));
+  chargerDefis();
+};
+
+// ── ÉVÉNEMENTS ──
+async function chargerEvents() {
+  try {
+    var snap = await getDocs(query(collection(db,'events'), orderBy('date','desc'), limit(20)));
+    var events = [];
+    snap.forEach(d => events.push(Object.assign({id:d.id},d.data())));
+    var el = document.getElementById('events-liste');
+    if(!events.length) { el.innerHTML = '<p style="color:var(--t2);font-size:13px">Aucun événement — crée le premier !</p>'; return; }
+    el.innerHTML = events.map(ev => 
+      '<div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg);border-radius:12px;margin-bottom:10px"><div style="font-size:28px">📅</div><div style="flex:1"><div style="font-weight:600">'+ev.titre+'</div><div style="font-size:12px;color:var(--t2)">⛳ '+ev.golf+' · '+ev.date+' · '+ev.format+' · '+ev.places+' places</div><div style="font-size:12px;color:var(--t2)">'+ev.inscrits+'/'+ev.places+' inscrits</div></div><button class="btn btn-red" style="font-size:11px;padding:5px 10px" onclick="supprimerEvent(\''+ev.id+'\')">Supprimer</button></div>'
+    ).join('');
+  } catch(e) { console.log(e); }
+}
+
+window.creerEvenement = async function() {
+  var data = {
+    titre: document.getElementById('ev-titre').value,
+    golf: document.getElementById('ev-golf').value,
+    date: document.getElementById('ev-date').value,
+    places: parseInt(document.getElementById('ev-places').value)||32,
+    format: document.getElementById('ev-format').value,
+    desc: document.getElementById('ev-desc').value,
+    inscrits: 0,
+    inscriptions: [],
+    createdAt: serverTimestamp()
+  };
+  if(!data.titre||!data.golf) { alert('Titre et golf requis !'); return; }
+  await addDoc(collection(db,'events'), data);
+  alert('Événement créé ! ✓');
+  chargerEvents();
+};
+
+window.supprimerEvent = async function(id) {
+  if(!confirm('Supprimer cet événement ?')) return;
+  await deleteDoc(doc(db,'events',id));
+  chargerEvents();
+};
+
+// ── PARTIES ──
+async function chargerParties() {
+  try {
+    var snap = await getDocs(query(collection(db,'parties'), orderBy('createdAt','desc'), limit(30)));
+    var parties = [];
+    snap.forEach(d => parties.push(Object.assign({id:d.id},d.data())));
+    var tb = document.getElementById('parties-table');
+    tb.innerHTML = parties.map(p => {
+      var date = p.createdAt?.toDate ? p.createdAt.toDate().toLocaleDateString('fr-FR') : '—';
+      return '<tr><td><strong>'+(p.golf||'—')+'</strong></td><td>'+(p.hoteNom||p.hote?.slice(0,8)+'...')+'</td><td>'+date+'</td><td>'+(p.joueurs?.length||1)+'/'+p.maxJoueurs+'</td><td><span class="tag tag-green">Ouverte</span></td><td><button class="btn btn-red" style="font-size:11px;padding:5px 10px" onclick="supprimerPartie(\''+p.id+'\')">Supprimer</button></td></tr>';
+    }).join('');
+  } catch(e) { console.log(e); }
+}
+
+window.supprimerPartie = async function(id) {
+  if(!confirm('Supprimer cette partie ?')) return;
+  await deleteDoc(doc(db,'parties',id));
+  chargerParties();
+};
+
+// ── TABS ──
+window.setTab = function(tab, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+};
 </script>
 </body>
 </html>
