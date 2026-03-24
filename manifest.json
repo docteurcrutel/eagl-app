@@ -1,0 +1,22 @@
+{
+  "name": "EAGL",
+  "short_name": "EAGL",
+  "description": "Trouve tes partenaires de golf. Joue. Progresse. Domine.",
+  "start_url": "/eagl-app/eagl-v18.html",
+  "display": "standalone",
+  "background_color": "#F7F8FA",
+  "theme_color": "#18c964",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://docteurcrutel.github.io/eagl-app/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://docteurcrutel.github.io/eagl-app/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
