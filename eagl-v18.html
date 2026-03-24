@@ -1535,13 +1535,40 @@ window.loginApple = async function() {
 // ── AMIS LISTENERS ──
 document.addEventListener("eagl-search-ami", async function(e) {
   if(!currentUser) return;
-  var q = e.detail.q;
+  var q = e.detail.q.toLowerCase().trim();
+  var qCap = q.charAt(0).toUpperCase() + q.slice(1);
   try {
-    var snap = await getDocs(query(collection(db,"users"), where("pseudo",">=",q), where("pseudo","<=",q+"\uf8ff"), limit(8)));
-    var users = [];
-    snap.forEach(function(d){ if(d.id !== currentUser.uid) users.push(Object.assign({uid:d.id}, d.data())); });
+    var usersMap = {};
+    // Chercher par pseudoLower (minuscules stockées)
+    var s1 = await getDocs(query(collection(db,"users"), where("pseudoLower",">=",q), where("pseudoLower","<=",q+"\uf8ff"), limit(6)));
+    s1.forEach(function(d){ if(d.id!==currentUser.uid) usersMap[d.id]=Object.assign({uid:d.id},d.data()); });
+    // Chercher par pseudo normal (compat anciens comptes)
+    var s2 = await getDocs(query(collection(db,"users"), where("pseudo",">=",q), where("pseudo","<=",q+"\uf8ff"), limit(6)));
+    s2.forEach(function(d){ if(d.id!==currentUser.uid) usersMap[d.id]=Object.assign({uid:d.id},d.data()); });
+    // Chercher par prénom
+    var s3 = await getDocs(query(collection(db,"users"), where("prenom",">=",qCap), where("prenom","<=",qCap+"\uf8ff"), limit(6)));
+    s3.forEach(function(d){ if(d.id!==currentUser.uid) usersMap[d.id]=Object.assign({uid:d.id},d.data()); });
+    // Chercher par prénom en minuscules
+    var s4 = await getDocs(query(collection(db,"users"), where("prenom",">=",q), where("prenom","<=",q+"\uf8ff"), limit(4)));
+    s4.forEach(function(d){ if(d.id!==currentUser.uid) usersMap[d.id]=Object.assign({uid:d.id},d.data()); });
+    
+    var users = Object.values(usersMap).slice(0,8);
     if(window.afficherResultatsRecherche) afficherResultatsRecherche(users);
-  } catch(err) { console.log("search ami:", err); }
+  } catch(err) { 
+    console.log("search ami err:", err);
+    // Fallback : charger tous les users et filtrer localement
+    try {
+      var allSnap = await getDocs(query(collection(db,"users"), limit(50)));
+      var allUsers = [];
+      allSnap.forEach(function(d){
+        if(d.id===currentUser.uid) return;
+        var u = d.data();
+        var haystack = ((u.pseudo||"")+" "+(u.prenom||"")+" "+(u.nom||"")).toLowerCase();
+        if(haystack.includes(q)) allUsers.push(Object.assign({uid:d.id},u));
+      });
+      if(window.afficherResultatsRecherche) afficherResultatsRecherche(allUsers.slice(0,8));
+    } catch(e2) { console.log("fallback search err:", e2); }
+  }
 });
 
 document.addEventListener("eagl-load-amis", async function() {
@@ -1624,23 +1651,66 @@ function haversineP(a,b,x,y){
   return R*2*Math.atan2(Math.sqrt(f),Math.sqrt(1-f));
 }
 
-function initGeolocPartie(){
-  var st=document.getElementById('loc-status');
-  if(!navigator.geolocation){if(st)st.textContent='Géolocalisation non disponible';return;}
-  navigator.geolocation.getCurrentPosition(function(p){
-    _pLat=p.coords.latitude; _pLng=p.coords.longitude;
-    if(st){
-      if(_pLat<41||_pLat>51.5||_pLng<-5.5||_pLng>9.6){
-        st.textContent='🌍 Eagl est disponible en France uniquement'; return;
-      }
-      st.textContent='📍 Position trouvée — parties triées par distance';
-      st.style.color='var(--green)';
-    }
-    afficherPartiesAvecDistance();
-  },function(){
-    if(st)st.textContent='📍 Active la localisation pour voir les parties proches';
-    afficherPartiesAvecDistance();
-  },{timeout:8000});
+function initGeolocPartie() {
+  var golfsList = document.getElementById('golfs-list');
+  if(!golfsList) return;
+  
+  if(!navigator.geolocation) {
+    // Pas de géoloc disponible → fallback ville
+    _afficherFallbackVille();
+    return;
+  }
+  
+  if(golfsList) golfsList.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px"><div class="spinner" style="margin:0 auto 8px;width:16px;height:16px;border-width:2px"></div>Localisation en cours...</div>';
+  
+  // Options optimisées pour iPhone Safari PWA
+  var geoOptions = {
+    enableHighAccuracy: false, // false = plus rapide sur iPhone
+    timeout: 8000,
+    maximumAge: 300000 // 5 min de cache
+  };
+  
+  navigator.geolocation.getCurrentPosition(
+    function(pos) {
+      _uLat = pos.coords.latitude;
+      _uLng = pos.coords.longitude;
+      chargerGolfs(_uLat, _uLng);
+    },
+    function(err) {
+      console.log('Géoloc erreur:', err.code, err.message);
+      // Sur iPhone Safari, souvent le code 1 = refus
+      // Afficher le fallback avec option de saisir sa ville
+      _afficherFallbackVille(err.code);
+    },
+    geoOptions
+  );
+}
+
+function _afficherFallbackVille(errCode) {
+  var golfsList = document.getElementById('golfs-list');
+  if(!golfsList) return;
+  
+  var msg = errCode === 1 
+    ? 'Localisation refusée' 
+    : errCode === 3 
+    ? 'Localisation trop lente' 
+    : 'Localisation non disponible';
+    
+  golfsList.innerHTML = 
+    '<div style="margin:0 14px 0;background:var(--bg2);border-radius:14px;padding:16px;box-shadow:var(--shadow-sm)">' +
+    '<div style="font-size:13px;font-weight:600;color:var(--t);margin-bottom:4px">📍 ' + msg + '</div>' +
+    '<div style="font-size:12px;color:var(--t3);margin-bottom:12px">Entre ta ville pour trouver les golfs proches</div>' +
+    '<div style="display:flex;gap:8px">' +
+    '<input id="geo-ville-input" class="inp" placeholder="Paris, Lyon, Bordeaux..." type="text" style="margin:0;flex:1" onkeypress="if(event.key===\'Enter\')rechercherGolfParVille()">' +
+    '<button onclick="rechercherGolfParVille()" style="padding:10px 16px;border:none;border-radius:10px;background:var(--green);color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">Chercher</button>' +
+    '</div>' +
+    '<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">' +
+    '<div onclick="rechercherGolfParVilleDirecte(\'Paris\')" style="padding:5px 10px;background:var(--bg3);border-radius:20px;font-size:11px;color:var(--t2);cursor:pointer">Paris</div>' +
+    '<div onclick="rechercherGolfParVilleDirecte(\'Lyon\')" style="padding:5px 10px;background:var(--bg3);border-radius:20px;font-size:11px;color:var(--t2);cursor:pointer">Lyon</div>' +
+    '<div onclick="rechercherGolfParVilleDirecte(\'Bordeaux\')" style="padding:5px 10px;background:var(--bg3);border-radius:20px;font-size:11px;color:var(--t2);cursor:pointer">Bordeaux</div>' +
+    '<div onclick="rechercherGolfParVilleDirecte(\'Marseille\')" style="padding:5px 10px;background:var(--bg3);border-radius:20px;font-size:11px;color:var(--t2);cursor:pointer">Marseille</div>' +
+    '</div>' +
+    '</div>';
 }
 
 window.setFiltreDistance=function(km,el){
@@ -2400,6 +2470,38 @@ if(_origGoTo18) {
     }
   };
 }
+</script>
+<script>
+window.rechercherGolfParVille = function() {
+  var inp = document.getElementById('geo-ville-input');
+  var ville = inp ? inp.value.trim() : '';
+  if(!ville) return;
+  rechercherGolfParVilleDirecte(ville);
+};
+
+window.rechercherGolfParVilleDirecte = function(ville) {
+  var golfsList = document.getElementById('golfs-list');
+  if(golfsList) golfsList.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px"><div class="spinner" style="margin:0 auto 8px;width:16px;height:16px;border-width:2px"></div>Recherche des golfs près de ' + ville + '...</div>';
+  
+  // Utiliser Nominatim pour géocoder la ville
+  fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(ville + ', France') + '&format=json&limit=1', {
+    headers: {'Accept-Language': 'fr'}
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if(!data || !data.length) {
+      if(golfsList) golfsList.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Ville non trouvée 😕</div>';
+      return;
+    }
+    var lat = parseFloat(data[0].lat);
+    var lng = parseFloat(data[0].lon);
+    _uLat = lat; _uLng = lng;
+    chargerGolfs(lat, lng);
+  })
+  .catch(function(err) {
+    if(golfsList) golfsList.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Erreur de recherche. Réessaie.</div>';
+  });
+};
 </script>
 </body>
 </html>
