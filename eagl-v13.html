@@ -383,7 +383,20 @@ select.input-field option{background:var(--bg3);color:var(--t)}
       <button class="btn btn-g" onclick="sauvegarderProfil()">Sauvegarder</button>
     </div>
 
-    <div class="sl">Mon sac</div>
+    
+    <!-- LISTE AMIS -->
+    <div class="sl">Mes amis</div>
+    <div style="margin:0 14px 10px">
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <input class="inp" id="ami-search" placeholder="🔍 Rechercher par pseudo..." type="text" style="margin:0;flex:1" oninput="rechercherAmis()">
+      </div>
+      <div id="ami-resultats" style="margin-bottom:8px"></div>
+      <div id="ami-liste" style="background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;overflow:hidden">
+        <div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Chargement de tes amis...</div>
+      </div>
+    </div>
+
+<div class="sl">Mon sac</div>
     <div style="margin:0 14px 12px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">
       <div style="display:flex;flex-direction:column;gap:9px">
         <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Driver</span><span style="color:var(--t);font-weight:600" id="sac-driver">À compléter</span></div>
@@ -524,6 +537,7 @@ window.logout = async () => {
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user; window._currentUid = user.uid;
+    setTimeout(function(){document.dispatchEvent(new CustomEvent('eagl-load-amis'));},1000);
     const initiales = (user.displayName||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
     const prenom = (user.displayName||'').split(' ')[0];
 
@@ -898,6 +912,32 @@ document.addEventListener('toggle-ami',async function(e){
     if(window.setPPData){var s=await getDoc(doc(db,'users',e.detail.uid));if(s.exists())setPPData(s.data(),e.detail.uid);}
   }catch(err){showToast('Erreur');}
 });
+
+// ══ AMIS SEARCH + LOAD ══
+document.addEventListener('eagl-search-ami', async function(e) {
+  var q = e.detail.q;
+  try {
+    var snap = await getDocs(query(collection(db,'users'), where('pseudo','>=',q), where('pseudo','<=',q+'\uf8ff'), limit(5)));
+    var users = [];
+    snap.forEach(function(d){ if(d.id!==currentUser?.uid) users.push(Object.assign({uid:d.id},d.data())); });
+    if(window.afficherResultatsRecherche) afficherResultatsRecherche(users);
+  } catch(err) { console.log(err); }
+});
+
+document.addEventListener('eagl-load-amis', async function() {
+  if(!currentUser) return;
+  try {
+    var snap = await getDoc(doc(db,'users',currentUser.uid));
+    var amis = (snap.data()||{}).amis || [];
+    if(window.updateMesAmis) updateMesAmis(amis);
+    var amisData = [];
+    for(var i=0; i<Math.min(amis.length,15); i++){
+      var as = await getDoc(doc(db,'users',amis[i]));
+      if(as.exists()) amisData.push(Object.assign({uid:amis[i]},as.data()));
+    }
+    if(window.afficherListeAmis) afficherListeAmis(amisData);
+  } catch(err) { console.log(err); }
+});
 </script>
 
 <script>
@@ -1011,6 +1051,7 @@ document.addEventListener('DOMContentLoaded',function(){
     window.goTo=function(id){
       origGoTo(id);
       if(id==='s-jouer'&&!_pLat){initGeolocPartie();}
+    if(id==='s-profile'){document.dispatchEvent(new CustomEvent('eagl-load-amis'));}
       if(id==='s-jouer'&&_pLat){afficherPartiesAvecDistance();}
     };
   }
@@ -1068,5 +1109,66 @@ window.setPPData=function(p,uid){
 
 window.updateMesAmis=function(amis){_mesAmis=amis||[];};
 </script>
+
+<script>
+window.rechercherAmis = async function() {
+  var q = (document.getElementById('ami-search').value||'').trim().toLowerCase().replace('@','');
+  var el = document.getElementById('ami-resultats');
+  if(!q || q.length < 2) { el.innerHTML=''; return; }
+  el.innerHTML = '<div style="font-size:12px;color:var(--t3);padding:6px 0">Recherche...</div>';
+  try {
+    document.dispatchEvent(new CustomEvent('eagl-search-ami', {detail:{q:q}}));
+  } catch(e) { el.innerHTML=''; }
+};
+
+window.ajouterAmiDepuisRecherche = function(uid, pseudo) {
+  document.dispatchEvent(new CustomEvent('toggle-ami', {detail:{uid:uid, add:true}}));
+  document.getElementById('ami-search').value='';
+  document.getElementById('ami-resultats').innerHTML='';
+  showToast('@'+pseudo+' ajouté en ami 🤝');
+  setTimeout(function(){ document.dispatchEvent(new CustomEvent('eagl-load-amis')); }, 500);
+};
+
+window.afficherResultatsRecherche = function(users) {
+  var el = document.getElementById('ami-resultats');
+  if(!users || !users.length){ el.innerHTML='<div style="font-size:12px;color:var(--t3);padding:6px 0">Aucun utilisateur trouvé</div>'; return; }
+  var h='';
+  users.forEach(function(u){
+    var init=((u.prenom||'')+(u.nom?' '+u.nom:'')).trim().split(' ').map(function(n){return n[0]||'';}).join('').toUpperCase().slice(0,2)||'?';
+    var isAmi=(window._mesAmis||[]).includes(u.uid);
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border:0.5px solid var(--line);border-radius:12px;margin-bottom:6px">';
+    h+='<div style="width:38px;height:38px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--green);flex-shrink:0">'+init+'</div>';
+    h+='<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(u.prenom||'')+' '+(u.nom||'')+'</div>';
+    h+='<div style="font-size:11px;color:var(--green)">@'+u.pseudo+'</div>';
+    if(u.club) h+='<div style="font-size:10px;color:var(--t3)">'+u.club+'</div>';
+    h+='</div>';
+    if(!isAmi) h+='<button onclick="ajouterAmiDepuisRecherche(''+u.uid+'',''+u.pseudo+'')" style="padding:8px 14px;border:none;border-radius:10px;background:var(--green);color:#000;font-size:11px;font-weight:600;cursor:pointer">+ Ami</button>';
+    else h+='<span style="font-size:11px;color:var(--t3)">✓ Ami</span>';
+    h+='</div>';
+  });
+  el.innerHTML = h;
+};
+
+window.afficherListeAmis = function(amis) {
+  var el = document.getElementById('ami-liste');
+  if(!el) return;
+  if(!amis || !amis.length){ el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Ajoute des amis en recherchant par pseudo 👆</div>'; return; }
+  var h='';
+  amis.forEach(function(u){
+    var init=((u.prenom||'')+(u.nom?' '+u.nom:'')).trim().split(' ').map(function(n){return n[0]||'';}).join('').toUpperCase().slice(0,2)||'?';
+    h+='<div style="display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line);cursor:pointer" onclick="ouvrirProfilPublic(''+u.uid+'','s-profile')">';
+    h+='<div style="width:40px;height:40px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--green);flex-shrink:0">'+init+'</div>';
+    h+='<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(u.prenom||'')+' '+(u.nom||'')+'</div>';
+    h+='<div style="font-size:11px;color:var(--green)">@'+(u.pseudo||'—')+'</div>';
+    if(u.club) h+='<div style="font-size:10px;color:var(--t3)">'+u.club+'</div>';
+    h+='</div>';
+    h+='<div style="text-align:right"><div style="font-size:11px;color:var(--t3)">Hcp '+(u.handicap!=null?u.handicap:'—')+'</div>';
+    h+='<div style="font-size:10px;color:var(--t3)">'+(u.points||0)+' pts</div></div>';
+    h+='</div>';
+  });
+  el.innerHTML = h;
+};
+</script>
+
 </body>
 </html>
