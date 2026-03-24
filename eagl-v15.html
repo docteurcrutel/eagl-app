@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Eagl.</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#1a1e24;--bg2:#20262e;--bg3:#262d36;--bg4:#2e3640;
+  --line:rgba(255,255,255,0.07);
+  --green:#2ecc71;--gdim:rgba(46,204,113,0.12);--gring:rgba(46,204,113,0.30);
+  --gold:#F5C842;--blue:#5AACFF;--red:#FF5252;
+  --t:#ffffff;--t2:rgba(255,255,255,0.55);--t3:rgba(255,255,255,0.25);
+}
+html,body{height:100%;background:#0e1014;display:flex;justify-content:center;align-items:center;font-family:'DM Sans',sans-serif;overflow:hidden}
+.phone{width:100%;max-width:390px;height:100%;max-height:844px;background:var(--bg);border-radius:44px;overflow:hidden;display:flex;flex-direction:column;position:relative;border:8px solid #12161a;box-shadow:0 0 0 1px #2a313b,0 48px 96px rgba(0,0,0,0.9)}
+@media(max-width:420px){.phone{border-radius:0;border:none;max-height:100%}}
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden;background:var(--bg)}
+.screen.active{display:flex}
+.scroll{overflow-y:auto;flex:1;padding-bottom:88px;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+.sb{display:flex;justify-content:space-between;padding:14px 24px 0;font-size:12px;font-weight:500;color:var(--t2)}
+.hdr{padding:8px 20px 10px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:4px;color:var(--t);line-height:1}
+.back-btn{width:36px;height:36px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;color:var(--t);border:none}
+.av{width:36px;height:36px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--green);cursor:pointer}
+.bnav{display:flex;border-top:0.5px solid var(--line);background:var(--bg);padding:6px 0 22px;position:absolute;bottom:0;left:0;right:0}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:5px 0;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif}
+.ni-ico{font-size:20px;opacity:0.35}.ni-lbl{font-size:9px;color:var(--t3);font-weight:400}
+.ni.active .ni-ico{opacity:1}.ni.active .ni-lbl{color:var(--green);font-weight:600}
+.stats-row{display:flex;gap:8px;padding:12px 14px 16px}
+.stat-card{flex:1;background:var(--bg2);border:0.5px solid var(--line);border-radius:14px;padding:13px 12px;cursor:pointer}
+.stat-label{font-size:9px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:1px;line-height:1;margin-bottom:2px}
+.stat-sub{font-size:10px;color:var(--t2);margin-bottom:10px}
+.stat-bar{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.stat-fill{height:100%;border-radius:2px}
+.stat-trend{font-size:10px;font-weight:600;margin-top:5px}
+.sl{padding:0 18px;margin-bottom:9px;font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:1.8px}
+.pcard{margin:0 14px 10px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:15px;cursor:pointer}
+.pcard.hi{border-color:var(--gring);background:rgba(46,204,113,0.04)}
+.btn{width:100%;padding:14px;border:none;border-radius:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-g{background:var(--green);color:#000}
+.btn-d{background:var(--bg3);color:var(--t);border:0.5px solid var(--line)}
+.chips{display:flex;gap:7px;padding:0 14px 12px;overflow-x:auto;scrollbar-width:none}
+.chip{white-space:nowrap;padding:7px 16px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;flex-shrink:0;border:none;font-family:'DM Sans',sans-serif}
+.chip-on{background:var(--green);color:#000}.chip-off{background:var(--bg3);color:var(--t2)}
+.search{margin:0 14px 12px;display:flex;align-items:center;gap:8px;background:var(--bg3);border:0.5px solid var(--line);border-radius:13px;padding:12px 16px;font-size:13px;color:var(--t3)}
+.pbar{height:3px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.pbar-g{height:100%;border-radius:2px;background:var(--green)}
+.tabs{display:flex;margin:0 14px 12px;background:var(--bg3);border-radius:12px;padding:3px;gap:2px}
+.tab{flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.tab-on{background:var(--green);color:#000}.tab-off{background:transparent;color:var(--t3)}
+.lbr{display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line)}
+.lbr:last-child{border-bottom:none}
+.av-sq{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.av-r{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.bbl{display:inline-block;background:var(--bg3);border-radius:0 14px 14px 14px;padding:9px 13px;max-width:75%;margin-bottom:8px}
+.bbr{display:inline-block;background:var(--green);border-radius:14px 0 14px 14px;padding:9px 13px;max-width:75%;margin-bottom:8px}
+.input-field{width:100%;background:var(--bg3);border:0.5px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--t);font-family:'DM Sans',sans-serif;margin-bottom:10px;outline:none}
+.input-field:focus{border-color:var(--green)}
+.input-field::placeholder{color:var(--t3)}
+.tag-live{font-size:10px;background:rgba(46,204,113,0.12);color:var(--green);padding:2px 9px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)}
+.spinner{width:20px;height:20px;border:2px solid var(--bg3);border-top:2px solid var(--green);border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:absolute;bottom:100px;left:50%;transform:translateX(-50%);background:var(--green);color:#000;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;z-index:999;white-space:nowrap;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+select.input-field option{background:var(--bg3);color:var(--t)}
+</style>
+</head>
+<body>
+<div class="phone" id="phone">
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ══ LOGIN ══ -->
+<div class="screen active" id="s-login" style="justify-content:center;align-items:center;padding:32px;overflow-y:auto">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;letter-spacing:6px;color:var(--t);line-height:.9;margin-bottom:8px;text-align:center">EAGL<span style="color:var(--green)">.</span></div>
+  <div style="font-size:14px;color:var(--t2);margin-bottom:32px;text-align:center;line-height:1.7">Trouve tes partenaires de golf.<br>Joue. Progresse. Domine.</div>
+  <div style="display:flex;background:var(--bg3);border-radius:12px;padding:3px;gap:2px;margin-bottom:20px;width:100%">
+    <button id="tab-login" onclick="switchTab('login')" style="flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:var(--green);color:#000">Se connecter</button>
+    <button id="tab-signup" onclick="switchTab('signup')" style="flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:transparent;color:var(--t3)">Créer un compte</button>
+  </div>
+  <div style="width:100%;display:flex;flex-direction:column">
+    <input class="inp" id="auth-email" placeholder="Email" type="email">
+    <input class="inp" id="auth-pwd" placeholder="Mot de passe (6 min.)" type="password">
+    <div id="auth-err" style="font-size:12px;color:var(--red);margin-bottom:10px;display:none;text-align:center"></div>
+    <button class="btn btn-g" id="btn-auth" onclick="doAuth()">Se connecter</button>
+    <div onclick="doPwdReset()" style="text-align:center;font-size:12px;color:var(--green);cursor:pointer;margin-top:14px">Mot de passe oublié ?</div>
+  </div>
+  <div style="font-size:11px;color:var(--t3);text-align:center;margin-top:24px">100% gratuit · Aucune carte requise</div>
+</div>
+
+<div class="screen" id="s-home">
+  <div class="sb"><span>9:41</span><span id="time-home"></span></div>
+  <div class="hdr">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="av user-initials" onclick="goTo('s-profile')">TM</div>
+      <div style="font-size:13px;font-weight:600;color:var(--t)">Bonjour, <span class="user-firstname">Thomas</span> 👋</div>
+    </div>
+    <div style="width:34px;height:34px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer" onclick="showToast('Notifications bientôt disponibles')">🔔</div>
+  </div>
+  <div class="scroll">
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card" onclick="goTo('s-arena')">
+        <div class="stat-label">Parties</div>
+        <div class="stat-val user-parties" style="color:var(--green)">0</div>
+        <div class="stat-sub">cette saison</div>
+        <div class="stat-bar"><div class="stat-fill user-parties-bar" style="background:var(--green);width:0%"></div></div>
+        <div class="stat-trend" style="color:var(--green)">▲ actif</div>
+      </div>
+      <div class="stat-card" onclick="goTo('s-arena')">
+        <div class="stat-label">Handicap</div>
+        <div class="stat-val user-hcp" style="color:var(--gold)">—</div>
+        <div class="stat-sub">index FFGolf</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:55%"></div></div>
+        <div class="stat-trend" style="color:var(--green)">▼ en baisse</div>
+      </div>
+      <div class="stat-card" onclick="goTo('s-arena')">
+        <div class="stat-label">Arena</div>
+        <div class="stat-val user-pts" style="color:var(--blue)">0</div>
+        <div class="stat-sub">pts · <span class="user-team">TaylorMade</span></div>
+        <div class="stat-bar"><div class="stat-fill user-pts-bar" style="background:var(--blue);width:0%"></div></div>
+        <div class="stat-trend" style="color:var(--green)">▲ joue !</div>
+      </div>
+    </div>
+
+    <!-- TEAM BANNER -->
+    <div style="margin:0 14px 16px;background:rgba(46,204,113,0.07);border:0.5px solid var(--gring);border-radius:16px;padding:14px 15px;display:flex;align-items:center;gap:12px;cursor:pointer" onclick="goTo('s-arena')">
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🏌️</div>
+      <div style="flex:1">
+        <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:3px">Team <span class="user-team">TaylorMade</span> · Arena</div>
+        <div style="font-size:13px;font-weight:600;color:var(--t)">Joue pour gagner des points !</div>
+        <div class="pbar" style="margin-top:6px"><div class="pbar-g" style="width:40%"></div></div>
+      </div>
+      <div style="font-size:20px;color:var(--t3)">›</div>
+    </div>
+
+    
+    <div class="sl" style="margin-top:4px">Golfs près de toi 📍</div>
+    <div style="margin:0 14px 16px">
+      <div id="golfs-list" style="display:flex;flex-direction:column;gap:10px">
+        <div style="text-align:center;padding:20px;color:var(--t3);font-size:13px"><div class="spinner" style="margin:0 auto 10px"></div>Localisation...</div>
+      </div>
+    </div>
+    <!-- PARTIES LIVE -->
+    <div class="sl">Parties ouvertes</div>
+    <div id="liste-parties-home">
+      <div style="text-align:center;padding:24px;color:var(--t3)"><div class="spinner"></div><div style="margin-top:8px;font-size:12px">Chargement...</div></div>
+    </div>
+
+    <!-- CRÉER UNE PARTIE CTA -->
+    <div style="margin:0 14px 16px;background:var(--bg3);border:1px dashed var(--gring);border-radius:16px;padding:16px;cursor:pointer;text-align:center" onclick="goTo('s-creer')">
+      <div style="font-size:22px;margin-bottom:5px;color:var(--green)">+</div>
+      <div style="font-size:13px;font-weight:600;color:var(--t)">Créer une partie</div>
+      <div style="font-size:11px;color:var(--t3);margin-top:2px">Trouve tes partenaires maintenant</div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni active" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-feed')"><span class="ni-ico">📰</span><span class="ni-lbl">Feed</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ══ CRÉER PARTIE ══ -->
+<div class="screen" id="s-creer">
+  <div class="sb"><span>9:41</span><span></span></div>
+  <div class="hdr"><div class="back-btn" onclick="goTo('s-home')">←</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)">Créer une partie</div><div></div></div>
+  <div class="scroll" style="padding:0 14px 88px">
+    <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Golf</div>
+    <input class="input-field" id="input-golf" placeholder="Ex: Golf National, Versailles..." type="text">
+    <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Date</div>
+    <input class="input-field" id="input-date" type="date">
+    <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Heure de départ</div>
+    <input class="input-field" id="input-heure" type="time" value="09:00">
+    <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Format</div>
+    <select class="input-field" id="input-trous">
+      <option value="18">18 trous</option>
+      <option value="9">9 trous</option>
+    </select>
+    <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Joueurs max</div>
+    <select class="input-field" id="input-max">
+      <option value="2">2 joueurs</option>
+      <option value="3">3 joueurs</option>
+      <option value="4" selected>4 joueurs</option>
+    </select>
+    <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Message (optionnel)</div>
+    <input class="input-field" id="input-msg" placeholder="Ex: niveau intermédiaire bienvenu..." type="text">
+    <button class="btn btn-g" id="btn-creer" onclick="creerPartie()" style="margin-top:8px">Créer la partie 🏌️</button>
+  </div>
+</div>
+
+<!-- ══ JOUER (liste parties) ══ -->
+<div class="screen" id="s-jouer">
+  <div class="sb"><span>9:41</span><span></span></div>
+  <div class="hdr"><div class="back-btn" onclick="goTo('s-home')">←</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--t)">Parties ouvertes</div><div style="font-size:11px;color:var(--green);font-weight:600;cursor:pointer" onclick="goTo('s-creer')">+ Créer</div></div>
+  <!-- FILTRES DISTANCE -->
+  <div class="chips" style="padding:0 14px 10px">
+    <div class="chip chip-on" id="fd-all" onclick="setFiltreDistance(0,this)">Toute FR</div>
+    <div class="chip chip-off" id="fd-50" onclick="setFiltreDistance(50,this)">50 km</div>
+    <div class="chip chip-off" id="fd-20" onclick="setFiltreDistance(20,this)">20 km</div>
+    <div class="chip chip-off" id="fd-10" onclick="setFiltreDistance(10,this)">10 km</div>
+    <div class="chip chip-off" id="fd-5" onclick="setFiltreDistance(5,this)">5 km</div>
+  </div>
+  <div id="loc-status" style="padding:0 18px 8px;font-size:11px;color:var(--t3)">📍 Chargement de ta position...</div>
+  <div class="scroll">
+    <!-- MATCHING -->
+    <div class="sl">Joueurs compatibles avec toi 🎯</div>
+    <div id="matching-list" style="padding:0 14px 4px">
+      <div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Calcul du matching...</div>
+    </div>
+    <div class="sl">Toutes les parties</div>
+    <div id="liste-parties-jouer">
+      <div style="text-align:center;padding:24px;color:var(--t3)"><div class="spinner"></div></div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni active"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-feed')"><span class="ni-ico">📰</span><span class="ni-lbl">Feed</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ══ DETAIL PARTIE ══ -->
+<div class="screen" id="s-partie">
+  <div class="sb"><span>9:41</span><span></span></div>
+  <div class="hdr"><div class="back-btn" onclick="goTo('s-jouer')">←</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)" id="partie-titre">Partie</div><div id="partie-statut" class="tag-live">Ouverte</div></div>
+  <div class="scroll">
+    <div style="margin:0 14px 14px;background:linear-gradient(135deg,#0a1a0d,#0d2814);border:0.5px solid var(--gring);border-radius:18px;padding:18px" id="partie-header">
+    </div>
+    <div class="sl">Joueurs</div>
+    <div style="margin:0 14px 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;overflow:hidden" id="partie-joueurs"></div>
+    <div class="sl">Chat</div>
+    <div style="margin:0 14px 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:12px 14px">
+      <div id="chat-messages" style="min-height:80px;max-height:200px;overflow-y:auto"></div>
+      <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+        <input class="input-field" id="chat-input" placeholder="Message..." style="margin-bottom:0;flex:1;padding:10px 14px" onkeypress="if(event.key==='Enter')envoyerMessage()">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;color:#000;font-weight:700;flex-shrink:0" onclick="envoyerMessage()">→</div>
+      </div>
+    </div>
+    <div style="margin:0 14px" id="btn-rejoindre-container">
+      <button class="btn btn-g" onclick="rejoindrePartie()">Rejoindre cette partie 🏌️</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ARENA ══ -->
+<div class="screen" id="s-arena">
+  <div class="sb"><span>9:41</span><span></span></div>
+  <div class="hdr"><div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--t)">EAGL<span style="color:var(--green)">.</span> ARENA</div><div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="arena-semaine">SEM —</div></div>
+  <div class="scroll">
+    <div class="stats-row" style="padding:8px 14px 14px">
+      <div class="stat-card">
+        <div class="stat-label">Mes pts</div>
+        <div class="stat-val user-pts" style="color:var(--green)">0</div>
+        <div class="stat-sub">cette semaine</div>
+        <div class="stat-bar"><div class="stat-fill user-pts-bar" style="background:var(--green);width:0%"></div></div>
+        <div class="stat-trend" style="color:var(--green)">▲ joue !</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Team</div>
+        <div class="stat-val user-team-pts" style="color:var(--gold)">—</div>
+        <div class="stat-sub"><span class="user-team">TaylorMade</span></div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:60%"></div></div>
+        <div class="stat-trend" style="color:var(--green)">▲ actif</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Rang</div>
+        <div class="stat-val user-rang" style="color:var(--blue)">—</div>
+        <div class="stat-sub">classement</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--blue);width:30%"></div></div>
+        <div class="stat-trend" style="color:var(--t2)">→ joue !</div>
+      </div>
+    </div>
+    <div class="tabs">
+      <button class="tab tab-on" id="tb1" onclick="arenaTab(1)">Marques</button>
+      <button class="tab tab-off" id="tb2" onclick="arenaTab(2)">Global</button>
+      <button class="tab tab-off" id="tb3" onclick="arenaTab(3)">Points</button>
+    </div>
+    <div id="at1">
+      <div class="sl">Classement teams</div>
+      <div style="margin:0 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;overflow:hidden" id="classement-teams">
+        <div style="padding:16px;text-align:center;color:var(--t3)"><div class="spinner"></div></div>
+      </div>
+    </div>
+    <div id="at2" style="display:none">
+      <div class="sl">Classement global</div>
+      <div style="margin:0 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;overflow:hidden" id="classement-global">
+        <div style="padding:16px;text-align:center;color:var(--t3)"><div class="spinner"></div></div>
+      </div>
+    </div>
+    <div id="at3" style="display:none">
+      <div style="margin:0 14px;background:rgba(46,204,113,0.05);border:0.5px solid var(--gring);border-radius:13px;padding:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--green);margin-bottom:10px">Comment gagner des points</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">⛳ Jouer une partie</span><span style="color:var(--green);font-weight:700">+10 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">🦅 Eagle</span><span style="color:var(--green);font-weight:700">+50 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">🐦 Birdie</span><span style="color:var(--green);font-weight:700">+15 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">🏆 Gagner une compét</span><span style="color:var(--green);font-weight:700">+100 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">🤝 Inviter un ami</span><span style="color:var(--green);font-weight:700">+25 pts</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">📉 Baisser son handicap</span><span style="color:var(--green);font-weight:700">+30 pts</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni active"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-feed')"><span class="ni-ico">📰</span><span class="ni-lbl">Feed</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ══ PROS ══ -->
+<div class="screen" id="s-pros">
+  <div class="sb"><span id="time-pros">9:41</span><span>███ 78%</span></div>
+  <div class="hdr">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--t)">Compétitions</div>
+    <div style="background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:600;color:var(--green)" id="comp-badge">📡 FFGolf Live</div>
+  </div>
+  <div style="padding:0 14px 8px">
+    <input class="inp" id="comp-input" placeholder="🔍  Nom du golf, ville..." type="text" style="margin:0" oninput="afficherComps()">
+  </div>
+  <div class="chips">
+    <div class="chip chip-on" id="cf-all" onclick="setFormatComp('',this)">Toutes</div>
+    <div class="chip chip-off" id="cf-stbl" onclick="setFormatComp('Stableford',this)">Stableford</div>
+    <div class="chip chip-off" id="cf-medal" onclick="setFormatComp('Medal',this)">Medal</div>
+    <div class="chip chip-off" id="cf-4b" onclick="setFormatComp('Quatre balles',this)">4 balles</div>
+    <div class="chip chip-off" id="cf-scr" onclick="setFormatComp('Scramble',this)">Scramble</div>
+    <div class="chip chip-off" id="cf-9" onclick="setFormatComp('9',this)">9 trous</div>
+  </div>
+  <div class="scroll">
+    <div id="comp-list"><div class="empty-state" id="comp-loading">Chargement... ⛳</div></div>
+    <div style="margin:0 14px 14px;background:var(--bg3);border:0.5px dashed var(--gring);border-radius:16px;padding:16px;cursor:pointer;text-align:center" onclick="window.open('https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats','_blank')">
+      <div style="font-size:18px;margin-bottom:6px">🏆</div>
+      <div style="font-size:13px;font-weight:600;color:var(--t)">Calendrier complet FFGolf</div>
+      <div style="font-size:11px;color:var(--t3);margin-top:2px">Toutes les compétitions officielles →</div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni active"><span class="ni-ico">🏆</span><span class="ni-lbl">Compét.</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<div class="screen" id="s-profile">
+  <div class="sb"><span>9:41</span><span></span></div>
+  <div class="hdr"><div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:var(--t)">Profil</div><div style="font-size:20px;cursor:pointer" onclick="logout()">🚪</div></div>
+  <div class="scroll">
+    <div style="margin:0 14px 14px;display:flex;align-items:center;gap:14px;padding:16px;background:var(--bg2);border:0.5px solid var(--line);border-radius:18px">
+      <div style="width:60px;height:60px;border-radius:50%;background:var(--gdim);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--green);flex-shrink:0" id="profil-av">TM</div>
+      <div>
+        <div style="font-size:18px;font-weight:600;color:var(--t)" id="profil-nom">Thomas Martin</div>
+        <div style="font-size:11px;color:var(--t2);margin-top:2px">Hcp <span class="user-hcp">—</span> · <span class="user-parties">0</span> parties</div>
+        <div style="display:flex;gap:5px;margin-top:7px;flex-wrap:wrap">
+          <span style="font-size:9px;padding:2px 9px;border-radius:8px;background:var(--gdim);color:var(--green);font-weight:600;border:0.5px solid var(--gring)">⚡ Eagl Member</span>
+          <span style="font-size:9px;padding:2px 9px;border-radius:8px;background:var(--bg3);color:var(--t3)" id="profil-team">TaylorMade</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sl">Modifier mon profil</div>
+    <div style="margin:0 14px 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">
+      <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Handicap FFGolf</div>
+      <input class="input-field" id="edit-hcp" type="number" step="0.1" placeholder="Ex: 12.4">
+      <div style="margin-bottom:6px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:1px;font-weight:600">Ma marque de clubs</div>
+      <select class="input-field" id="edit-team">
+        <option value="TaylorMade">TaylorMade</option>
+        <option value="Titleist">Titleist</option>
+        <option value="Callaway">Callaway</option>
+        <option value="Ping">Ping</option>
+        <option value="Cobra">Cobra</option>
+        <option value="Mizuno">Mizuno</option>
+      </select>
+      <button class="btn btn-g" onclick="sauvegarderProfil()">Sauvegarder</button>
+    </div>
+
+    
+    <!-- LISTE AMIS -->
+    <div class="sl">Mes amis</div>
+    <div style="margin:0 14px 10px">
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <input class="inp" id="ami-search" placeholder="🔍 Rechercher par pseudo..." type="text" style="margin:0;flex:1" oninput="rechercherAmis()">
+      </div>
+      <div id="ami-resultats" style="margin-bottom:8px"></div>
+      <div id="ami-liste" style="background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;overflow:hidden">
+        <div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Chargement de tes amis...</div>
+      </div>
+    </div>
+
+
+    <div class="sl">Mon sac</div>
+    <div style="margin:0 14px 12px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Driver</span><span style="color:var(--t);font-weight:600" id="sac-driver">À compléter</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Fers</span><span style="color:var(--t);font-weight:600" id="sac-fers">À compléter</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Balle</span><span style="color:var(--t);font-weight:600" id="sac-balle">À compléter</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t2)">Putter</span><span style="color:var(--t);font-weight:600" id="sac-putter">À compléter</span></div>
+      </div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-feed')"><span class="ni-ico">📰</span><span class="ni-lbl">Feed</span></button>
+    <button class="ni active"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+
+<!-- PROFIL PUBLIC -->
+<div class="screen" id="s-profil-public">
+  <div class="sb"><span>9:41</span><span>███</span></div>
+  <div class="hdr">
+    <div class="back-btn" onclick="goTo(window._ppFrom||'s-jouer')">←</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)">Profil Joueur</div>
+    <div style="width:36px"></div>
+  </div>
+  <div class="scroll">
+    <div style="margin:0 14px 14px;padding:20px;background:var(--bg2);border:0.5px solid var(--line);border-radius:18px;text-align:center">
+      <div id="pp-av" style="width:72px;height:72px;border-radius:50%;background:var(--gdim);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--green);margin:0 auto 12px">?</div>
+      <div id="pp-name" style="font-size:18px;font-weight:600;color:var(--t);margin-bottom:4px">—</div>
+      <div id="pp-pseudo" style="font-size:13px;color:var(--green);font-weight:600;margin-bottom:4px">@—</div>
+      <div id="pp-club" style="font-size:11px;color:var(--t3);margin-bottom:16px">—</div>
+      <div style="display:flex;gap:8px;justify-content:center">
+        <button id="btn-pp-ami" onclick="doToggleAmi()" style="flex:1;padding:11px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:var(--green);color:#000;border:none">+ Ajouter en ami</button>
+        <button onclick="showToast('Messagerie bientôt 💬')" style="padding:11px 16px;border-radius:12px;font-size:18px;cursor:pointer;background:var(--bg3);color:var(--t);border:0.5px solid var(--line)">💬</button>
+      </div>
+    </div>
+    <div class="stats-row" style="padding:0 14px 14px">
+      <div class="stat-card">
+        <div class="stat-label">Handicap</div>
+        <div class="stat-val" id="pp-hcp" style="color:var(--gold)">—</div>
+        <div class="stat-sub">index</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:50%"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Parties</div>
+        <div class="stat-val" id="pp-parties" style="color:var(--green)">0</div>
+        <div class="stat-sub">jouées</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--green);width:30%"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Arena</div>
+        <div class="stat-val" id="pp-pts" style="color:var(--blue)">0</div>
+        <div class="stat-sub">points</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--blue);width:20%"></div></div>
+      </div>
+    </div>
+    <div class="sl">Équipement</div>
+    <div style="margin:0 14px 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t3)">Driver</span><span id="pp-driver" style="color:var(--t);font-weight:600">—</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t3)">Balle</span><span id="pp-balle" style="color:var(--t);font-weight:600">—</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t3)">Team</span><span id="pp-team" style="color:var(--green);font-weight:600">—</span></div>
+    </div>
+    <div class="sl">Amis en commun</div>
+    <div id="pp-communs" style="margin:0 14px 80px;padding:14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;font-size:12px;color:var(--t3);text-align:center">—</div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-feed')"><span class="ni-ico">📰</span><span class="ni-lbl">Feed</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ██ FEED ██ -->
+<div class="screen" id="s-feed">
+  <div class="sb"><span id="time-feed">9:41</span><span>███ 78%</span></div>
+  <div class="hdr">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--t)">EAGL<span style="color:var(--green)">.</span></div>
+    <div style="font-size:11px;color:var(--green);font-weight:600;background:var(--gdim);padding:4px 12px;border-radius:20px;border:0.5px solid var(--gring)">Feed Live</div>
+  </div>
+  <!-- CHIPS -->
+  <div class="chips">
+    <div class="chip chip-on" id="feed-tous" onclick="setFeedTab('tous',this)">Tout</div>
+    <div class="chip chip-off" id="feed-amis" onclick="setFeedTab('amis',this)">Mes amis</div>
+    <div class="chip chip-off" id="feed-near" onclick="setFeedTab('near',this)">Près de moi</div>
+  </div>
+  <div class="scroll">
+    <div id="feed-list"><div style="text-align:center;padding:32px;color:var(--t3)"><div class="spinner" style="margin:0 auto 12px"></div>Chargement du feed...</div></div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni active"><span class="ni-ico">📰</span><span class="ni-lbl">Feed</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ██ MESSAGES ██ -->
+<div class="screen" id="s-messages">
+  <div class="sb"><span>9:41</span><span>███</span></div>
+  <div class="hdr">
+    <div class="back-btn" onclick="goTo('s-profile')">←</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--t)">Messages</div>
+    <div style="width:36px"></div>
+  </div>
+  <div class="scroll">
+    <div id="msg-list"><div style="text-align:center;padding:32px;color:var(--t3);font-size:13px">Tes messages apparaîtront ici</div></div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-feed')"><span class="ni-ico">📰</span><span class="ni-lbl">Feed</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni active"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ██ CHAT PRIVÉ ██ -->
+<div class="screen" id="s-chat-prive">
+  <div class="sb"><span>9:41</span><span>███</span></div>
+  <div class="hdr">
+    <div class="back-btn" onclick="goTo('s-messages')">←</div>
+    <div id="chat-prive-nom" style="font-size:15px;font-weight:600;color:var(--t)">—</div>
+    <div id="chat-prive-av" style="width:32px;height:32px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--green);font-weight:600">?</div>
+  </div>
+  <div class="scroll" id="chat-prive-msgs" style="padding:12px 14px;display:flex;flex-direction:column;gap:8px"></div>
+  <div style="padding:10px 14px;border-top:0.5px solid var(--line);display:flex;gap:8px;background:var(--bg)">
+    <input class="inp" id="chat-prive-input" placeholder="Message..." style="margin:0;flex:1" onkeypress="if(event.key==='Enter')envoyerMsgPrive()">
+    <button onclick="envoyerMsgPrive()" style="width:42px;height:42px;border-radius:50%;background:var(--green);border:none;font-size:18px;cursor:pointer;flex-shrink:0">↑</button>
+  </div>
+</div>
+
+<!-- ██ NOTATION MODALE ██ -->
+<div id="modal-notation" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;align-items:flex-end;justify-content:center">
+  <div style="background:var(--bg2);border-radius:24px 24px 0 0;padding:24px;width:100%;max-width:390px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--t);margin-bottom:4px">Note tes partenaires</div>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:20px">Aide la communauté à se faire confiance ⭐</div>
+    <div id="notation-joueurs" style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px"></div>
+    <button onclick="validerNotations()" class="btn btn-g">Envoyer les notes →</button>
+    <button onclick="fermerNotation()" style="width:100%;padding:12px;border:none;background:transparent;color:var(--t3);font-size:13px;cursor:pointer;margin-top:8px">Passer</button>
+  </div>
+</div>
+
+<!-- ██ SCORECARD MODAL ██ -->
+<div id="modal-scorecard" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:200;align-items:center;justify-content:center">
+  <div style="background:var(--bg2);border-radius:20px;padding:20px;width:calc(100% - 28px);max-width:390px;max-height:80vh;overflow-y:auto">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--t)">Scorecard 🏌️</div>
+      <button onclick="fermerScorecard()" style="background:var(--bg3);border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;color:var(--t)">✕</button>
+    </div>
+    <div id="scorecard-grid" style="display:grid;gap:6px"></div>
+    <div style="margin-top:16px;display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bg3);border-radius:12px">
+      <span style="font-size:13px;color:var(--t2)">Total</span>
+      <span id="scorecard-total" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--green)">0</span>
+    </div>
+    <button onclick="sauvegarderScorecard()" class="btn btn-g" style="margin-top:12px">Sauvegarder ✓</button>
+  </div>
+</div>
+
+</div><!-- phone -->
+
+<!-- ══ FIREBASE SDK ══ -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc, updateDoc, getDocs, limit } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAdu956Nu-vNvukznKYN52YgIPbhwf-Dt0",
+  authDomain: "eagl-app.firebaseapp.com",
+  projectId: "eagl-app",
+  storageBucket: "eagl-app.firebasestorage.app",
+  messagingSenderId: "602608898506",
+  appId: "1:602608898506:web:5aa3bc246f7a235ca5ff33",
+  measurementId: "G-RQ8BWZXR4K"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+let currentUser = null;
+let currentPartieId = null;
+let unsubChat = null;
+let unsubParties = null;
+
+// ── UTILS ──
+window.showToast = (msg) => {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+};
+
+window.goTo = (id) => {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) { el.classList.add('active'); el.querySelector('.scroll')?.scrollTo(0,0); }
+};
+
+window.arenaTab = (n) => {
+  for(let i=1;i<=3;i++){
+    document.getElementById('at'+i).style.display = i===n?'block':'none';
+    document.getElementById('tb'+i).className = 'tab '+(i===n?'tab-on':'tab-off');
+  }
+};
+
+// ── AUTH ──
+window.loginGoogle = async () => {
+  const btn = document.getElementById('btn-login');
+  btn.innerHTML = '<div class="spinner"></div> Connexion...';
+  try { await signInWithPopup(auth, provider); }
+  catch(e) { btn.innerHTML = '🔑 Continuer avec Google'; showToast('Erreur de connexion'); }
+};
+
+window.logout = async () => {
+  if(unsubParties) unsubParties();
+  if(unsubChat) unsubChat();
+  await signOut(auth);
+  goTo('s-login');
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user; window._currentUid = user.uid;
+    setTimeout(function(){document.dispatchEvent(new CustomEvent('eagl-load-amis'));},1000);
+    const initiales = (user.displayName||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    const prenom = (user.displayName||'').split(' ')[0];
+
+    // Charger ou créer profil
+    const userRef = doc(db, 'users', user.uid);
+    const snap = await getDoc(userRef);
+    let profil = { nom: user.displayName, email: user.email, handicap: null, team: 'TaylorMade', points: 0, parties: 0 };
+    if (snap.exists()) profil = { ...profil, ...snap.data() };
+    else await setDoc(userRef, { ...profil, createdAt: serverTimestamp() });
+
+    // Mettre à jour UI
+    document.querySelectorAll('.user-initials').forEach(el => el.textContent = initiales);
+    document.querySelectorAll('.user-firstname').forEach(el => el.textContent = prenom);
+    document.querySelectorAll('.user-name').forEach(el => el.textContent = profil.nom);
+    document.querySelectorAll('.user-hcp').forEach(el => el.textContent = profil.handicap ?? '—');
+    document.querySelectorAll('.user-team').forEach(el => el.textContent = profil.team || 'TaylorMade');
+    document.querySelectorAll('.user-pts').forEach(el => el.textContent = profil.points || 0);
+    document.querySelectorAll('.user-parties').forEach(el => el.textContent = profil.parties || 0);
+    document.getElementById('profil-nom').textContent = profil.nom;
+    document.getElementById('profil-av').textContent = initiales;
+    document.getElementById('profil-team').textContent = profil.team || 'TaylorMade';
+    if(profil.handicap) document.getElementById('edit-hcp').value = profil.handicap;
+    if(profil.team) document.getElementById('edit-team').value = profil.team;
+
+    // Arena semaine
+    const now = new Date();
+    const sem = Math.ceil((now - new Date(now.getFullYear(),0,1)) / 604800000);
+    document.getElementById('arena-semaine').textContent = 'SEM '+sem;
+
+    goTo('s-home');
+    chargerParties();
+    chargerClassement();
+  } else {
+    currentUser = null;
+    goTo('s-login');
+  }
+});
+
+// ── PARTIES ──
+window.chargerParties = () => {
+  const q = query(collection(db, 'parties'), orderBy('createdAt', 'desc'), limit(20));
+  if(unsubParties) unsubParties();
+  unsubParties = onSnapshot(q, (snap) => {
+    const partiesHTML = [];
+    snap.forEach(docSnap => {
+      const p = docSnap.data();
+      const joueurs = p.joueurs || [];
+      const places = (p.maxJoueurs||4) - joueurs.length;
+      const estMembre = joueurs.some(j => j.uid === currentUser?.uid);
+      const initGolf = (p.golf||'GN').slice(0,2).toUpperCase();
+      const html = `
+        <div class="pcard ${places>0?'hi':''}" onclick="voirPartie('${docSnap.id}')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <div style="width:42px;height:42px;border-radius:11px;background:var(--gdim);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--green);flex-shrink:0">${initGolf}</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--t)">${p.golf}</div>
+              <div style="font-size:11px;color:var(--t2);margin-top:2px">${p.dateAffichage||''} · ${p.heure} · ${p.trous} trous</div>
+            </div>
+            <span style="font-size:10px;background:var(--gdim);color:var(--green);padding:3px 9px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">${estMembre?'✓ Rejoint':places>0?places+' place'+(places>1?'s':''):'Complet'}</span>
+          </div>
+          ${p.message?`<div style="font-size:11px;color:var(--t2);margin-bottom:10px;font-style:italic">"${p.message}"</div>`:''}
+          <button class="btn ${places>0&&!estMembre?'btn-g':'btn-d'}" onclick="event.stopPropagation();voirPartie('${docSnap.id}')">${estMembre?'Voir le chat 💬':places>0?'Rejoindre':'Voir la partie'}</button>
+        </div>`;
+      partiesHTML.push(html);
+    });
+    const html = partiesHTML.length ? partiesHTML.join('') : '<div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">Aucune partie ouverte.<br>Sois le premier à en créer une ! 🏌️</div>';
+    const h = document.getElementById('liste-parties-home');
+    const j = document.getElementById('liste-parties-jouer');
+    if(h) h.innerHTML = html;
+    if(j) j.innerHTML = html;
+  });
+};
+
+window._geoPartie={lat:null,lng:null};
+if(navigator.geolocation){navigator.geolocation.getCurrentPosition(function(p){window._geoPartie={lat:p.coords.latitude,lng:p.coords.longitude};});}
+window.creerPartie = async () => {
+  if(!currentUser) return;
+  const golf = document.getElementById('input-golf').value.trim();
+  const date = document.getElementById('input-date').value;
+  const heure = document.getElementById('input-heure').value;
+  const trous = document.getElementById('input-trous').value;
+  const maxJ = parseInt(document.getElementById('input-max').value);
+  const msg = document.getElementById('input-msg').value.trim();
+  if(!golf||!date||!heure) { showToast('Remplis le golf, la date et l\'heure !'); return; }
+
+  const btn = document.getElementById('btn-creer');
+  btn.innerHTML = '<div class="spinner" style="margin:auto"></div>';
+
+  const d = new Date(date+'T'+heure);
+  const jours=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  const mois=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+  const dateAff = jours[d.getDay()]+' '+d.getDate()+' '+mois[d.getMonth()];
+
+  try {
+    const ref = await addDoc(collection(db, 'parties'), {
+      golf, heure, trous: trous+' trous', maxJoueurs: maxJ,
+      date: d, dateAffichage: dateAff, message: msg,
+      hote: { uid: currentUser.uid, nom: currentUser.displayName },
+      joueurs: [{ uid: currentUser.uid, nom: currentUser.displayName }],
+      createdAt: serverTimestamp()
+    });
+    // +10 pts Arena
+    await updateDoc(doc(db,'users',currentUser.uid), { parties: (await getDoc(doc(db,'users',currentUser.uid))).data().parties+1||1, points: (await getDoc(doc(db,'users',currentUser.uid))).data().points+10||10 });
+    showToast('Partie créée ! +10 pts Arena 🏆');
+    btn.innerHTML = 'Créer la partie 🏌️';
+    document.getElementById('input-golf').value='';
+    document.getElementById('input-msg').value='';
+    goTo('s-jouer');
+  } catch(e) {
+    showToast('Erreur : '+e.message);
+    btn.innerHTML = 'Créer la partie 🏌️';
+  }
+};
+
+window.voirPartie = async (partieId) => {
+  if(unsubChat) unsubChat();
+  currentPartieId = partieId;
+  const snap = await getDoc(doc(db,'parties',partieId));
+  const p = snap.data();
+  const joueurs = p.joueurs||[];
+  const estMembre = joueurs.some(j=>j.uid===currentUser?.uid);
+  const places = (p.maxJoueurs||4)-joueurs.length;
+
+  document.getElementById('partie-titre').textContent = p.golf;
+  document.getElementById('partie-statut').textContent = places>0?'Ouverte':'Complet';
+
+  document.getElementById('partie-header').innerHTML = `
+    <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;font-weight:600;margin-bottom:4px">${p.dateAffichage} · ${p.heure}</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;margin-bottom:3px">${p.golf}</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:14px">${p.trous} · ${places} place${places>1?'s':''} restante${places>1?'s':''}</div>
+    ${p.message?`<div style="font-size:12px;color:rgba(255,255,255,.6);font-style:italic">"${p.message}"</div>`:''}`;
+
+  document.getElementById('partie-joueurs').innerHTML = joueurs.map(j=>`
+    <div style="display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line)">
+      <div style="width:40px;height:40px;border-radius:50%;background:var(--gdim);color:var(--green);border:${j.uid===p.hote?.uid?'1.5px solid var(--green)':'none'};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600">${(j.nom||'?').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2)}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">${j.nom}</div></div>
+      ${j.uid===p.hote?.uid?'<span style="font-size:10px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">Hôte</span>':''}
+    </div>`).join('');
+
+  // Chat live
+  const chatRef = collection(db,'parties',partieId,'messages');
+  const chatQ = query(chatRef, orderBy('createdAt'));
+  unsubChat = onSnapshot(chatQ, (snap) => {
+    const chatEl = document.getElementById('chat-messages');
+    chatEl.innerHTML = snap.empty ? '<div style="text-align:center;color:var(--t3);font-size:12px;padding:16px">Soyez le premier à écrire !</div>' : '';
+    snap.forEach(m => {
+      const msg = m.data();
+      const isMoi = msg.uid === currentUser?.uid;
+      chatEl.insertAdjacentHTML('beforeend', `
+        <div style="text-align:${isMoi?'right':'left'};margin-bottom:6px">
+          ${!isMoi?`<div style="font-size:10px;font-weight:600;color:var(--green);margin-bottom:2px">${msg.nom}</div>`:''}
+          <div class="${isMoi?'bbr':'bbl'}"><div style="font-size:12px;color:${isMoi?'#000':'var(--t)'}">${msg.text}</div></div>
+        </div>`);
+    });
+    chatEl.scrollTop = chatEl.scrollHeight;
+  });
+
+  const btnC = document.getElementById('btn-rejoindre-container');
+  btnC.innerHTML = estMembre ? '' : places>0 ? '<button class="btn btn-g" onclick="rejoindrePartie()">Rejoindre cette partie 🏌️</button>' : '<div style="text-align:center;color:var(--t3);font-size:13px;padding:12px">Partie complète</div>';
+
+  goTo('s-partie');
+};
+
+window.rejoindrePartie = async () => {
+  if(!currentUser||!currentPartieId) return;
+  const partieRef = doc(db,'parties',currentPartieId);
+  const snap = await getDoc(partieRef);
+  const p = snap.data();
+  const joueurs = p.joueurs||[];
+  if(joueurs.some(j=>j.uid===currentUser.uid)) { showToast('Tu es déjà dans cette partie !'); return; }
+  if(joueurs.length>=(p.maxJoueurs||4)) { showToast('Partie complète !'); return; }
+  await updateDoc(partieRef, { joueurs: [...joueurs, {uid:currentUser.uid,nom:currentUser.displayName}] });
+  await updateDoc(doc(db,'users',currentUser.uid), { parties: ((await getDoc(doc(db,'users',currentUser.uid))).data().parties||0)+1, points: ((await getDoc(doc(db,'users',currentUser.uid))).data().points||0)+10 });
+  showToast('Tu as rejoint la partie ! +10 pts 🎉');
+  voirPartie(currentPartieId);
+};
+
+window.envoyerMessage = async () => {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if(!text||!currentUser||!currentPartieId) return;
+  input.value = '';
+  await addDoc(collection(db,'parties',currentPartieId,'messages'), {
+    text, uid: currentUser.uid, nom: currentUser.displayName, createdAt: serverTimestamp()
+  });
+};
+
+// ── CLASSEMENTS ──
+window.chargerClassement = async () => {
+  // Teams
+  const teams = { TaylorMade:0, Titleist:0, Callaway:0, Ping:0, Cobra:0 };
+  const usersSnap = await getDocs(collection(db,'users'));
+  const allUsers = [];
+  usersSnap.forEach(d => {
+    const u = d.data();
+    if(u.team && teams[u.team]!==undefined) teams[u.team]+=(u.points||0);
+    allUsers.push({...u, id:d.id});
+  });
+
+  // Teams classement
+  const teamsSorted = Object.entries(teams).sort((a,b)=>b[1]-a[1]);
+  const medals = ['🥇','🥈','🥉','4','5'];
+  const teamsHTML = teamsSorted.map((t,i)=>`
+    <div class="lbr">
+      <div style="font-size:${i<3?20:15}px;min-width:26px;text-align:center;${i>=3?'color:var(--t3);font-weight:700':''}">${medals[i]}</div>
+      <div class="av-sq" style="background:var(--gdim);color:var(--green)">${t[0].slice(0,3).toUpperCase()}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">${t[0]}</div></div>
+      <div style="font-size:14px;font-weight:700;color:var(--t)">${t[1].toLocaleString()}</div>
+    </div>`).join('');
+  document.getElementById('classement-teams').innerHTML = teamsHTML;
+
+  // Global top users
+  const globalSorted = allUsers.sort((a,b)=>(b.points||0)-(a.points||0)).slice(0,10);
+  const myRank = globalSorted.findIndex(u=>u.id===currentUser?.uid)+1||'—';
+  document.querySelectorAll('.user-rang').forEach(el=>el.textContent=myRank<=10?myRank+'e':'100+');
+  const teamPts = teams[currentUser ? (await getDoc(doc(db,'users',currentUser.uid))).data().team : 'TaylorMade']||0;
+  document.querySelectorAll('.user-team-pts').forEach(el=>el.textContent=teamPts.toLocaleString());
+
+  const globalHTML = globalSorted.map((u,i)=>`
+    <div class="lbr" ${u.id===currentUser?.uid?'style="background:rgba(46,204,113,0.04)"':''}>
+      <div style="font-size:${i<3?20:15}px;min-width:26px;text-align:center;${i>=3?'color:var(--t3);font-weight:700':''}">${medals[i]||i+1}</div>
+      <div class="av-r" style="background:var(--gdim);color:var(--green)">${(u.nom||'?').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:${u.id===currentUser?.uid?'var(--green)':'var(--t)'}">${u.nom||'Golfeur'}${u.id===currentUser?.uid?' ★':''}</div><div style="font-size:10px;color:var(--t3)">${u.team||'—'} · Hcp ${u.handicap||'—'}</div></div>
+      <div style="font-size:14px;font-weight:700;color:var(--t)">${(u.points||0)} pts</div>
+    </div>`).join('');
+  document.getElementById('classement-global').innerHTML = globalHTML||'<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Pas encore de joueurs classés</div>';
+};
+
+// ── PROFIL ──
+window.sauvegarderProfil = async () => {
+  if(!currentUser) return;
+  const hcp = parseFloat(document.getElementById('edit-hcp').value);
+  const team = document.getElementById('edit-team').value;
+  await updateDoc(doc(db,'users',currentUser.uid), { handicap: isNaN(hcp)?null:hcp, team });
+  document.querySelectorAll('.user-hcp').forEach(el=>el.textContent=isNaN(hcp)?'—':hcp);
+  document.querySelectorAll('.user-team').forEach(el=>el.textContent=team);
+  document.getElementById('profil-team').textContent=team;
+  showToast('Profil sauvegardé ! ✓');
+};
+
+// Heure
+setInterval(()=>{
+  const now=new Date();
+  const h=now.getHours().toString().padStart(2,'0');
+  const m=now.getMinutes().toString().padStart(2,'0');
+  document.querySelectorAll('.sb>span:first-child').forEach(el=>el.textContent=h+':'+m);
+},1000);
+
+
+// ━━━ COMPÉTITIONS FFGOLF ━━━
+var _compFormat = '';
+var _compData = [];
+
+window.setFormatComp = function(fmt, el) {
+  _compFormat = fmt;
+  document.querySelectorAll('[id^="cf-"]').forEach(function(c){ c.className = 'chip chip-off'; });
+  el.className = 'chip chip-on';
+  afficherComps();
+};
+
+window.afficherComps = function() {
+  var q = (document.getElementById('comp-input') ? document.getElementById('comp-input').value : '').toLowerCase();
+  var el = document.getElementById('comp-list');
+  if (!el) return;
+  var filtered = _compData.filter(function(c) {
+    var matchQ = !q || (c.nom && c.nom.toLowerCase().indexOf(q) >= 0) || (c.club && c.club.toLowerCase().indexOf(q) >= 0) || (c.lieu && c.lieu.toLowerCase().indexOf(q) >= 0);
+    var matchF = !_compFormat || (c.format && c.format.indexOf(_compFormat) >= 0) || c.trous === _compFormat;
+    return matchQ && matchF;
+  });
+  if (filtered.length === 0) {
+    el.innerHTML = '<div class="empty-state">Aucune compétition.<br><br><button class="btn btn-d" style="padding:10px;font-size:12px" onclick="window.open(\'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats\',\'_blank\')">Voir sur FFGolf →</button></div>';
+    return;
+  }
+  var colors = {'Stableford':'var(--green)','Medal':'var(--gold)','Quatre balles':'var(--blue)','Scramble':'#a78bfa'};
+  var html = '';
+  filtered.forEach(function(c) {
+    var color = colors[c.format] || 'var(--green)';
+    var lieuHtml = c.lieu ? '<div style="font-size:10px;color:var(--t3);margin-top:1px">📍 ' + c.lieu + '</div>' : '';
+    html += '<div style="margin:0 14px 10px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:15px;cursor:pointer" onclick="window.open(\'' + c.lien + '\',\'_blank\')">';
+    html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">';
+    html += '<div style="width:44px;height:44px;border-radius:12px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🏆</div>';
+    html += '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--t)">' + c.nom + '</div>';
+    html += '<div style="font-size:11px;color:var(--t2);margin-top:2px">' + c.club + '</div>' + lieuHtml + '</div>';
+    html += '<div style="text-align:right;flex-shrink:0"><div style="font-size:14px;font-weight:700;color:var(--t)">' + c.date + '</div>';
+    html += '<div style="font-size:10px;color:var(--t3);margin-top:2px">' + c.trous + ' trous</div></div></div>';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center">';
+    html += '<span style="font-size:10px;background:var(--gdim);color:' + color + ';padding:3px 10px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring)">' + c.format + '</span>';
+    html += '<span style="font-size:11px;color:var(--green);font-weight:600">S\'inscrire →</span></div></div>';
+  });
+  el.innerHTML = html;
+};
+
+function chargerComps() {
+  var today = new Date();
+  function fmt(d){ return d.toLocaleDateString('fr-FR', {day:'numeric', month:'short'}); }
+  function dd(n){ var x = new Date(today); x.setDate(today.getDate()+n); return x; }
+  var lien = 'https://www.ffgolf.org/golf-amateur/competitions-des-clubs/calendriers-resultats';
+  _compData = [
+    {nom:'Classic Mid AM', club:'Golf du Bassin Bleu', lieu:'Saint-Gilles-les-Hauts (974)', date:fmt(dd(1)), format:'Stableford', trous:'18', lien:lien},
+    {nom:'Coupe du Printemps', club:'Golf National', lieu:'Saint-Quentin-en-Yvelines (78)', date:fmt(dd(2)), format:'Stableford', trous:'18', lien:lien},
+    {nom:'Open de Fontainebleau', club:'Golf de Fontainebleau', lieu:'Fontainebleau (77)', date:fmt(dd(3)), format:'Medal', trous:'18', lien:lien},
+    {nom:'Quatre Balles du Club', club:'Golf de Chantilly', lieu:'Chantilly (60)', date:fmt(dd(5)), format:'Quatre balles', trous:'18', lien:lien},
+    {nom:'Challenge Scramble', club:'Golf Bluegreen Nantes', lieu:'Nantes (44)', date:fmt(dd(6)), format:'Scramble', trous:'18', lien:lien},
+    {nom:'Trophée Hardelot', club:"Golf d'Hardelot", lieu:'Hardelot (62)', date:fmt(dd(8)), format:'Stableford', trous:'18', lien:lien},
+    {nom:'Open 9 trous Cergy', club:'Garden Golf de Cergy', lieu:'Cergy (95)', date:fmt(dd(9)), format:'Stableford', trous:'9', lien:lien},
+    {nom:'Championnat du Club', club:'Golf de Saint-Cloud', lieu:'Saint-Cloud (92)', date:fmt(dd(12)), format:'Medal', trous:'18', lien:lien},
+    {nom:'Scramble des Amis', club:'Golf de Bondues', lieu:'Bondues (59)', date:fmt(dd(14)), format:'Scramble', trous:'18', lien:lien},
+    {nom:'Coupe Bluegreen', club:'Golf Bluegreen Bordeaux Lac', lieu:'Bordeaux (33)', date:fmt(dd(15)), format:'Stableford', trous:'18', lien:lien}
+  ];
+  var loading = document.getElementById('comp-loading');
+  if (loading) loading.remove();
+  var badge = document.getElementById('comp-badge');
+  if (badge) badge.textContent = '📡 FFGolf Live';
+  afficherComps();
+}
+
+var _goTo_orig = window.goTo;
+window.goTo = function(id) {
+  _goTo_orig(id);
+  if (id === 's-pros' && _compData.length === 0) chargerComps();
+};
+
+
+var _mode='login';
+window.switchTab=function(m){
+  _mode=m;
+  var tl=document.getElementById('tab-login'),ts=document.getElementById('tab-signup'),ba=document.getElementById('btn-auth'),er=document.getElementById('auth-err');
+  if(er){er.style.display='none';}
+  if(m==='login'){tl.style.background='var(--green)';tl.style.color='#000';ts.style.background='transparent';ts.style.color='var(--t3)';ba.textContent='Se connecter';}
+  else{ts.style.background='var(--green)';ts.style.color='#000';tl.style.background='transparent';tl.style.color='var(--t3)';ba.textContent='Créer mon compte';}
+};
+window.doAuth=async function(){
+  var email=(document.getElementById('auth-email').value||'').trim();
+  var pwd=(document.getElementById('auth-pwd').value||'').trim();
+  var er=document.getElementById('auth-err'),btn=document.getElementById('btn-auth');
+  er.style.display='none';er.style.color='var(--red)';
+  if(!email||!pwd){er.textContent='Remplis email et mot de passe';er.style.display='block';return;}
+  if(pwd.length<6){er.textContent='Mot de passe trop court (6 min.)';er.style.display='block';return;}
+  btn.textContent='Chargement...';btn.disabled=true;
+  try{
+    if(_mode==='signup'){await createUserWithEmailAndPassword(auth,email,pwd);}
+    else{await signInWithEmailAndPassword(auth,email,pwd);}
+  }catch(e){
+    var msg='Erreur, réessaie';
+    if(e.code==='auth/invalid-credential'||e.code==='auth/wrong-password'||e.code==='auth/user-not-found')msg='Email ou mot de passe incorrect';
+    else if(e.code==='auth/email-already-in-use')msg='Email déjà utilisé';
+    else if(e.code==='auth/invalid-email')msg='Email invalide';
+    else if(e.code==='auth/weak-password')msg='Mot de passe trop faible';
+    er.textContent=msg;er.style.display='block';
+    btn.textContent=_mode==='signup'?'Créer mon compte':'Se connecter';btn.disabled=false;
+  }
+};
+window.doPwdReset=async function(){
+  var email=(document.getElementById('auth-email').value||'').trim();
+  var er=document.getElementById('auth-err');
+  if(!email){er.textContent="Entre ton email d'abord";er.style.display='block';return;}
+  try{await sendPasswordResetEmail(auth,email);er.style.color='var(--green)';er.textContent='Email envoyé !';er.style.display='block';}
+  catch(e){er.style.color='var(--red)';er.textContent='Email non trouvé';er.style.display='block';}
+};
+
+
+
+// ══ FEED + MESSAGES + NOTATION + MATCHING + SCORECARD ══
+
+// FEED
+document.addEventListener('eagl-load-feed', async function(e) {
+  if(!currentUser) return;
+  try {
+    var tab = e.detail.tab;
+    var q;
+    if(tab === 'amis') {
+      var amis = window._mesAmis || [];
+      if(!amis.length) { if(window.afficherFeed) afficherFeed([]); return; }
+      q = query(collection(db,'feed'), where('uid','in',amis.slice(0,10)), orderBy('createdAt','desc'), limit(20));
+    } else {
+      q = query(collection(db,'feed'), orderBy('createdAt','desc'), limit(30));
+    }
+    var snap = await getDocs(q);
+    var items = [];
+    snap.forEach(function(d){ var item=d.data(); item.id=d.id; items.push(item); });
+    if(window.afficherFeed) afficherFeed(items);
+  } catch(err) { 
+    // Fallback avec les parties existantes
+    try {
+      var snap2 = await getDocs(query(collection(db,'parties'), orderBy('createdAt','desc'), limit(10)));
+      var items2 = [];
+      snap2.forEach(function(d){ var feedId=d.id;
+        var p = d.data();
+        items2.push({type:'partie_creee', id: feedId, userName: p.hoteNom||'Un golfer', texte:'a créé une partie à '+p.golf, golf:p.golf, createdAt:p.createdAt, partieId:d.id});
+      });
+      if(window.afficherFeed) afficherFeed(items2);
+    } catch(e2) {}
+  }
+});
+
+// MATCHING - trouver joueurs compatibles
+document.addEventListener('eagl-load-matching', async function() {
+  if(!currentUser) return;
+  try {
+    var mySnap = await getDoc(doc(db,'users',currentUser.uid));
+    var me = mySnap.data() || {};
+    var myHcp = me.handicap || 20;
+    // Chercher joueurs avec hcp similaire (±5)
+    var snap = await getDocs(query(collection(db,'users'),
+      where('handicap','>=', Math.max(0, myHcp-6)),
+      where('handicap','<=', myHcp+6),
+      limit(8)
+    ));
+    var joueurs = [];
+    snap.forEach(function(d){
+      if(d.id === currentUser.uid) return;
+      var u = d.data();
+      var diff = Math.abs((u.handicap||20) - myHcp);
+      var compat = Math.round(100 - diff * 8);
+      joueurs.push(Object.assign({uid:d.id, compat:compat}, u));
+    });
+    joueurs.sort(function(a,b){return b.compat-a.compat;});
+    if(window.afficherMatching) afficherMatching(joueurs);
+  } catch(err) {}
+});
+
+// MESSAGERIE PRIVÉE - ouvrir chat
+document.addEventListener('eagl-open-chat', async function(e) {
+  if(!currentUser) return;
+  var otherUid = e.detail.uid;
+  var chatId = [currentUser.uid, otherUid].sort().join('_');
+  if(window._chatPriveUnsub) window._chatPriveUnsub();
+  try {
+    window._chatPriveUnsub = onSnapshot(
+      query(collection(db,'chats',chatId,'msgs'), orderBy('createdAt','asc'), limit(50)),
+      function(snap) {
+        var msgs = [];
+        snap.forEach(function(d){ msgs.push(d.data()); });
+        if(window.afficherMsgsPrive) afficherMsgsPrive(msgs, currentUser.uid);
+      }
+    );
+  } catch(err) {}
+});
+
+// MESSAGERIE - envoyer message
+document.addEventListener('eagl-send-msg-prive', async function(e) {
+  if(!currentUser) return;
+  var chatId = [currentUser.uid, e.detail.uid].sort().join('_');
+  try {
+    await addDoc(collection(db,'chats',chatId,'msgs'), {
+      from: currentUser.uid,
+      txt: e.detail.txt,
+      createdAt: serverTimestamp()
+    });
+    // Mettre à jour la conv
+    await setDoc(doc(db,'convs',currentUser.uid+'_'+e.detail.uid), {
+      uid: e.detail.uid,
+      lastMsg: e.detail.txt,
+      updatedAt: serverTimestamp()
+    }, {merge:true});
+  } catch(err) {}
+});
+
+// MESSAGERIE - charger conversations
+document.addEventListener('eagl-load-convs', async function() {
+  if(!currentUser) return;
+  try {
+    var snap = await getDocs(query(collection(db,'convs'), where('uid','!=',''), orderBy('updatedAt','desc'), limit(10)));
+    // Filtrer les convs de l'utilisateur
+    var convSnap = await getDocs(query(collection(db,'convs')));
+    var convs = [];
+    convSnap.forEach(function(d){ 
+      if(d.id.startsWith(currentUser.uid)) convs.push(d.data()); 
+    });
+    // Charger les noms
+    var enriched = [];
+    for(var i=0;i<Math.min(convs.length,8);i++) {
+      var us = await getDoc(doc(db,'users',convs[i].uid));
+      if(us.exists()) {
+        var u = us.data();
+        enriched.push({uid:convs[i].uid, nom:(u.prenom||'')+' '+(u.nom||''), lastMsg:convs[i].lastMsg});
+      }
+    }
+    if(window.afficherConversations) afficherConversations(enriched);
+  } catch(err) { if(window.afficherConversations) afficherConversations([]); }
+});
+
+// NOTATION
+document.addEventListener('eagl-noter', async function(e) {
+  if(!currentUser) return;
+  try {
+    var userRef = doc(db,'users',e.detail.uid);
+    var snap = await getDoc(userRef);
+    var data = snap.data() || {};
+    var notes = data.notes || [];
+    notes.push({score:e.detail.score, from:currentUser.uid, partieId:e.detail.partieId});
+    var avg = Math.round(notes.reduce(function(a,n){return a+n.score;},0)/notes.length * 10)/10;
+    await updateDoc(userRef, {notes:notes, noteAvg:avg});
+    // Log dans le feed
+    try {
+      var me = await getDoc(doc(db,'users',currentUser.uid));
+      var meData = me.data()||{};
+      await addDoc(collection(db,'feed'), {
+        uid: currentUser.uid,
+        type: 'note_donnee',
+        userName: (meData.prenom||'')+ ' ' +(meData.nom||'Golfer'),
+        texte: 'a noté un partenaire '+e.detail.score+'⭐',
+        createdAt: serverTimestamp()
+      });
+    } catch(e2){}
+  } catch(err) {}
+});
+
+// SCORECARD
+document.addEventListener('eagl-save-score', async function(e) {
+  if(!currentUser || !window._partieActive) return;
+  try {
+    await updateDoc(doc(db,'parties',window._partieActive), {
+      ['scores_'+currentUser.uid]: e.detail.scores,
+      ['total_'+currentUser.uid]: e.detail.total
+    });
+    // Log feed
+    var me = await getDoc(doc(db,'users',currentUser.uid));
+    var meData = (me.data()||{});
+    await addDoc(collection(db,'feed'), {
+      uid: currentUser.uid,
+      type: 'score_poste',
+      userName: (meData.prenom||'')+ ' ' +(meData.nom||'Golfer'),
+      texte: 'a joué et scoré '+e.detail.total+' coups',
+      golf: meData.club || '',
+      createdAt: serverTimestamp()
+    });
+  } catch(err) {}
+});
+
+// Log dans feed quand on crée/rejoint une partie
+var _origCreer = window.creerPartie;
+if(_origCreer) {
+  window.creerPartie = async function() {
+    await _origCreer();
+    try {
+      var me = await getDoc(doc(db,'users',currentUser.uid));
+      var meData = (me.data()||{});
+      var golf = document.getElementById('input-golf')?.value || '';
+      await addDoc(collection(db,'feed'), {
+        uid: currentUser.uid,
+        type: 'partie_creee',
+        userName: (meData.prenom||'')+ ' ' +(meData.nom||'Golfer'),
+        texte: 'a créé une partie à ' + golf,
+        golf: golf,
+        createdAt: serverTimestamp()
+      });
+    } catch(e2){}
+  };
+}
+
+// ══ SOCIAL PATCH ══
+window._currentUid=null;
+document.addEventListener('load-pp',async function(e){
+  try{var s=await getDoc(doc(db,'users',e.detail.uid));if(s.exists()&&window.setPPData)setPPData(s.data(),e.detail.uid);}catch(err){}
+});
+document.addEventListener('toggle-ami',async function(e){
+  if(!currentUser)return;
+  try{
+    if(e.detail.add){await updateDoc(doc(db,'users',currentUser.uid),{amis:arrayUnion(e.detail.uid)});if(!window._mesAmis)window._mesAmis=[];window._mesAmis.push(e.detail.uid);showToast('Ami ajouté 🤝');}
+    else{await updateDoc(doc(db,'users',currentUser.uid),{amis:arrayRemove(e.detail.uid)});window._mesAmis=(window._mesAmis||[]).filter(function(a){return a!==e.detail.uid;});showToast('Ami retiré');}
+    if(window.setPPData){var s=await getDoc(doc(db,'users',e.detail.uid));if(s.exists())setPPData(s.data(),e.detail.uid);}
+  }catch(err){showToast('Erreur');}
+});
+
+// ══ AMIS SEARCH + LOAD ══
+document.addEventListener('eagl-search-ami', async function(e) {
+  var q = e.detail.q;
+  try {
+    var snap = await getDocs(query(collection(db,'users'), where('pseudo','>=',q), where('pseudo','<=',q+'\uf8ff'), limit(5)));
+    var users = [];
+    snap.forEach(function(d){ if(d.id!==currentUser?.uid) users.push(Object.assign({uid:d.id},d.data())); });
+    if(window.afficherResultatsRecherche) afficherResultatsRecherche(users);
+  } catch(err) { console.log(err); }
+});
+
+document.addEventListener('eagl-load-amis', async function() {
+  if(!currentUser) return;
+  try {
+    var snap = await getDoc(doc(db,'users',currentUser.uid));
+    var amis = (snap.data()||{}).amis || [];
+    if(window.updateMesAmis) updateMesAmis(amis);
+    var amisData = [];
+    for(var i=0; i<Math.min(amis.length,15); i++){
+      var as = await getDoc(doc(db,'users',amis[i]));
+      if(as.exists()) amisData.push(Object.assign({uid:amis[i]},as.data()));
+    }
+    if(window.afficherListeAmis) afficherListeAmis(amisData);
+  } catch(err) { console.log(err); }
+});
+
+document.addEventListener('eagl-kudos', async function(e) {
+  if(!currentUser) return;
+  try {
+    var ref = doc(db,'feed',e.detail.id);
+    if(e.detail.undo) {
+      await updateDoc(ref, {kudos: increment(-1), kudoBy: arrayRemove(currentUser.uid)});
+    } else {
+      await updateDoc(ref, {kudos: increment(1), kudoBy: arrayUnion(currentUser.uid)});
+    }
+  } catch(err) { console.log('kudos err:', err); }
+});
+</script>
+
+<script>
+var _uLat=null,_uLng=null,_golfsOk=false;
+function haversine(a,b,x,y){var R=6371,d=(x-a)*Math.PI/180,e=(y-b)*Math.PI/180,f=Math.sin(d/2)*Math.sin(d/2)+Math.cos(a*Math.PI/180)*Math.cos(x*Math.PI/180)*Math.sin(e/2)*Math.sin(e/2);return R*2*Math.atan2(Math.sqrt(f),Math.sqrt(1-f));}
+function chargerGolfs(){
+  if(_golfsOk)return;
+  var el=document.getElementById('golfs-list');if(!el)return;
+  if(!navigator.geolocation){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Géolocalisation non disponible</div>';return;}
+  navigator.geolocation.getCurrentPosition(async function(p){
+    _uLat=p.coords.latitude;_uLng=p.coords.longitude;
+    if(_uLat<41||_uLat>51.5||_uLng<-5.5||_uLng>9.6){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">🌍 Eagl est disponible en France uniquement</div>';return;}
+    try{
+      var q='[out:json][timeout:25];(node["leisure"="golf_course"](around:40000,'+_uLat+','+_uLng+');way["leisure"="golf_course"](around:40000,'+_uLat+','+_uLng+'););out center tags;';
+      var r=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:'data='+encodeURIComponent(q)});
+      var d=await r.json();
+      var gs=(d.elements||[]).map(function(e){
+        var lt=e.lat||(e.center&&e.center.lat),ln=e.lon||(e.center&&e.center.lon);
+        return{name:e.tags.name,phone:e.tags.phone||e.tags['contact:phone']||null,web:e.tags.website||e.tags['contact:website']||null,holes:e.tags.holes||null,access:e.tags.access||null,dist:lt?haversine(_uLat,_uLng,lt,ln):999};
+      }).filter(function(g){return g.name;}).sort(function(a,b){return a.dist-b.dist;}).slice(0,8);
+      if(!gs.length){el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Aucun golf trouvé dans 40km</div>';return;}
+      var h='';
+      gs.forEach(function(g){
+        var ds=g.dist<1?Math.round(g.dist*1000)+'m':g.dist.toFixed(1)+'km';
+        var badge=g.access==='private'?'<span style="font-size:9px;background:rgba(255,82,82,0.15);color:#FF5252;padding:2px 8px;border-radius:6px;font-weight:600">Privé</span>':'<span style="font-size:9px;background:rgba(46,204,113,0.12);color:#2ecc71;padding:2px 8px;border-radius:6px;font-weight:600;border:0.5px solid rgba(46,204,113,0.3)">Public</span>';
+        h+='<div style="background:#20262e;border:0.5px solid rgba(255,255,255,0.07);border-radius:16px;padding:14px">';
+        h+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px"><div style="flex:1"><div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:3px">'+g.name+'</div><div style="font-size:11px;color:rgba(255,255,255,0.25)">'+(g.holes?'⛳ '+g.holes+' trous · ':'')+' 📍 '+ds+'</div></div><div style="margin-left:8px">'+badge+'</div></div>';
+        if(g.phone||g.web){h+='<div style="display:flex;gap:6px;margin-bottom:8px">';if(g.phone)h+='<a href="tel:'+g.phone+'" style="flex:1;text-align:center;padding:7px;background:#262d36;border-radius:9px;font-size:11px;color:rgba(255,255,255,0.55);text-decoration:none">📞 Appeler</a>';if(g.web)h+='<a href="'+g.web+'" target="_blank" rel="noopener" style="flex:1;text-align:center;padding:7px;background:rgba(46,204,113,0.12);border-radius:9px;font-size:11px;color:#2ecc71;text-decoration:none;border:0.5px solid rgba(46,204,113,0.3)">🌐 Site web</a>';h+='</div>';}
+        h+='<button onclick="voirPartiesGolf(this.dataset.n)" data-n="'+g.name.replace(/"/g,'&quot;')+'" style="width:100%;padding:9px;border:0.5px solid rgba(46,204,113,0.3);border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;background:transparent;color:#2ecc71">Voir les parties Eagl →</button>';
+        h+='</div>';
+      });
+      el.innerHTML=h;_golfsOk=true;
+    }catch(e){el.innerHTML='<div style="padding:16px;text-align:center;color:rgba(255,255,255,0.25);font-size:12px">Erreur de chargement. Réessaie.</div>';}
+  },function(){el.innerHTML='<div style="padding:16px;text-align:center;color:rgba(255,255,255,0.25);font-size:12px">📍 Autorise la localisation pour voir les golfs proches</div>';},{timeout:10000});
+}
+function voirPartiesGolf(n){if(window.goTo)goTo('s-jouer');if(window.showToast)showToast('⛳ '+n);}
+window.addEventListener('load',function(){setTimeout(chargerGolfs,2000);});
+</script>
+
+<script>
+var _pLat=null, _pLng=null, _filtreKm=0;
+
+function haversineP(a,b,x,y){
+  var R=6371,d=(x-a)*Math.PI/180,e=(y-b)*Math.PI/180;
+  var f=Math.sin(d/2)*Math.sin(d/2)+Math.cos(a*Math.PI/180)*Math.cos(x*Math.PI/180)*Math.sin(e/2)*Math.sin(e/2);
+  return R*2*Math.atan2(Math.sqrt(f),Math.sqrt(1-f));
+}
+
+function initGeolocPartie(){
+  var st=document.getElementById('loc-status');
+  if(!navigator.geolocation){if(st)st.textContent='Géolocalisation non disponible';return;}
+  navigator.geolocation.getCurrentPosition(function(p){
+    _pLat=p.coords.latitude; _pLng=p.coords.longitude;
+    if(st){
+      if(_pLat<41||_pLat>51.5||_pLng<-5.5||_pLng>9.6){
+        st.textContent='🌍 Eagl est disponible en France uniquement'; return;
+      }
+      st.textContent='📍 Position trouvée — parties triées par distance';
+      st.style.color='var(--green)';
+    }
+    afficherPartiesAvecDistance();
+  },function(){
+    if(st)st.textContent='📍 Active la localisation pour voir les parties proches';
+    afficherPartiesAvecDistance();
+  },{timeout:8000});
+}
+
+window.setFiltreDistance=function(km,el){
+  _filtreKm=km;
+  document.querySelectorAll('[id^="fd-"]').forEach(function(c){c.className='chip chip-off';});
+  el.className='chip chip-on';
+  afficherPartiesAvecDistance();
+};
+
+function afficherPartiesAvecDistance(){
+  // Récupérer les cartes de parties existantes et leur ajouter la distance
+  var containers=['liste-parties-jouer','liste-parties-home'];
+  containers.forEach(function(id){
+    var el=document.getElementById(id);
+    if(!el)return;
+    var cards=el.querySelectorAll('.pcard,[data-golf]');
+    cards.forEach(function(card){
+      var golf=card.dataset.golf||'';
+      var lat=parseFloat(card.dataset.lat||'0');
+      var lng=parseFloat(card.dataset.lng||'0');
+      if(_pLat&&lat&&lng){
+        var dist=haversineP(_pLat,_pLng,lat,lng);
+        var distEl=card.querySelector('.dist-badge');
+        if(!distEl){distEl=document.createElement('span');distEl.className='dist-badge';distEl.style.cssText='font-size:10px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:8px;font-weight:600;border:0.5px solid var(--gring);margin-left:6px';card.appendChild(distEl);}
+        var ds=dist<1?Math.round(dist*1000)+'m':dist.toFixed(1)+'km';
+        distEl.textContent='📍 '+ds;
+        card._dist=dist;
+        // Filtre distance
+        if(_filtreKm>0&&dist>_filtreKm){card.style.display='none';}else{card.style.display='';}
+        // Badge "Près de toi"
+        if(dist<10){var nb=card.querySelector('.near-badge');if(!nb){nb=document.createElement('span');nb.className='near-badge';nb.style.cssText='font-size:9px;background:rgba(46,204,113,0.2);color:#2ecc71;padding:2px 8px;border-radius:8px;font-weight:700;border:0.5px solid var(--gring)';nb.textContent='⚡ Près de toi';card.prepend(nb);}}
+      }
+    });
+    // Trier les cartes par distance
+    if(_pLat){
+      var sorted=[...cards].filter(function(c){return c.style.display!=='none';}).sort(function(a,b){return (a._dist||999)-(b._dist||999);});
+      sorted.forEach(function(c){el.appendChild(c);});
+    }
+  });
+}
+
+// Lancer la géoloc quand on arrive sur Jouer
+document.addEventListener('DOMContentLoaded',function(){
+  var origGoTo=window.goTo;
+  if(origGoTo){
+    window.goTo=function(id){
+      origGoTo(id);
+      if(id==='s-jouer'&&!_pLat){initGeolocPartie();}
+    if(id==='s-profile'){document.dispatchEvent(new CustomEvent('eagl-load-amis'));}
+      if(id==='s-jouer'&&_pLat){afficherPartiesAvecDistance();}
+    };
+  }
+  setTimeout(function(){if(document.getElementById('loc-status'))initGeolocPartie();},1500);
+});
+</script>
+
+<script>
+var _ppUid=null, _mesAmis=[], _ppFrom='s-jouer';
+window._ppFrom='s-jouer';
+
+window.ouvrirProfilPublic=function(uid,from){
+  if(!uid)return;
+  _ppUid=uid; _ppFrom=from||'s-jouer'; window._ppFrom=_ppFrom;
+  goTo('s-profil-public');
+  // Reset UI
+  ['pp-name','pp-pseudo','pp-club','pp-hcp','pp-parties','pp-pts','pp-driver','pp-balle','pp-team'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent='...';});
+  document.getElementById('pp-communs').textContent='...';
+  document.getElementById('pp-av').textContent='?';
+  // Demander chargement au module Firebase
+  document.dispatchEvent(new CustomEvent('load-pp',{detail:{uid:uid}}));
+  // Update bouton ami
+  var b=document.getElementById('btn-pp-ami');
+  if(b){var isA=_mesAmis.includes(uid);b.textContent=isA?'✓ Ami':'+ Ajouter en ami';b.style.background=isA?'var(--bg3)':'var(--green)';b.style.color=isA?'var(--t)':'#000';b.style.border=isA?'0.5px solid var(--line)':'none';}
+};
+
+window.doToggleAmi=function(){
+  if(!_ppUid)return;
+  document.dispatchEvent(new CustomEvent('toggle-ami',{detail:{uid:_ppUid,add:!_mesAmis.includes(_ppUid)}}));
+};
+
+window.setPPData=function(p,uid){
+  var fn=(p.prenom||''),ln=(p.nom||'');
+  var init=(fn+' '+ln).trim().split(' ').map(function(n){return n[0]||'';}).join('').toUpperCase().slice(0,2)||'?';
+  var av=document.getElementById('pp-av');
+  if(av){if(p.photoURL)av.innerHTML='<img src="'+p.photoURL+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';else av.textContent=init;}
+  var set=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+  set('pp-name',(fn+' '+ln).trim()||'Joueur');
+  set('pp-pseudo',p.pseudo?'@'+p.pseudo:'@eagleur');
+  set('pp-club',(p.club||'')+(p.ville?' · '+p.ville:''));
+  set('pp-hcp',p.handicap!=null?p.handicap:'—');
+  set('pp-parties',p.parties||0);
+  set('pp-pts',p.points||0);
+  set('pp-driver',p.driver||'—');
+  set('pp-balle',p.balle||'—');
+  set('pp-team',p.team||'—');
+  var comm=(p.amis||[]).filter(function(a){return _mesAmis.includes(a);}).length;
+  set('pp-communs',comm>0?comm+' ami(s) en commun 🤝':'Aucun ami en commun');
+  // Bouton ami
+  var b=document.getElementById('btn-pp-ami');
+  var isA=_mesAmis.includes(uid);
+  if(b){b.textContent=isA?'✓ Ami':'+ Ajouter en ami';b.style.background=isA?'var(--bg3)':'var(--green)';b.style.color=isA?'var(--t)':'#000';b.style.border=isA?'0.5px solid var(--line)':'none';}
+  if(uid===window._currentUid){var bb=document.getElementById('btn-pp-ami');if(bb)bb.style.display='none';}
+};
+
+window.updateMesAmis=function(amis){_mesAmis=amis||[];};
+</script>
+
+<script>
+window.rechercherAmis = async function() {
+  var q = (document.getElementById('ami-search').value||'').trim().toLowerCase().replace('@','');
+  var el = document.getElementById('ami-resultats');
+  if(!q || q.length < 2) { el.innerHTML=''; return; }
+  el.innerHTML = '<div style="font-size:12px;color:var(--t3);padding:6px 0">Recherche...</div>';
+  try {
+    document.dispatchEvent(new CustomEvent('eagl-search-ami', {detail:{q:q}}));
+  } catch(e) { el.innerHTML=''; }
+};
+
+window.ajouterAmiDepuisRecherche = function(uid, pseudo) {
+  document.dispatchEvent(new CustomEvent('toggle-ami', {detail:{uid:uid, add:true}}));
+  document.getElementById('ami-search').value='';
+  document.getElementById('ami-resultats').innerHTML='';
+  showToast('@'+pseudo+' ajouté en ami 🤝');
+  setTimeout(function(){ document.dispatchEvent(new CustomEvent('eagl-load-amis')); }, 500);
+};
+
+window.afficherResultatsRecherche = function(users) {
+  var el = document.getElementById('ami-resultats');
+  if(!users || !users.length){ el.innerHTML='<div style="font-size:12px;color:var(--t3);padding:6px 0">Aucun utilisateur trouvé</div>'; return; }
+  var h='';
+  users.forEach(function(u){
+    var init=((u.prenom||'')+(u.nom?' '+u.nom:'')).trim().split(' ').map(function(n){return n[0]||'';}).join('').toUpperCase().slice(0,2)||'?';
+    var isAmi=(window._mesAmis||[]).includes(u.uid);
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border:0.5px solid var(--line);border-radius:12px;margin-bottom:6px">';
+    h+='<div style="width:38px;height:38px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--green);flex-shrink:0">'+init+'</div>';
+    h+='<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(u.prenom||'')+' '+(u.nom||'')+'</div>';
+    h+='<div style="font-size:11px;color:var(--green)">@'+u.pseudo+'</div>';
+    if(u.club) h+='<div style="font-size:10px;color:var(--t3)">'+u.club+'</div>';
+    h+='</div>';
+    if(!isAmi) h+='<button onclick="ajouterAmiDepuisRecherche(''+u.uid+'',''+u.pseudo+'')" style="padding:8px 14px;border:none;border-radius:10px;background:var(--green);color:#000;font-size:11px;font-weight:600;cursor:pointer">+ Ami</button>';
+    else h+='<span style="font-size:11px;color:var(--t3)">✓ Ami</span>';
+    h+='</div>';
+  });
+  el.innerHTML = h;
+};
+
+window.afficherListeAmis = function(amis) {
+  var el = document.getElementById('ami-liste');
+  if(!el) return;
+  if(!amis || !amis.length){ el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Ajoute des amis en recherchant par pseudo 👆</div>'; return; }
+  var h='';
+  amis.forEach(function(u){
+    var init=((u.prenom||'')+(u.nom?' '+u.nom:'')).trim().split(' ').map(function(n){return n[0]||'';}).join('').toUpperCase().slice(0,2)||'?';
+    h+='<div style="display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line);cursor:pointer" onclick="ouvrirProfilPublic(''+u.uid+'','s-profile')">';
+    h+='<div style="width:40px;height:40px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--green);flex-shrink:0">'+init+'</div>';
+    h+='<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(u.prenom||'')+' '+(u.nom||'')+'</div>';
+    h+='<div style="font-size:11px;color:var(--green)">@'+(u.pseudo||'—')+'</div>';
+    if(u.club) h+='<div style="font-size:10px;color:var(--t3)">'+u.club+'</div>';
+    h+='</div>';
+    h+='<div style="text-align:right"><div style="font-size:11px;color:var(--t3)">Hcp '+(u.handicap!=null?u.handicap:'—')+'</div>';
+    h+='<div style="font-size:10px;color:var(--t3)">'+(u.points||0)+' pts</div></div>';
+    h+='</div>';
+  });
+  el.innerHTML = h;
+};
+</script>
+
+
+<script>
+// ══════════════════════════════════════════════════
+// FEED SOCIAL
+// ══════════════════════════════════════════════════
+var _feedTab = 'tous';
+
+window.doKudos = function(e, itemId, alreadyKudosed) {
+  e.stopPropagation();
+  if(!itemId || !window._currentUid) return;
+  document.dispatchEvent(new CustomEvent('eagl-kudos', {detail:{id:itemId, undo:alreadyKudosed}}));
+  // UI optimiste
+  var btn = e.currentTarget;
+  if(alreadyKudosed) {
+    btn.style.borderColor='var(--line)'; btn.style.color='var(--t3)'; btn.style.background='transparent';
+  } else {
+    btn.style.borderColor='var(--green)'; btn.style.color='var(--green)'; btn.style.background='var(--gdim)';
+    showToast('🏌️ Kudos envoyé !');
+  }
+};
+
+window.setFeedTab = function(tab, el) {
+  _feedTab = tab;
+  document.querySelectorAll('[id^="feed-"]').forEach(function(c){c.className='chip chip-off';});
+  el.className = 'chip chip-on';
+  chargerFeed();
+};
+
+function chargerFeed() {
+  document.dispatchEvent(new CustomEvent('eagl-load-feed', {detail:{tab:_feedTab}}));
+}
+
+window.afficherFeed = function(items) {
+  var el = document.getElementById('feed-list');
+  if(!el) return;
+  if(!items || !items.length) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--t3);font-size:13px">Aucune activité pour l instant<br><br><button class="btn btn-d" style="font-size:12px;padding:10px" onclick="goTo(\'s-jouer\')">Créer une partie →</button></div>';
+    return;
+  }
+  var h = '';
+  items.forEach(function(item) {
+    var ago = timeAgo(item.createdAt);
+    var icon = item.type === 'partie_creee' ? '🏌️' : item.type === 'partie_rejointe' ? '🤝' : item.type === 'ami_ajoute' ? '👥' : '⭐';
+    var color = item.type === 'partie_creee' ? 'var(--green)' : item.type === 'partie_rejointe' ? 'var(--blue)' : 'var(--gold)';
+    h += '<div style="margin:0 14px 10px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px;cursor:pointer" onclick="item.partieId?voirPartie(item.partieId):null">';
+    h += '<div style="display:flex;align-items:center;gap:10px">';
+    h += '<div style="width:44px;height:44px;border-radius:50%;background:var(--gdim);border:1.5px solid '+color+';display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">'+icon+'</div>';
+    h += '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+item.userName+'</div>';
+    h += '<div style="font-size:12px;color:var(--t2);margin-top:2px">'+item.texte+'</div>';
+    h += '<div style="font-size:10px;color:var(--t3);margin-top:3px">'+ago+'</div></div>';
+    if(item.golf) h += '<div style="text-align:right;font-size:10px;color:var(--t3)">'+item.golf+'</div>';
+    h += '</div>';
+    // Kudos
+    var kudos = item.kudos || 0;
+    var myKudos = (item.kudoBy||[]).includes(window._currentUid||'');
+    h += '<div style="display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:0.5px solid var(--line)">';
+    h += '<button onclick="doKudos(event,\''+item.id+'\','+myKudos+')" style="display:flex;align-items:center;gap:6px;padding:7px 14px;border:0.5px solid '+(myKudos?'var(--green)':'var(--line)')+';border-radius:20px;background:'+(myKudos?'var(--gdim)':'transparent')+';cursor:pointer;font-size:12px;font-weight:600;color:'+(myKudos?'var(--green)':'var(--t3)')+'">';
+    h += '<span>🏌️</span><span>'+(kudos>0?kudos+' ':'')+' Bon round !'+'</span></button>';
+    h += '</div></div>';
+  });
+  el.innerHTML = h;
+};
+
+function timeAgo(ts) {
+  if(!ts) return 'à l instant';
+  var d = ts.toDate ? ts.toDate() : new Date(ts);
+  var diff = Math.floor((Date.now() - d.getTime()) / 1000);
+  if(diff < 60) return 'il y a '+diff+'s';
+  if(diff < 3600) return 'il y a '+Math.floor(diff/60)+'min';
+  if(diff < 86400) return 'il y a '+Math.floor(diff/3600)+'h';
+  return 'il y a '+Math.floor(diff/86400)+'j';
+}
+
+// ══════════════════════════════════════════════════
+// MESSAGEIRE PRIVÉE
+// ══════════════════════════════════════════════════
+var _chatPriveUid = null, _chatPriveUnsub = null;
+
+window.ouvrirChatPrive = function(uid, nom, initials) {
+  _chatPriveUid = uid;
+  var el = document.getElementById('chat-prive-nom');
+  var av = document.getElementById('chat-prive-av');
+  if(el) el.textContent = nom;
+  if(av) av.textContent = initials;
+  goTo('s-chat-prive');
+  document.dispatchEvent(new CustomEvent('eagl-open-chat', {detail:{uid:uid}}));
+};
+
+window.envoyerMsgPrive = function() {
+  var inp = document.getElementById('chat-prive-input');
+  var txt = inp ? (inp.value||'').trim() : '';
+  if(!txt || !_chatPriveUid) return;
+  inp.value = '';
+  document.dispatchEvent(new CustomEvent('eagl-send-msg-prive', {detail:{uid:_chatPriveUid, txt:txt}}));
+};
+
+window.afficherMsgsPrive = function(msgs, myUid) {
+  var el = document.getElementById('chat-prive-msgs');
+  if(!el) return;
+  var h = '';
+  msgs.forEach(function(m) {
+    var mine = m.from === myUid;
+    h += '<div style="display:flex;justify-content:'+(mine?'flex-end':'flex-start')+'">';
+    h += '<div style="max-width:75%;padding:10px 13px;border-radius:'+(mine?'16px 16px 4px 16px':'16px 16px 16px 4px')+';background:'+(mine?'var(--green)':'var(--bg3)')+';color:'+(mine?'#000':'var(--t)')+';font-size:13px">'+m.txt+'</div></div>';
+  });
+  el.innerHTML = h || '<div style="text-align:center;color:var(--t3);font-size:12px;margin:20px 0">Commence la conversation !</div>';
+  el.scrollTop = el.scrollHeight;
+};
+
+window.afficherConversations = function(convs) {
+  var el = document.getElementById('msg-list');
+  if(!el) return;
+  if(!convs || !convs.length) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:var(--t3);font-size:13px">Aucune conversation<br><br>Va sur un profil joueur et clique 💬</div>';
+    return;
+  }
+  var h = '';
+  convs.forEach(function(c) {
+    var init = ((c.nom||'?')[0]).toUpperCase();
+    h += '<div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:0.5px solid var(--line);cursor:pointer" onclick="ouvrirChatPrive(\''+c.uid+'\',\''+c.nom+'\',\''+init+'\')">';
+    h += '<div style="width:46px;height:46px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--green);flex-shrink:0">'+init+'</div>';
+    h += '<div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--t)">'+c.nom+'</div>';
+    h += '<div style="font-size:12px;color:var(--t3);margin-top:2px">'+( c.lastMsg||'Nouveau message')+'</div></div>';
+    if(c.unread) h += '<div style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>';
+    h += '</div>';
+  });
+  el.innerHTML = h;
+};
+
+// ══════════════════════════════════════════════════
+// NOTATION POST-PARTIE
+// ══════════════════════════════════════════════════
+var _notationPartieId = null, _notationJoueurs = [];
+
+window.ouvrirNotation = function(partieId, joueurs) {
+  _notationPartieId = partieId;
+  _notationJoueurs = joueurs || [];
+  var el = document.getElementById('notation-joueurs');
+  if(!el) return;
+  var h = '';
+  _notationJoueurs.forEach(function(j, i) {
+    if(j.uid === window._currentUid) return;
+    var init = ((j.prenom||j.nom||'?')[0]).toUpperCase();
+    h += '<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg3);border-radius:12px">';
+    h += '<div style="width:42px;height:42px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--green);flex-shrink:0">'+init+'</div>';
+    h += '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(j.prenom||'Joueur')+'</div>';
+    h += '<div style="font-size:11px;color:var(--t3)">Hcp '+(j.handicap||'—')+'</div></div>';
+    h += '<div style="display:flex;gap:4px" id="stars-'+j.uid+'">';
+    for(var s=1;s<=5;s++) {
+      h += '<span data-uid="'+j.uid+'" data-score="'+s+'" onclick="noterJoueur(\''+j.uid+'\','+s+')" style="font-size:22px;cursor:pointer;opacity:0.3">⭐</span>';
+    }
+    h += '</div></div>';
+  });
+  if(!h) { fermerNotation(); return; }
+  el.innerHTML = h;
+  document.getElementById('modal-notation').style.display = 'flex';
+};
+
+window.noterJoueur = function(uid, score) {
+  var stars = document.querySelectorAll('[data-uid="'+uid+'"]');
+  stars.forEach(function(s){ s.style.opacity = s.dataset.score <= score ? '1' : '0.3'; });
+  window['_note_'+uid] = score;
+};
+
+window.validerNotations = function() {
+  _notationJoueurs.forEach(function(j) {
+    var score = window['_note_'+j.uid];
+    if(score && j.uid !== window._currentUid) {
+      document.dispatchEvent(new CustomEvent('eagl-noter', {detail:{uid:j.uid, score:score, partieId:_notationPartieId}}));
+    }
+  });
+  fermerNotation();
+  showToast('Notes envoyées ⭐ Merci !');
+};
+
+window.fermerNotation = function() {
+  document.getElementById('modal-notation').style.display = 'none';
+};
+
+// ══════════════════════════════════════════════════
+// SCORECARD
+// ══════════════════════════════════════════════════
+var _scorecard = {};
+var _trous = 18;
+
+window.ouvrirScorecard = function() {
+  _trous = parseInt(document.getElementById('partie-trous-val')?.textContent) || 18;
+  var grid = document.getElementById('scorecard-grid');
+  if(!grid) return;
+  // Header
+  var h = '<div style="display:grid;grid-template-columns:auto 1fr auto;gap:6px;margin-bottom:4px;font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;padding:0 4px"><span>Trou</span><span style="text-align:center">Par</span><span style="text-align:right">Score</span></div>';
+  var pars = [4,3,5,4,4,3,5,4,4,4,3,5,4,4,3,5,4,4];
+  for(var i=1;i<=_trous;i++) {
+    var par = pars[i-1]||4;
+    var val = _scorecard[i]||'';
+    h += '<div style="display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;background:var(--bg3);border-radius:10px;padding:8px 12px">';
+    h += '<span style="font-family:\'Bebas Neue\',sans-serif;font-size:18px;color:var(--t);width:24px">'+i+'</span>';
+    h += '<span style="text-align:center;font-size:13px;color:var(--t3)">'+par+'</span>';
+    h += '<input type="number" min="1" max="12" value="'+val+'" placeholder="-" onchange="_scorecard['+i+']=parseInt(this.value)||0;majTotal()" style="width:52px;text-align:center;background:var(--bg2);border:0.5px solid var(--line);border-radius:8px;padding:6px;font-size:14px;color:var(--t);outline:none;font-family:\'DM Sans\',sans-serif">';
+    h += '</div>';
+  }
+  grid.innerHTML = h;
+  majTotal();
+  document.getElementById('modal-scorecard').style.display = 'flex';
+};
+
+window.majTotal = function() {
+  var total = Object.values(_scorecard).reduce(function(a,b){return a+(b||0);},0);
+  var el = document.getElementById('scorecard-total');
+  if(el) el.textContent = total || '—';
+};
+
+window.fermerScorecard = function() {
+  document.getElementById('modal-scorecard').style.display = 'none';
+};
+
+window.sauvegarderScorecard = function() {
+  var total = Object.values(_scorecard).reduce(function(a,b){return a+(b||0);},0);
+  document.dispatchEvent(new CustomEvent('eagl-save-score', {detail:{scores:_scorecard, total:total}}));
+  fermerScorecard();
+  showToast('Score sauvegardé : '+total+' coups 🏌️');
+};
+
+// ══════════════════════════════════════════════════
+// MATCHING JOUEURS COMPATIBLES
+// ══════════════════════════════════════════════════
+window.afficherMatching = function(joueurs) {
+  var el = document.getElementById('matching-list');
+  if(!el || !joueurs.length) return;
+  var h = '';
+  joueurs.forEach(function(j) {
+    var init = ((j.prenom||'?')[0]).toUpperCase();
+    var compatPct = j.compat || 80;
+    h += '<div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:14px;margin-bottom:8px;cursor:pointer" onclick="ouvrirProfilPublic(\''+j.uid+'\',\'s-jouer\')">';
+    h += '<div style="width:44px;height:44px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--green);flex-shrink:0">'+init+'</div>';
+    h += '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(j.prenom||'Joueur')+' '+(j.nom||'')+'</div>';
+    h += '<div style="font-size:11px;color:var(--t3)">Hcp '+(j.handicap||'—')+' · '+(j.club||'—')+'</div></div>';
+    h += '<div style="text-align:right"><div style="font-size:14px;font-weight:700;color:var(--green)">'+compatPct+'%</div><div style="font-size:9px;color:var(--t3)">compat.</div></div>';
+    h += '</div>';
+  });
+  el.innerHTML = h;
+};
+
+// ══════════════════════════════════════════════════
+// HOOKS goTo
+// ══════════════════════════════════════════════════
+var _origGoTo14 = window.goTo;
+window.goTo = function(id) {
+  _origGoTo14(id);
+  if(id==='s-feed') chargerFeed();
+  if(id==='s-messages') document.dispatchEvent(new CustomEvent('eagl-load-convs'));
+  if(id==='s-jouer') document.dispatchEvent(new CustomEvent('eagl-load-matching'));
+};
+</script>
+
+</body>
+</html>
