@@ -577,6 +577,78 @@ select.input-field option{background:var(--bg3);color:var(--t)}
   </div>
 </div>
 
+<!-- ██ CLUBS ██ -->
+<div class="screen" id="s-clubs">
+  <div class="sb"><span id="time-clubs">9:41</span><span>███</span></div>
+  <div class="hdr">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--t)">Clubs</div>
+    <button onclick="ouvrirCreerClub()" style="padding:6px 14px;border:none;border-radius:20px;background:var(--green);color:#000;font-size:12px;font-weight:700;cursor:pointer">+ Créer</button>
+  </div>
+  <!-- MON CLUB -->
+  <div id="mon-club-section" style="display:none">
+    <div class="sl">Mon club</div>
+    <div id="mon-club-card" style="margin:0 14px 14px;background:linear-gradient(135deg,rgba(46,204,113,0.12),rgba(46,204,113,0.04));border:0.5px solid var(--gring);border-radius:18px;padding:16px;cursor:pointer" onclick="ouvrirClub(window._monClubId)">
+    </div>
+  </div>
+  <!-- CLUBS PROCHES -->
+  <div class="sl">Clubs près de toi</div>
+  <div class="scroll">
+    <div id="clubs-list" style="padding:0 14px 80px">
+      <div style="text-align:center;padding:24px;color:var(--t3);font-size:12px"><div class="spinner" style="margin:0 auto 10px"></div>Recherche des clubs...</div>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-feed')"><span class="ni-ico">📰</span><span class="ni-lbl">Feed</span></button>
+    <button class="ni active"><span class="ni-ico">🏌️</span><span class="ni-lbl">Clubs</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- ██ DÉTAIL CLUB ██ -->
+<div class="screen" id="s-club-detail">
+  <div class="sb"><span>9:41</span><span>███</span></div>
+  <div class="hdr">
+    <div class="back-btn" onclick="goTo('s-clubs')">←</div>
+    <div id="club-detail-nom" style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--t)">Club</div>
+    <button id="btn-rejoindre-club" onclick="rejoindreClub()" style="padding:6px 14px;border:none;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;background:var(--green);color:#000">Rejoindre</button>
+  </div>
+  <div class="scroll">
+    <!-- INFOS CLUB -->
+    <div id="club-detail-header" style="margin:0 14px 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:18px;padding:16px"></div>
+    <!-- TABS -->
+    <div style="display:flex;background:var(--bg3);border-radius:12px;padding:3px;gap:2px;margin:0 14px 14px">
+      <button id="ctab-membres" onclick="setClubTab('membres',this)" style="flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:var(--green);color:#000">Membres</button>
+      <button id="ctab-parties" onclick="setClubTab('parties',this)" style="flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:transparent;color:var(--t3)">Parties</button>
+      <button id="ctab-classement" onclick="setClubTab('classement',this)" style="flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:transparent;color:var(--t3)">Classement</button>
+    </div>
+    <div id="club-detail-content" style="padding:0 14px 80px"></div>
+  </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-feed')"><span class="ni-ico">📰</span><span class="ni-lbl">Feed</span></button>
+    <button class="ni active" onclick="goTo('s-clubs')"><span class="ni-ico">🏌️</span><span class="ni-lbl">Clubs</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
+</div>
+
+<!-- MODAL CRÉER CLUB -->
+<div id="modal-creer-club" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;align-items:flex-end;justify-content:center">
+  <div style="background:var(--bg2);border-radius:24px 24px 0 0;padding:24px;width:100%;max-width:390px">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--t);margin-bottom:16px">Créer un club</div>
+    <input class="inp" id="club-nom-input" placeholder="Nom du club (ex: Les Eagles de Paris)" type="text">
+    <input class="inp" id="club-golf-input" placeholder="Golf associé (ex: Golf National)" type="text">
+    <select class="inp" id="club-type-input">
+      <option value="public">🌍 Club public — tout le monde peut rejoindre</option>
+      <option value="prive">🔒 Club privé — sur invitation</option>
+    </select>
+    <button onclick="validerCreerClub()" class="btn btn-g">Créer le club →</button>
+    <button onclick="document.getElementById('modal-creer-club').style.display='none'" style="width:100%;padding:12px;border:none;background:transparent;color:var(--t3);font-size:13px;cursor:pointer;margin-top:8px">Annuler</button>
+  </div>
+</div>
+
 </div><!-- phone -->
 
 <!-- ══ FIREBASE SDK ══ -->
@@ -1261,6 +1333,70 @@ async function chargerChallenges(){
     if(window.afficherBadges)afficherBadges(badges);
   }catch(err){}
 }
+
+// ══ CLUBS FIREBASE ══
+window._monClubId = null;
+
+document.addEventListener('eagl-creer-club', async function(e) {
+  if(!currentUser) return;
+  try {
+    var clubRef = await addDoc(collection(db,'clubs'), {
+      nom: e.detail.nom,
+      golf: e.detail.golf || '',
+      type: e.detail.type || 'public',
+      createur: currentUser.uid,
+      membresUids: [currentUser.uid],
+      membres: 1,
+      createdAt: serverTimestamp()
+    });
+    await updateDoc(doc(db,'users',currentUser.uid), {clubId: clubRef.id, clubNom: e.detail.nom});
+    showToast('Club créé ! 🏌️');
+    window._monClubId = clubRef.id;
+    document.getElementById('mon-club-section').style.display='block';
+    document.dispatchEvent(new CustomEvent('eagl-load-clubs'));
+  } catch(err) { showToast('Erreur: '+err.message); }
+});
+
+document.addEventListener('eagl-load-clubs', async function() {
+  if(!currentUser) return;
+  try {
+    var snap = await getDocs(query(collection(db,'clubs'), orderBy('membres','desc'), limit(20)));
+    var clubs = [];
+    snap.forEach(function(d){ clubs.push(Object.assign({id:d.id}, d.data())); });
+    var mySnap = await getDoc(doc(db,'users',currentUser.uid));
+    var monClubId = (mySnap.data()||{}).clubId || null;
+    window._monClubId = monClubId;
+    if(window.afficherClubs) afficherClubs(clubs, monClubId);
+  } catch(err) { console.log('clubs err:', err); }
+});
+
+document.addEventListener('eagl-load-club', async function(e) {
+  if(!currentUser) return;
+  try {
+    var clubSnap = await getDoc(doc(db,'clubs',e.detail.id));
+    if(!clubSnap.exists()) return;
+    var club = Object.assign({id:e.detail.id}, clubSnap.data());
+    var membresData = [];
+    var uids = club.membresUids || [];
+    for(var i=0;i<Math.min(uids.length,20);i++){
+      var ms = await getDoc(doc(db,'users',uids[i]));
+      if(ms.exists()) membresData.push(Object.assign({uid:uids[i]}, ms.data()));
+    }
+    membresData.sort(function(a,b){return (b.points||0)-(a.points||0);});
+    if(window.afficherClubDetail) afficherClubDetail(club, membresData, []);
+  } catch(err) {}
+});
+
+document.addEventListener('eagl-rejoindre-club', async function(e) {
+  if(!currentUser) return;
+  try {
+    await updateDoc(doc(db,'clubs',e.detail.id), {membresUids: arrayUnion(currentUser.uid), membres: increment(1)});
+    await updateDoc(doc(db,'users',currentUser.uid), {clubId: e.detail.id});
+    window._monClubId = e.detail.id;
+    showToast('Tu as rejoint le club ! 🏌️');
+    document.dispatchEvent(new CustomEvent('eagl-load-club', {detail:{id:e.detail.id}}));
+  } catch(err) { showToast('Erreur'); }
+});
 </script>
 
 <script>
@@ -1540,6 +1676,110 @@ window.afficherBadges=function(badges){
   if(!el)return;
   if(!badges||!badges.length){el.innerHTML='<div style="font-size:12px;color:var(--t3)">Complète des défis pour gagner des badges !</div>';return;}
   el.innerHTML=badges.map(function(b){return '<div style="padding:6px 13px;background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;font-size:12px;font-weight:600;color:var(--green)">'+b+'</div>';}).join('');
+};
+
+
+var _clubActif = null, _clubTab = 'membres';
+
+window.ouvrirCreerClub = function() {
+  document.getElementById('modal-creer-club').style.display = 'flex';
+};
+
+window.validerCreerClub = async function() {
+  var nom = (document.getElementById('club-nom-input').value||'').trim();
+  var golf = (document.getElementById('club-golf-input').value||'').trim();
+  var type = document.getElementById('club-type-input').value;
+  if(!nom) { showToast('Entre un nom de club !'); return; }
+  document.getElementById('modal-creer-club').style.display = 'none';
+  document.dispatchEvent(new CustomEvent('eagl-creer-club', {detail:{nom,golf,type}}));
+};
+
+window.ouvrirClub = function(clubId) {
+  _clubActif = clubId;
+  goTo('s-club-detail');
+  document.dispatchEvent(new CustomEvent('eagl-load-club', {detail:{id:clubId}}));
+};
+
+window.rejoindreClub = function() {
+  if(!_clubActif) return;
+  document.dispatchEvent(new CustomEvent('eagl-rejoindre-club', {detail:{id:_clubActif}}));
+};
+
+window.setClubTab = function(tab, el) {
+  _clubTab = tab;
+  ['membres','parties','classement'].forEach(function(t){
+    var b = document.getElementById('ctab-'+t);
+    if(b){ b.style.background = t===tab?'var(--green)':'transparent'; b.style.color = t===tab?'#000':'var(--t3)'; }
+  });
+  document.dispatchEvent(new CustomEvent('eagl-club-tab', {detail:{id:_clubActif, tab:tab}}));
+};
+
+window.afficherClubs = function(clubs, monClubId) {
+  var el = document.getElementById('clubs-list');
+  if(!el) return;
+  window._monClubId = monClubId;
+  if(monClubId) document.getElementById('mon-club-section').style.display='block';
+  
+  if(!clubs || !clubs.length) {
+    el.innerHTML = '<div style="text-align:center;padding:32px;color:var(--t3);font-size:13px">Aucun club trouvé près de toi.<br><br><button class="btn btn-d" style="font-size:12px;padding:10px" onclick="ouvrirCreerClub()">Créer le premier club →</button></div>';
+    return;
+  }
+  var h = '';
+  clubs.forEach(function(cl) {
+    var membres = cl.membres || 0;
+    var badge = cl.type === 'prive' ? '🔒' : '🌍';
+    h += '<div style="background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer" onclick="ouvrirClub(\''+cl.id+'\')">'; 
+    h += '<div style="display:flex;align-items:center;gap:12px">';
+    h += '<div style="width:48px;height:48px;border-radius:14px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🏌️</div>';
+    h += '<div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--t)">' + badge + ' ' + cl.nom + '</div>';
+    if(cl.golf) h += '<div style="font-size:11px;color:var(--t3);margin-top:2px">⛳ ' + cl.golf + '</div>';
+    h += '<div style="font-size:11px;color:var(--t3);margin-top:2px">👥 ' + membres + ' membre' + (membres>1?'s':'') + '</div></div>';
+    h += '<div style="font-size:20px;color:var(--t3)">›</div></div></div>';
+  });
+  el.innerHTML = h;
+};
+
+window.afficherClubDetail = function(club, membres, parties) {
+  var header = document.getElementById('club-detail-header');
+  var nomEl = document.getElementById('club-detail-nom');
+  if(nomEl) nomEl.textContent = club.nom || 'Club';
+  
+  var isMembre = (club.membresUids||[]).includes(window._currentUid||'');
+  var btn = document.getElementById('btn-rejoindre-club');
+  if(btn) {
+    btn.textContent = isMembre ? '✓ Membre' : 'Rejoindre';
+    btn.style.background = isMembre ? 'var(--bg3)' : 'var(--green)';
+    btn.style.color = isMembre ? 'var(--t)' : '#000';
+    btn.style.border = isMembre ? '0.5px solid var(--line)' : 'none';
+  }
+  
+  if(header) {
+    header.innerHTML = '<div style="display:flex;align-items:center;gap:14px">' +
+      '<div style="width:56px;height:56px;border-radius:16px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-size:28px">🏌️</div>' +
+      '<div><div style="font-size:15px;font-weight:700;color:var(--t)">' + (club.nom||'—') + '</div>' +
+      (club.golf?'<div style="font-size:12px;color:var(--t3);margin-top:3px">⛳ '+club.golf+'</div>':'') +
+      '<div style="font-size:12px;color:var(--t3);margin-top:3px">👥 '+(club.membres||0)+' membres</div></div></div>' +
+      (club.desc?'<div style="font-size:12px;color:var(--t2);margin-top:10px">'+club.desc+'</div>':'');
+  }
+  afficherMembresList(membres);
+};
+
+window.afficherMembresList = function(membres) {
+  var el = document.getElementById('club-detail-content');
+  if(!el || !membres) return;
+  var h = '';
+  membres.forEach(function(m, i) {
+    var init = ((m.prenom||'?')[0]).toUpperCase();
+    h += '<div style="display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:0.5px solid var(--line);cursor:pointer" onclick="ouvrirProfilPublic(\''+m.uid+'\',\'s-club-detail\')">';
+    h += '<div style="width:16px;font-size:12px;color:var(--t3);text-align:center;font-weight:600">'+(i+1)+'</div>';
+    h += '<div style="width:40px;height:40px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--green);flex-shrink:0">'+init+'</div>';
+    h += '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(m.prenom||'')+' '+(m.nom||'')+'</div>';
+    h += '<div style="font-size:11px;color:var(--t3)">@'+(m.pseudo||'—')+' · Hcp '+(m.handicap!=null?m.handicap:'—')+'</div></div>';
+    h += '<div style="text-align:right"><div style="font-size:13px;font-weight:700;color:var(--green)">'+(m.points||0)+'</div><div style="font-size:10px;color:var(--t3)">pts</div></div>';
+    h += '</div>';
+  });
+  if(!h) h = '<div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">Aucun membre pour l instant</div>';
+  el.innerHTML = h;
 };
 
 window.doKudos = function(e, itemId, alreadyKudosed) {
