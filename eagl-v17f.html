@@ -1380,106 +1380,22 @@ window._currentUid=null;
 document.addEventListener('load-pp',async function(e){
   try{var s=await getDoc(doc(db,'users',e.detail.uid));if(s.exists()&&window.setPPData)setPPData(s.data(),e.detail.uid);}catch(err){}
 });
-document.addEventListener('toggle-ami',async function(e){
-  if(!currentUser)return;
-  try{
-    if(e.detail.add){await updateDoc(doc(db,'users',currentUser.uid),{amis:arrayUnion(e.detail.uid)});if(!window._mesAmis)window._mesAmis=[];window._mesAmis.push(e.detail.uid);showToast('Ami ajouté 🤝');}
-    else{await updateDoc(doc(db,'users',currentUser.uid),{amis:arrayRemove(e.detail.uid)});window._mesAmis=(window._mesAmis||[]).filter(function(a){return a!==e.detail.uid;});showToast('Ami retiré');}
-    if(window.setPPData){var s=await getDoc(doc(db,'users',e.detail.uid));if(s.exists())setPPData(s.data(),e.detail.uid);}
-  }catch(err){showToast('Erreur');}
-});
+
 
 // ══ AMIS SEARCH + LOAD ══
 
 // ══ AMIS LISTENERS (FIX) ══
-document.addEventListener('eagl-search-ami', async function(e) {
-  if(!currentUser) return;
-  var q = e.detail.q;
-  try {
-    var snap = await getDocs(query(
-      collection(db,'users'),
-      where('pseudo','>=',q),
-      where('pseudo','<=',q+'\uf8ff'),
-      limit(8)
-    ));
-    var users = [];
-    snap.forEach(function(d){ if(d.id!==currentUser.uid) users.push(Object.assign({uid:d.id},d.data())); });
-    // Aussi chercher par prénom
-    if(users.length < 3) {
-      var snap2 = await getDocs(query(collection(db,'users'), where('prenom','>=',q.charAt(0).toUpperCase()+q.slice(1)), where('prenom','<=',q.charAt(0).toUpperCase()+q.slice(1)+'\uf8ff'), limit(5)));
-      snap2.forEach(function(d){ if(d.id!==currentUser.uid && !users.find(u=>u.uid===d.id)) users.push(Object.assign({uid:d.id},d.data())); });
-    }
-    if(window.afficherResultatsRecherche) afficherResultatsRecherche(users);
-  } catch(err) { console.log('search ami err:', err); }
-});
 
-document.addEventListener('eagl-load-amis', async function() {
-  if(!currentUser) return;
-  try {
-    var snap = await getDoc(doc(db,'users',currentUser.uid));
-    var data = snap.data() || {};
-    var amis = data.amis || [];
-    window._mesAmis = amis;
-    if(window.updateMesAmis) updateMesAmis(amis);
-    var amisData = [];
-    for(var i=0; i<Math.min(amis.length,20); i++){
-      var as = await getDoc(doc(db,'users',amis[i]));
-      if(as.exists()) amisData.push(Object.assign({uid:amis[i]},as.data()));
-    }
-    if(window.afficherListeAmis) afficherListeAmis(amisData);
-  } catch(err) { console.log('load amis err:', err); }
-});
 
-document.addEventListener('toggle-ami', async function(e) {
-  if(!currentUser) return;
-  try {
-    var uid = e.detail.uid;
-    var add = e.detail.add;
-    if(add) {
-      await updateDoc(doc(db,'users',currentUser.uid), {amis: arrayUnion(uid)});
-      await updateDoc(doc(db,'users',uid), {amis: arrayUnion(currentUser.uid)});
-      await updateDoc(doc(db,'users',currentUser.uid), {points: increment(5)});
-      // Log dans feed
-      var me = await getDoc(doc(db,'users',currentUser.uid));
-      var meData = me.data()||{};
-      await addDoc(collection(db,'feed'), {
-        uid: currentUser.uid, type:'ami_ajoute',
-        userName:(meData.prenom||'')+' '+(meData.nom||''),
-        texte:'a ajouté un ami', createdAt: serverTimestamp(), kudos:0, kudoBy:[]
-      });
-    } else {
-      await updateDoc(doc(db,'users',currentUser.uid), {amis: arrayRemove(uid)});
-      await updateDoc(doc(db,'users',uid), {amis: arrayRemove(currentUser.uid)});
-    }
-  } catch(err) { console.log('toggle ami err:', err); }
-});
+
+
+
 
 
 // ══ AMIS SEARCH + LOAD ══
-document.addEventListener('eagl-search-ami', async function(e) {
-  var q = e.detail.q;
-  try {
-    var snap = await getDocs(query(collection(db,'users'), where('pseudo','>=',q), where('pseudo','<=',q+'\uf8ff'), limit(5)));
-    var users = [];
-    snap.forEach(function(d){ if(d.id!==currentUser?.uid) users.push(Object.assign({uid:d.id},d.data())); });
-    if(window.afficherResultatsRecherche) afficherResultatsRecherche(users);
-  } catch(err) { console.log(err); }
-});
 
-document.addEventListener('eagl-load-amis', async function() {
-  if(!currentUser) return;
-  try {
-    var snap = await getDoc(doc(db,'users',currentUser.uid));
-    var amis = (snap.data()||{}).amis || [];
-    if(window.updateMesAmis) updateMesAmis(amis);
-    var amisData = [];
-    for(var i=0; i<Math.min(amis.length,15); i++){
-      var as = await getDoc(doc(db,'users',amis[i]));
-      if(as.exists()) amisData.push(Object.assign({uid:amis[i]},as.data()));
-    }
-    if(window.afficherListeAmis) afficherListeAmis(amisData);
-  } catch(err) { console.log(err); }
-});
+
+
 
 document.addEventListener('eagl-kudos', async function(e) {
   if(!currentUser) return;
@@ -1629,48 +1545,57 @@ document.addEventListener('eagl-save-score-post', async function(e) {
 });
 
 // == AMIS FB ==
-document.addEventListener("eagl-search-ami",async function(e){
-  if(!currentUser)return;
-  var q=e.detail.q;
-  try{
-    var snap=await getDocs(query(collection(db,"users"),where("pseudo",">=",q),where("pseudo","<=",q+"\uf8ff"),limit(8)));
-    var users=[];
-    snap.forEach(function(d){if(d.id!==currentUser.uid)users.push(Object.assign({uid:d.id},d.data()));});
-    if(window.afficherResultatsRecherche)afficherResultatsRecherche(users);
-  }catch(err){console.log("search ami:",err);}
+
+
+
+
+
+
+// == AMIS LISTENERS CLEAN ==
+document.addEventListener("eagl-search-ami", async function(e) {
+  if(!currentUser) return;
+  var q = e.detail.q;
+  try {
+    var snap = await getDocs(query(collection(db,"users"), where("pseudo",">=",q), where("pseudo","<=",q+"\uf8ff"), limit(8)));
+    var users = [];
+    snap.forEach(function(d){ if(d.id !== currentUser.uid) users.push(Object.assign({uid:d.id}, d.data())); });
+    if(window.afficherResultatsRecherche) afficherResultatsRecherche(users);
+  } catch(err) { console.log("search ami:", err); }
 });
 
-document.addEventListener("eagl-load-amis",async function(){
-  if(!currentUser)return;
-  try{
-    var snap=await getDoc(doc(db,"users",currentUser.uid));
-    var data=snap.data()||{};
-    var amis=data.amis||[];
-    window._mesAmis=amis;
-    if(window.updateMesAmis)updateMesAmis(amis);
-    var amisData=[];
-    for(var i=0;i<Math.min(amis.length,20);i++){
-      var as=await getDoc(doc(db,"users",amis[i]));
-      if(as.exists())amisData.push(Object.assign({uid:amis[i]},as.data()));
+document.addEventListener("eagl-load-amis", async function() {
+  if(!currentUser) return;
+  try {
+    var snap = await getDoc(doc(db,"users",currentUser.uid));
+    var data = snap.data() || {};
+    var amis = data.amis || [];
+    window._mesAmis = amis;
+    if(window.updateMesAmis) updateMesAmis(amis);
+    var amisData = [];
+    for(var i = 0; i < Math.min(amis.length,20); i++) {
+      var as = await getDoc(doc(db,"users",amis[i]));
+      if(as.exists()) amisData.push(Object.assign({uid:amis[i]}, as.data()));
     }
-    if(window.afficherListeAmis)afficherListeAmis(amisData);
-  }catch(err){console.log("load amis:",err);}
+    if(window.afficherListeAmis) afficherListeAmis(amisData);
+  } catch(err) { console.log("load amis:", err); }
 });
 
-document.addEventListener("toggle-ami",async function(e){
-  if(!currentUser)return;
-  var uid=e.detail.uid; var add=e.detail.add;
-  try{
-    if(add){
-      await updateDoc(doc(db,"users",currentUser.uid),{amis:arrayUnion(uid)});
-      await updateDoc(doc(db,"users",uid),{amis:arrayUnion(currentUser.uid)});
-      await updateDoc(doc(db,"users",currentUser.uid),{points:increment(5)});
-    }else{
-      await updateDoc(doc(db,"users",currentUser.uid),{amis:arrayRemove(uid)});
-      await updateDoc(doc(db,"users",uid),{amis:arrayRemove(currentUser.uid)});
+document.addEventListener("toggle-ami", async function(e) {
+  if(!currentUser) return;
+  var uid = e.detail.uid;
+  var add = e.detail.add;
+  try {
+    if(add) {
+      await updateDoc(doc(db,"users",currentUser.uid), {amis: arrayUnion(uid)});
+      await updateDoc(doc(db,"users",uid), {amis: arrayUnion(currentUser.uid)});
+      await updateDoc(doc(db,"users",currentUser.uid), {points: increment(5)});
+    } else {
+      await updateDoc(doc(db,"users",currentUser.uid), {amis: arrayRemove(uid)});
+      await updateDoc(doc(db,"users",uid), {amis: arrayRemove(currentUser.uid)});
     }
-  }catch(err){console.log("toggle ami:",err);}
+  } catch(err) { console.log("toggle ami:", err); }
 });
+
 </script>
 
 <script>
