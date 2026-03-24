@@ -387,13 +387,17 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     <!-- LISTE AMIS -->
     <div class="sl">Mes amis</div>
     <div style="margin:0 14px 10px">
-      <input class="inp" id="ami-search" placeholder="🔍 Rechercher par pseudo (@pseudo...)" type="text" style="margin-bottom:8px" oninput="rechercherAmis()">
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <input class="inp" id="ami-search" placeholder="🔍 Rechercher par pseudo..." type="text" style="margin:0;flex:1" oninput="rechercherAmis()">
+      </div>
       <div id="ami-resultats" style="margin-bottom:8px"></div>
       <div id="ami-liste" style="background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;overflow:hidden">
-        <div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Chargement...</div>
+        <div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Chargement de tes amis...</div>
       </div>
     </div>
-<div class="sl">Mon sac</div>
+
+
+    <div class="sl">Mon sac</div>
     <div style="margin:0 14px 12px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">
       <div style="display:flex;flex-direction:column;gap:9px">
         <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Driver</span><span style="color:var(--t);font-weight:600" id="sac-driver">À compléter</span></div>
