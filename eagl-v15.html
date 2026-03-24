@@ -141,6 +141,12 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     </div>
 
     
+    
+    <div class="sl">Défis du mois 🎯</div>
+    <div id="challenges-list" style="padding:0 14px 14px;display:flex;flex-direction:column;gap:8px">
+      <div style="text-align:center;padding:12px;color:var(--t3);font-size:12px;display:flex;align-items:center;justify-content:center;gap:8px"><div class="spinner" style="width:14px;height:14px;border-width:2px"></div>Chargement des défis...</div>
+    </div>
+
     <div class="sl" style="margin-top:4px">Golfs près de toi 📍</div>
     <div style="margin:0 14px 16px">
       <div id="golfs-list" style="display:flex;flex-direction:column;gap:10px">
@@ -404,11 +410,10 @@ select.input-field option{background:var(--bg3);color:var(--t)}
 
     
     <div class="sl">Mes badges 🏅</div>
-    <div id="badges-liste" style="margin:0 14px 14px;display:flex;flex-wrap:wrap;gap:8px;min-height:48px">
-      <div style="font-size:12px;color:var(--t3);padding:8px 0">Complète des défis pour gagner des badges !</div>
+    <div id="badges-liste" style="margin:0 14px 14px;display:flex;flex-wrap:wrap;gap:8px">
+      <div style="font-size:12px;color:var(--t3)">Complète des défis pour gagner des badges !</div>
     </div>
-
-    <div class="sl">Mon sac</div>
+<div class="sl">Mon sac</div>
     <div style="margin:0 14px 12px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">
       <div style="display:flex;flex-direction:column;gap:9px">
         <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t2)">Driver</span><span style="color:var(--t);font-weight:600" id="sac-driver">À compléter</span></div>
@@ -1240,41 +1245,22 @@ document.addEventListener('eagl-kudos', async function(e) {
   } catch(err) { console.log('kudos err:', err); }
 });
 
-// ══ CHALLENGES FIREBASE ══
-async function chargerChallenges() {
-  if(!currentUser) return;
-  try {
-    var snap = await getDoc(doc(db,'users',currentUser.uid));
-    var data = snap.data() || {};
-    var progres = {
-      parties: data.parties || 0,
-      rejoint: data.partiesRejointes || 0,
-      amis: (data.amis||[]).length,
-      scores: data.scoresPostes || 0,
-      notes: data.notesData || 0,
-    };
-    if(window.afficherChallenges) afficherChallenges(progres);
-    // Badges
-    var badges = data.badges || [];
-    // Calculer nouveaux badges
-    CHALLENGES.forEach(function(ch) {
-      var prog = progres[ch.type] || 0;
-      if(prog >= ch.cible && !badges.includes(ch.badge)) {
-        badges.push(ch.badge);
-        // Sauver badge + pts bonus
-        updateDoc(doc(db,'users',currentUser.uid), {
-          badges: arrayUnion(ch.badge),
-          points: increment(ch.pts)
-        }).catch(function(){});
-        showToast('🏅 Badge gagné : ' + ch.badge + ' +'+ch.pts+'pts !');
-      }
+async function chargerChallenges(){
+  if(!currentUser)return;
+  try{
+    var snap=await getDoc(doc(db,'users',currentUser.uid));
+    var data=snap.data()||{};
+    var prog={parties:data.parties||0,rejoint:data.partiesRejointes||0,amis:(data.amis||[]).length,scores:data.scoresPostes||0,notes:data.notesData||0};
+    if(window.afficherChallenges)afficherChallenges(prog);
+    var badges=data.badges||[];
+    var newBadges=false;
+    window.CHALLENGES.forEach(function(ch){
+      var v=prog[ch.type]||0;
+      if(v>=ch.cible&&!badges.includes(ch.badge)){badges.push(ch.badge);newBadges=true;updateDoc(doc(db,'users',currentUser.uid),{badges:arrayUnion(ch.badge),points:increment(ch.pts)}).catch(function(){});showToast('🏅 '+ch.badge+' +'+ch.pts+'pts !');} 
     });
-    if(window.afficherBadges) afficherBadges(badges);
-  } catch(err) { console.log('challenges err:', err); }
+    if(window.afficherBadges)afficherBadges(badges);
+  }catch(err){}
 }
-
-// Exposer CHALLENGES pour le FB patch
-window.CHALLENGES = CHALLENGES;
 </script>
 
 <script>
@@ -1515,58 +1501,45 @@ window.afficherListeAmis = function(amis) {
 var _feedTab = 'tous';
 
 
-// ══ CHALLENGES MENSUELS ══
-var CHALLENGES = [
-  { id:'c1', icon:'⛳', titre:'Golfeur actif', desc:'Joue 3 parties ce mois', cible:3, type:'parties', pts:50, badge:'⛳ Actif' },
-  { id:'c2', icon:'🏆', titre:'Compétiteur', desc:'Rejoins 2 parties ouvertes', cible:2, type:'rejoint', pts:30, badge:'🏆 Compétiteur' },
-  { id:'c3', icon:'👥', titre:'Social', desc:'Ajoute 3 amis', cible:3, type:'amis', pts:40, badge:'👥 Social' },
-  { id:'c4', icon:'📊', titre:'Scoreur', desc:'Poste 1 scorecard', cible:1, type:'scores', pts:25, badge:'📊 Scoreur' },
-  { id:'c5', icon:'🤝', titre:'Fair-play', desc:'Note 2 partenaires', cible:2, type:'notes', pts:20, badge:'🤝 Fair-play' },
-  { id:'c6', icon:'🔥', titre:'Série', desc:'Joue 5 parties ce mois', cible:5, type:'parties', pts:100, badge:'🔥 En série' },
+var CHALLENGES=[
+  {id:'c1',icon:'⛳',titre:'Golfeur actif',desc:'Joue 3 parties ce mois',cible:3,type:'parties',pts:50,badge:'⛳ Actif'},
+  {id:'c2',icon:'🏆',titre:'Compétiteur',desc:'Rejoins 2 parties',cible:2,type:'rejoint',pts:30,badge:'🏆 Compétiteur'},
+  {id:'c3',icon:'👥',titre:'Social',desc:'Ajoute 3 amis',cible:3,type:'amis',pts:40,badge:'👥 Social'},
+  {id:'c4',icon:'📊',titre:'Scoreur',desc:'Poste 1 scorecard',cible:1,type:'scores',pts:25,badge:'📊 Scoreur'},
+  {id:'c5',icon:'🤝',titre:'Fair-play',desc:'Note 2 partenaires',cible:2,type:'notes',pts:20,badge:'🤝 Fair-play'},
+  {id:'c6',icon:'🔥',titre:'Série',desc:'Joue 5 parties',cible:5,type:'parties',pts:100,badge:'🔥 En série'},
 ];
+window.CHALLENGES=CHALLENGES;
 
-window.afficherChallenges = function(progres) {
-  var el = document.getElementById('challenges-list');
-  if(!el) return;
-  var h = '';
-  var now = new Date();
-  var mois = now.toLocaleDateString('fr-FR',{month:'long', year:'numeric'});
-  
-  CHALLENGES.forEach(function(ch) {
-    var prog = progres[ch.type] || 0;
-    var done = prog >= ch.cible;
-    var pct = Math.min(100, Math.round(prog/ch.cible*100));
-    var couleur = done ? 'var(--green)' : 'var(--t3)';
-    
-    h += '<div style="background:var(--bg2);border:0.5px solid '+(done?'var(--gring)':'var(--line)')+';border-radius:14px;padding:12px 14px;'+(done?'background:rgba(46,204,113,0.05)':'')+'">';
-    h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">';
-    h += '<div style="font-size:22px">'+ch.icon+'</div>';
-    h += '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+ch.titre+'</div>';
-    h += '<div style="font-size:11px;color:var(--t3)">'+ch.desc+'</div></div>';
-    h += '<div style="text-align:right"><div style="font-size:12px;font-weight:700;color:'+couleur+'">'+prog+'/'+ch.cible+'</div>';
-    h += '<div style="font-size:10px;color:var(--gold)">+'+ch.pts+' pts</div></div></div>';
-    // Barre de progression
-    h += '<div style="height:4px;background:var(--bg4);border-radius:2px;overflow:hidden">';
-    h += '<div style="height:100%;width:'+pct+'%;background:'+(done?'var(--green)':'var(--blue)')+';border-radius:2px;transition:width .5s"></div></div>';
-    if(done) h += '<div style="font-size:10px;color:var(--green);margin-top:6px;font-weight:600">✓ Défi complété ! Badge gagné : '+ch.badge+'</div>';
-    h += '</div>';
+window.afficherChallenges=function(prog){
+  var el=document.getElementById('challenges-list');
+  if(!el)return;
+  var now=new Date();
+  var mois=now.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+  var h='<div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:10px">'+mois.charAt(0).toUpperCase()+mois.slice(1)+'</div>';
+  CHALLENGES.forEach(function(ch){
+    var v=prog[ch.type]||0;
+    var done=v>=ch.cible;
+    var pct=Math.min(100,Math.round(v/ch.cible*100));
+    h+='<div style="background:var(--bg2);border:0.5px solid '+(done?'var(--gring)':'var(--line)')+';border-radius:14px;padding:12px 14px'+(done?';background:rgba(46,204,113,0.05)':'')+'">';
+    h+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">';
+    h+='<div style="font-size:22px">'+ch.icon+'</div>';
+    h+='<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+ch.titre+'</div>';
+    h+='<div style="font-size:11px;color:var(--t3)">'+ch.desc+'</div></div>';
+    h+='<div style="text-align:right"><div style="font-size:13px;font-weight:700;color:'+(done?'var(--green)':'var(--t3)')+'">'+v+'/'+ch.cible+'</div>';
+    h+='<div style="font-size:10px;color:var(--gold)">+'+ch.pts+' pts</div></div></div>';
+    h+='<div style="height:4px;background:var(--bg3);border-radius:2px"><div style="height:100%;width:'+pct+'%;background:'+(done?'var(--green)':'var(--blue)')+';border-radius:2px"></div></div>';
+    if(done)h+='<div style="font-size:10px;color:var(--green);margin-top:5px;font-weight:600">✓ Badge gagné : '+ch.badge+'</div>';
+    h+='</div>';
   });
-  
-  el.innerHTML = '<div style="font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:1.2px;font-weight:600;margin-bottom:8px">'+mois.charAt(0).toUpperCase()+mois.slice(1)+'</div>' + h;
+  el.innerHTML=h;
 };
 
-window.afficherBadges = function(badges) {
-  var el = document.getElementById('badges-liste');
-  if(!el) return;
-  if(!badges || !badges.length) {
-    el.innerHTML = '<div style="font-size:12px;color:var(--t3);padding:4px 0">Complète des défis pour gagner des badges !</div>';
-    return;
-  }
-  var h = '';
-  badges.forEach(function(b) {
-    h += '<div style="padding:6px 12px;background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;font-size:12px;font-weight:600;color:var(--green)">'+b+'</div>';
-  });
-  el.innerHTML = h;
+window.afficherBadges=function(badges){
+  var el=document.getElementById('badges-liste');
+  if(!el)return;
+  if(!badges||!badges.length){el.innerHTML='<div style="font-size:12px;color:var(--t3)">Complète des défis pour gagner des badges !</div>';return;}
+  el.innerHTML=badges.map(function(b){return '<div style="padding:6px 13px;background:var(--gdim);border:0.5px solid var(--gring);border-radius:20px;font-size:12px;font-weight:600;color:var(--green)">'+b+'</div>';}).join('');
 };
 
 window.doKudos = function(e, itemId, alreadyKudosed) {
