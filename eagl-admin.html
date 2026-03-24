@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eagl. Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#F7F8FA;--bg2:#FFFFFF;--bg3:#F0F2F5;--bg4:#E8EAED;--green:#18c964;--gdim:rgba(24,201,100,0.10);--gold:#F59F00;--blue:#228BE6;--red:#FA5252;--orange:#FD7E14;--t:#1A1B1E;--t2:#495057;--t3:#ADB5BD;--shadow:0 2px 8px rgba(0,0,0,0.08)}
+body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--t);min-height:100vh}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0a1628,#1a2a4a)}
+.login-box{background:#fff;border-radius:24px;padding:40px;width:100%;max-width:380px;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,0.3)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:48px;letter-spacing:4px;color:#1A1B1E}
+.logo span{color:var(--green)}
+.login-sub{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin:4px 0 32px}
+.login-box input{width:100%;padding:14px 16px;border:1.5px solid var(--bg4);border-radius:12px;font-size:15px;outline:none;margin-bottom:12px;font-family:'DM Sans',sans-serif;color:var(--t)}
+.login-box input:focus{border-color:var(--green)}
+.login-btn{width:100%;padding:14px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+#login-error{font-size:13px;color:var(--red);margin-top:12px;display:none}
+#admin-app{display:none}
+.sidebar{width:240px;background:#1A1B1E;min-height:100vh;position:fixed;left:0;top:0;padding:24px 0;z-index:100}
+.sidebar-logo{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:#fff;padding:0 24px 24px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.sidebar-logo span{color:var(--green)}
+.sidebar-logo sub{font-size:10px;font-family:'DM Sans',sans-serif;color:var(--t3);letter-spacing:1px;display:block}
+.nav-item{display:flex;align-items:center;gap:12px;padding:12px 24px;cursor:pointer;font-size:14px;font-weight:500;color:rgba(255,255,255,0.5);transition:all .2s}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,0.05)}
+.nav-item.active{color:#fff;background:rgba(24,201,100,0.12);border-right:3px solid var(--green)}
+.nav-item .icon{font-size:18px;width:24px}
+.main{margin-left:240px;padding:32px;min-height:100vh}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px}
+.page-sub{font-size:14px;color:var(--t3);margin:4px 0 28px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--bg2);border-radius:16px;padding:20px;box-shadow:var(--shadow)}
+.stat-label{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px}
+.stat-val{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;line-height:1}
+.stat-sub{font-size:12px;color:var(--t3);margin-top:4px}
+.card{background:var(--bg2);border-radius:16px;padding:24px;box-shadow:var(--shadow);margin-bottom:20px}
+.card-title{font-size:15px;font-weight:700;margin-bottom:16px}
+table{width:100%;border-collapse:collapse}
+th{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;padding:8px 12px;text-align:left;border-bottom:1.5px solid var(--bg4)}
+td{padding:12px;font-size:13px;border-bottom:1px solid var(--bg3);vertical-align:middle}
+tr:hover td{background:var(--bg3)}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-green{background:rgba(24,201,100,0.12);color:var(--green)}
+.badge-red{background:rgba(250,82,82,0.12);color:var(--red)}
+.badge-blue{background:rgba(34,139,230,0.12);color:var(--blue)}
+.badge-orange{background:rgba(253,126,20,0.12);color:var(--orange)}
+.action-btn{padding:5px 12px;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-danger{background:rgba(250,82,82,0.1);color:var(--red)}
+.btn-success{background:rgba(24,201,100,0.1);color:var(--green)}
+.btn-primary{background:rgba(34,139,230,0.1);color:var(--blue)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:12px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:1px}
+.form-group input,.form-group select,.form-group textarea{padding:10px 14px;border:1.5px solid var(--bg4);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--t);outline:none;background:#fff}
+.form-group input:focus,.form-group select:focus{border-color:var(--green)}
+.form-group textarea{min-height:80px;resize:vertical}
+.btn-submit{padding:12px 24px;background:var(--green);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.page{display:none}
+.page.active{display:block}
+.toast{position:fixed;top:24px;right:24px;background:#1A1B1E;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.spinner{width:20px;height:20px;border:2px solid var(--bg4);border-top:2px solid var(--green);border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.report-card{background:var(--bg2);border-radius:12px;padding:16px;box-shadow:var(--shadow);margin-bottom:12px;border-left:4px solid var(--orange)}
+.report-card.resolved{border-left-color:var(--green);opacity:0.6}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo">EAGL<span>.</span></div>
+    <div class="login-sub">Panneau Administrateur</div>
+    <input type="email" id="login-email" placeholder="Email administrateur">
+    <input type="password" id="login-password" placeholder="Mot de passe">
+    <button class="login-btn" onclick="doAdminLogin()">Accéder au panneau →</button>
+    <div id="login-error">Email ou mot de passe incorrect</div>
+  </div>
+</div>
+
+<div id="admin-app">
+  <div class="sidebar">
+    <div class="sidebar-logo">EAGL<span>.</span><sub>Admin Panel</sub></div>
+    <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="icon">📊</span> Dashboard</div>
+    <div class="nav-item" onclick="showPage('users',this)"><span class="icon">👥</span> Utilisateurs</div>
+    <div class="nav-item" onclick="showPage('parties',this)"><span class="icon">⛳</span> Parties</div>
+    <div class="nav-item" onclick="showPage('defis',this)"><span class="icon">🎯</span> Défis</div>
+    <div class="nav-item" onclick="showPage('events',this)"><span class="icon">📅</span> Événements</div>
+    <div class="nav-item" onclick="showPage('signalements',this)"><span class="icon">🚨</span> Signalements <span id="nb-reports" style="background:var(--red);color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;margin-left:4px;display:none">0</span></div>
+    <div class="nav-item" onclick="showPage('moderation',this)"><span class="icon">🛡️</span> Modération</div>
+    <div class="nav-item" onclick="showPage('stats',this)"><span class="icon">📈</span> Statistiques</div>
+    <div style="position:absolute;bottom:24px;left:0;right:0;padding:0 24px">
+      <div onclick="adminLogout()" style="cursor:pointer;font-size:13px;color:rgba(255,255,255,0.4);padding:10px 0">🚪 Déconnexion</div>
+    </div>
+  </div>
+  <div class="main">
+    <div id="page-dashboard" class="page active">
+      <div class="page-title">Dashboard</div><div class="page-sub">Vue d'ensemble de l'app Eagl</div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Utilisateurs</div><div class="stat-val" id="stat-users" style="color:var(--blue)"><div class="spinner"></div></div><div class="stat-sub">total</div></div>
+        <div class="stat-card"><div class="stat-label">Parties</div><div class="stat-val" id="stat-parties" style="color:var(--green)"><div class="spinner"></div></div><div class="stat-sub">créées</div></div>
+        <div class="stat-card"><div class="stat-label">Signalements</div><div class="stat-val" id="stat-reports" style="color:var(--orange)">0</div><div class="stat-sub">en attente</div></div>
+        <div class="stat-card"><div class="stat-label">Clubs</div><div class="stat-val" id="stat-clubs" style="color:var(--gold)"><div class="spinner"></div></div><div class="stat-sub">créés</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="card"><div class="card-title">🆕 Derniers inscrits</div><div id="last-users"><div class="spinner"></div></div></div>
+        <div class="card"><div class="card-title">⛳ Dernières parties</div><div id="last-parties"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+    <div id="page-users" class="page">
+      <div class="page-title">Utilisateurs</div><div class="page-sub">Gestion des comptes</div>
+      <div class="card">
+        <input type="text" placeholder="🔍 Rechercher..." id="search-users" oninput="filtrerUsers()" style="width:100%;padding:10px 14px;border:1.5px solid var(--bg4);border-radius:10px;font-size:14px;outline:none;font-family:'DM Sans',sans-serif;margin-bottom:16px">
+        <table><thead><tr><th>Utilisateur</th><th>Hcp</th><th>Parties</th><th>Statut</th><th>Actions</th></tr></thead>
+        <tbody id="users-table"><tr><td colspan="5" style="text-align:center;padding:32px"><div class="spinner" style="margin:auto"></div></td></tr></tbody></table>
+      </div>
+    </div>
+    <div id="page-parties" class="page">
+      <div class="page-title">Parties</div><div class="page-sub">Toutes les parties</div>
+      <div class="card"><table><thead><tr><th>Golf</th><th>Date</th><th>Trous</th><th>Joueurs</th><th>Actions</th></tr></thead>
+      <tbody id="parties-table"><tr><td colspan="5" style="text-align:center;padding:32px"><div class="spinner" style="margin:auto"></div></td></tr></tbody></table></div>
+    </div>
+    <div id="page-defis" class="page">
+      <div class="page-title">Défis mensuels</div><div class="page-sub">Gérer les défis actifs</div>
+      <div class="card">
+        <div class="card-title">➕ Créer un défi</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Icône</label><input type="text" id="defi-icon" value="🎯"></div>
+          <div class="form-group"><label>Titre</label><input type="text" id="defi-titre" placeholder="Titre du défi"></div>
+          <div class="form-group"><label>Description</label><input type="text" id="defi-desc" placeholder="Description"></div>
+          <div class="form-group"><label>Type</label><select id="defi-type"><option value="parties">Parties jouées</option><option value="rejoint">Rejoindre parties</option><option value="amis">Amis ajoutés</option><option value="scores">Scorecards</option><option value="notes">Notes données</option></select></div>
+          <div class="form-group"><label>Cible</label><input type="number" id="defi-cible" value="3"></div>
+          <div class="form-group"><label>Points</label><input type="number" id="defi-pts" value="50"></div>
+          <div class="form-group"><label>Mois</label><input type="month" id="defi-mois"></div>
+          <div class="form-group"><label>Badge</label><input type="text" id="defi-badge" placeholder="ex: ⛳ Expert"></div>
+        </div>
+        <button class="btn-submit" style="margin-top:16px" onclick="creerDefi()">Créer →</button>
+      </div>
+      <div class="card"><div class="card-title">📋 Défis actifs</div><div id="defis-list"><div class="spinner" style="display:block;margin:20px auto"></div></div></div>
+    </div>
+    <div id="page-events" class="page">
+      <div class="page-title">Événements</div><div class="page-sub">Tournois et compétitions Eagl</div>
+      <div class="card">
+        <div class="card-title">➕ Créer un événement</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Nom</label><input type="text" id="evt-nom" placeholder="Eagl Open Paris 2026"></div>
+          <div class="form-group"><label>Golf</label><input type="text" id="evt-golf" placeholder="Golf National"></div>
+          <div class="form-group"><label>Date</label><input type="date" id="evt-date"></div>
+          <div class="form-group"><label>Heure</label><input type="time" id="evt-heure" value="09:00"></div>
+          <div class="form-group"><label>Places</label><input type="number" id="evt-places" value="72"></div>
+          <div class="form-group"><label>Format</label><select id="evt-format"><option>Stableford</option><option>Medal</option><option>Scramble</option><option>Quatre balles</option></select></div>
+          <div class="form-group" style="grid-column:1/-1"><label>Description</label><textarea id="evt-desc" placeholder="Description..."></textarea></div>
+        </div>
+        <button class="btn-submit" style="margin-top:16px" onclick="creerEvenement()">Publier →</button>
+      </div>
+      <div class="card"><div class="card-title">📅 Événements publiés</div><div id="events-list"><div class="spinner" style="display:block;margin:20px auto"></div></div></div>
+    </div>
+    <div id="page-signalements" class="page">
+      <div class="page-title">Signalements 🚨</div><div class="page-sub">Messages et profils signalés</div>
+      <div id="reports-list"><div class="spinner" style="display:block;margin:40px auto"></div></div>
+    </div>
+    <div id="page-moderation" class="page">
+      <div class="page-title">Modération 🛡️</div><div class="page-sub">Mots bannis · Comptes bannis</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="card">
+          <div class="card-title">🚫 Mots bannis</div>
+          <div id="mots-bannis-list" style="margin-bottom:16px;display:flex;flex-wrap:wrap;gap:8px;min-height:40px"></div>
+          <div style="display:flex;gap:8px">
+            <input type="text" id="new-mot" placeholder="Ajouter un mot..." style="flex:1;padding:8px 12px;border:1.5px solid var(--bg4);border-radius:8px;font-size:13px;outline:none;font-family:'DM Sans',sans-serif">
+            <button onclick="ajouterMotBanni()" style="padding:8px 16px;background:var(--red);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">+ Ajouter</button>
+          </div>
+        </div>
+        <div class="card"><div class="card-title">⛔ Utilisateurs bannis</div><div id="users-bannis-list" style="min-height:40px"></div></div>
+      </div>
+    </div>
+    <div id="page-stats" class="page">
+      <div class="page-title">Statistiques 📈</div><div class="page-sub">Analyse de l'activité</div>
+      <div class="card"><div class="card-title">📊 Répartition par Team</div><div id="team-stats" style="display:flex;gap:16px;flex-wrap:wrap;padding:8px 0"></div></div>
+      <div class="card"><div class="card-title">🌍 Top golfs</div><div id="top-golfs"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="admin-toast"></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getFirestore, collection, addDoc, query, orderBy, serverTimestamp, doc, setDoc, getDoc, updateDoc, getDocs, limit, where, deleteDoc, increment } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+const ADMIN_UID = 'IYWaAdcnsFVuFNDvIE4v07m77vf1';
+const app = initializeApp({apiKey:"AIzaSyAdu956Nu-vNvukznKYN52YgIPbhwf-Dt0",authDomain:"eagl-app.firebaseapp.com",projectId:"eagl-app",storageBucket:"eagl-app.appspot.com",messagingSenderId:"602608898506",appId:"1:602608898506:web:5aa3bc246f7a235ca5ff33"});
+const auth = getAuth(app);
+const db = getFirestore(app);
+let allUsers = [];
+
+function toast(msg,color='var(--green)'){const t=document.getElementById('admin-toast');t.textContent=msg;t.style.background=color;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+window.adminToast=toast;
+
+window.doAdminLogin=async function(){
+  const email=document.getElementById('login-email').value.trim();
+  const pwd=document.getElementById('login-password').value;
+  try{const c=await signInWithEmailAndPassword(auth,email,pwd);if(c.user.uid!==ADMIN_UID){await signOut(auth);showErr('Accès refusé');return;}}catch(e){showErr('Email ou mot de passe incorrect');}
+};
+function showErr(m){const e=document.getElementById('login-error');e.style.display='block';e.textContent=m;}
+
+window.adminLogout=async function(){await signOut(auth);document.getElementById('admin-app').style.display='none';document.getElementById('login-screen').style.display='flex';};
+
+onAuthStateChanged(auth,async(user)=>{
+  if(user&&user.uid===ADMIN_UID){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('admin-app').style.display='block';
+    chargerDashboard();
+  }else if(user){await signOut(auth);}
+});
+
+window.showPage=function(page,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  if(el)el.classList.add('active');
+  const loaders={users:chargerUsers,parties:chargerParties,defis:chargerDefis,events:chargerEvents,signalements:chargerSignalements,moderation:chargerModeration,stats:chargerStats};
+  if(loaders[page])loaders[page]();
+};
+
+async function chargerDashboard(){
+  const [u,p,c,r]=await Promise.all([getDocs(collection(db,'users')),getDocs(collection(db,'parties')),getDocs(collection(db,'clubs')),getDocs(query(collection(db,'reports'),where('resolved','==',false)))]);
+  document.getElementById('stat-users').textContent=u.size;
+  document.getElementById('stat-parties').textContent=p.size;
+  document.getElementById('stat-clubs').textContent=c.size;
+  document.getElementById('stat-reports').textContent=r.size;
+  if(r.size>0){const nb=document.getElementById('nb-reports');nb.textContent=r.size;nb.style.display='inline';}
+  let uh='';u.forEach(d=>{const x=d.data();if(uh.split('</div>').length>5)return;uh+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bg3)"><div style="width:32px;height:32px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--green)">${((x.prenom||'?')[0]).toUpperCase()}</div><div><div style="font-size:13px;font-weight:600">${x.prenom||'—'} ${x.nom||''}</div><div style="font-size:11px;color:var(--t3)">@${x.pseudo||'—'}</div></div></div>`;});
+  document.getElementById('last-users').innerHTML=uh||'<div style="color:var(--t3);font-size:13px">Aucun utilisateur</div>';
+  let ph='';p.forEach(d=>{const x=d.data();if(ph.split('</div>').length>5)return;ph+=`<div style="padding:10px 0;border-bottom:1px solid var(--bg3)"><div style="font-size:13px;font-weight:600">⛳ ${x.golf||'—'}</div><div style="font-size:11px;color:var(--t3)">${x.date||'—'} · ${(x.joueurs||[]).length} joueurs</div></div>`;});
+  document.getElementById('last-parties').innerHTML=ph||'<div style="color:var(--t3);font-size:13px">Aucune partie</div>';
+}
+
+async function chargerUsers(){const s=await getDocs(query(collection(db,'users'),orderBy('createdAt','desc'),limit(100)));allUsers=[];s.forEach(d=>allUsers.push({id:d.id,...d.data()}));renderUsers(allUsers);}
+function renderUsers(users){let h='';users.forEach(u=>{const b=u.banned||false;h+=`<tr><td><div style="font-weight:600">${u.prenom||'—'} ${u.nom||''}</div><div style="font-size:11px;color:var(--t3)">@${u.pseudo||'—'}</div></td><td>${u.handicap||'—'}</td><td>${u.parties||0}</td><td><span class="badge ${b?'badge-red':'badge-green'}">${b?'Banni':'Actif'}</span></td><td style="display:flex;gap:6px">${b?`<button class="action-btn btn-success" onclick="toggleBan('${u.id}',false)">Débannir</button>`:`<button class="action-btn btn-danger" onclick="toggleBan('${u.id}',true)">Bannir</button>`}</td></tr>`;});document.getElementById('users-table').innerHTML=h||'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucun utilisateur</td></tr>';}
+window.filtrerUsers=function(){const q=document.getElementById('search-users').value.toLowerCase();renderUsers(allUsers.filter(u=>(u.prenom||'').toLowerCase().includes(q)||(u.pseudo||'').toLowerCase().includes(q)));};
+window.toggleBan=async function(uid,ban){if(!confirm(ban?'Bannir ?':'Débannir ?'))return;await updateDoc(doc(db,'users',uid),{banned:ban});toast(ban?'⛔ Banni':'✅ Débanni',ban?'var(--red)':'var(--green)');chargerUsers();};
+
+async function chargerParties(){const s=await getDocs(query(collection(db,'parties'),orderBy('createdAt','desc'),limit(50)));let h='';s.forEach(d=>{const p=d.data();h+=`<tr><td><b>${p.golf||'—'}</b></td><td>${p.date||'—'}</td><td>${p.trous||18}</td><td>${(p.joueurs||[]).length}/${p.maxJoueurs||4}</td><td><button class="action-btn btn-danger" onclick="supprimerPartie('${d.id}')">Supprimer</button></td></tr>`;});document.getElementById('parties-table').innerHTML=h||'<tr><td colspan="5" style="text-align:center;padding:24px;color:var(--t3)">Aucune partie</td></tr>';}
+window.supprimerPartie=async function(id){if(!confirm('Supprimer ?'))return;await deleteDoc(doc(db,'parties',id));toast('✅ Supprimée');chargerParties();};
+
+async function chargerDefis(){const s=await getDocs(collection(db,'challenges'));let h='';if(s.empty)h='<div style="color:var(--t3);font-size:13px">Aucun défi personnalisé. Les 6 défis par défaut sont dans le code.</div>';else s.forEach(d=>{const c=d.data();h+=`<div style="display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg3);border-radius:12px;margin-bottom:8px"><div style="font-size:22px">${c.icon}</div><div style="flex:1"><div style="font-weight:600">${c.titre}</div><div style="font-size:12px;color:var(--t3)">${c.desc} · +${c.pts}pts</div></div><button class="action-btn btn-danger" onclick="supprimerDefi('${d.id}')">Supprimer</button></div>`;});document.getElementById('defis-list').innerHTML=h;}
+window.creerDefi=async function(){const data={icon:document.getElementById('defi-icon').value,titre:document.getElementById('defi-titre').value,desc:document.getElementById('defi-desc').value,type:document.getElementById('defi-type').value,cible:parseInt(document.getElementById('defi-cible').value),pts:parseInt(document.getElementById('defi-pts').value),mois:document.getElementById('defi-mois').value,badge:document.getElementById('defi-badge').value,createdAt:serverTimestamp()};if(!data.titre){toast('Remplis les champs !','var(--red)');return;}await addDoc(collection(db,'challenges'),data);toast('✅ Défi créé !');chargerDefis();};
+window.supprimerDefi=async function(id){if(!confirm('Supprimer ?'))return;await deleteDoc(doc(db,'challenges',id));toast('✅ Supprimé');chargerDefis();};
+
+async function chargerEvents(){const s=await getDocs(query(collection(db,'events'),orderBy('createdAt','desc'),limit(20)));let h='';s.forEach(d=>{const e=d.data();h+=`<div style="background:var(--bg3);border-radius:12px;padding:14px;margin-bottom:10px;display:flex;gap:12px"><div style="font-size:24px">🏆</div><div style="flex:1"><div style="font-weight:700">${e.nom}</div><div style="font-size:12px;color:var(--t3)">⛳ ${e.golf} · ${e.date} · ${e.format}</div></div><button class="action-btn btn-danger" onclick="supprimerEvent('${d.id}')">Supprimer</button></div>`;});document.getElementById('events-list').innerHTML=h||'<div style="color:var(--t3);font-size:13px">Aucun événement</div>';}
+window.creerEvenement=async function(){const data={nom:document.getElementById('evt-nom').value,golf:document.getElementById('evt-golf').value,date:document.getElementById('evt-date').value,heure:document.getElementById('evt-heure').value,places:parseInt(document.getElementById('evt-places').value)||72,format:document.getElementById('evt-format').value,desc:document.getElementById('evt-desc').value,inscrits:[],createdAt:serverTimestamp()};if(!data.nom||!data.golf||!data.date){toast('Remplis les champs !','var(--red)');return;}await addDoc(collection(db,'events'),data);toast('✅ Événement publié !');chargerEvents();};
+window.supprimerEvent=async function(id){if(!confirm('Supprimer ?'))return;await deleteDoc(doc(db,'events',id));toast('✅ Supprimé');chargerEvents();};
+
+async function chargerSignalements(){const s=await getDocs(query(collection(db,'reports'),orderBy('createdAt','desc'),limit(50)));let h='';if(s.empty)h='<div style="text-align:center;padding:40px;color:var(--t3)">🎉 Aucun signalement</div>';else s.forEach(d=>{const r=d.data();const resolved=r.resolved||false;h+=`<div class="report-card ${resolved?'resolved':''}"><div style="display:flex;gap:12px"><div style="font-size:22px">🚨</div><div style="flex:1"><div style="font-weight:700">${r.type||'Signalement'}</div><div style="font-size:13px;color:var(--t2);margin-top:4px">${r.message||'—'}</div><div style="font-size:11px;color:var(--t3);margin-top:6px">Par: ${r.reportedBy||'—'}</div></div>${!resolved?`<div style="display:flex;gap:8px"><button class="action-btn btn-success" onclick="resoudreSignalement('${d.id}')">✓ Résolu</button><button class="action-btn btn-danger" onclick="bannirSignalement('${d.id}','${r.targetId||''}')">Bannir</button></div>`:'<span class="badge badge-green">Résolu</span>'}</div></div>`;});document.getElementById('reports-list').innerHTML=h;}
+window.resoudreSignalement=async function(id){await updateDoc(doc(db,'reports',id),{resolved:true});toast('✅ Résolu');chargerSignalements();};
+window.bannirSignalement=async function(rid,targetId){if(!targetId||!confirm('Bannir ?'))return;await updateDoc(doc(db,'users',targetId),{banned:true});await updateDoc(doc(db,'reports',rid),{resolved:true,action:'banned'});toast('⛔ Banni','var(--red)');chargerSignalements();};
+
+async function chargerModeration(){const s=await getDoc(doc(db,'config','moderation'));const data=s.exists()?s.data():{};const mots=data.motsBannis||[];let mh=mots.map(m=>`<div style="display:flex;align-items:center;gap:6px;padding:5px 12px;background:rgba(250,82,82,0.1);border-radius:20px"><span style="font-size:13px;color:var(--red);font-weight:600">${m}</span><span onclick="supprimerMot('${m}')" style="cursor:pointer;color:var(--t3);font-size:16px">×</span></div>`).join('');document.getElementById('mots-bannis-list').innerHTML=mh||'<div style="color:var(--t3);font-size:13px">Aucun mot</div>';const bs=await getDocs(query(collection(db,'users'),where('banned','==',true)));let bh='';bs.forEach(d=>{const u=d.data();bh+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bg3)"><div style="flex:1;font-size:13px;font-weight:600">${u.prenom||'—'} ${u.nom||''}</div><button class="action-btn btn-success" onclick="toggleBan('${d.id}',false)">Débannir</button></div>`;});document.getElementById('users-bannis-list').innerHTML=bh||'<div style="color:var(--t3);font-size:13px">Aucun utilisateur banni</div>';}
+window.ajouterMotBanni=async function(){const m=document.getElementById('new-mot').value.trim().toLowerCase();if(!m)return;const s=await getDoc(doc(db,'config','moderation'));const mots=s.exists()?(s.data().motsBannis||[]):[];if(!mots.includes(m)){mots.push(m);await setDoc(doc(db,'config','moderation'),{motsBannis:mots},{merge:true});toast('✅ Mot ajouté');document.getElementById('new-mot').value='';chargerModeration();}};
+window.supprimerMot=async function(mot){const s=await getDoc(doc(db,'config','moderation'));const mots=(s.data()?.motsBannis||[]).filter(m=>m!==mot);await setDoc(doc(db,'config','moderation'),{motsBannis:mots},{merge:true});toast('✅ Retiré');chargerModeration();};
+
+async function chargerStats(){const s=await getDocs(collection(db,'users'));let tc={};s.forEach(d=>{const t=d.data().team||'Inconnu';tc[t]=(tc[t]||0)+1;});let th='';Object.entries(tc).sort((a,b)=>b[1]-a[1]).forEach(([t,n])=>{th+=`<div style="flex:1;min-width:100px;background:var(--bg3);border-radius:12px;padding:14px;text-align:center"><div style="font-size:13px;font-weight:700">${t}</div><div style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--green);margin:6px 0">${n}</div></div>`;});document.getElementById('team-stats').innerHTML=th;const ps=await getDocs(collection(db,'parties'));let gs={};ps.forEach(d=>{const g=d.data().golf||'Inconnu';gs[g]=(gs[g]||0)+1;});let gh='<table style="width:100%"><thead><tr><th>#</th><th>Golf</th><th>Parties</th></tr></thead><tbody>';Object.entries(gs).sort((a,b)=>b[1]-a[1]).slice(0,10).forEach(([g,n],i)=>{gh+=`<tr><td>${i+1}</td><td>${g}</td><td><span class="badge badge-green">${n}</span></td></tr>`;});gh+='</tbody></table>';document.getElementById('top-golfs').innerHTML=gh;}
+
+document.getElementById('defi-mois').value=new Date().toISOString().slice(0,7);
+</script>
+</body>
+</html>
