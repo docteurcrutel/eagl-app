@@ -91,45 +91,21 @@ select.input-field option{background:var(--bg3);color:var(--t)}
 <div class="toast" id="toast"></div>
 
 <!-- ══ LOGIN ══ -->
-<div class="screen active" id="s-login" style="justify-content:center;align-items:center;padding:32px;overflow-y:auto;background:#FFFFFF">
-  <div style="font-family:'Bebas Neue',sans-serif;font-size:76px;letter-spacing:6px;color:var(--t);line-height:.9;margin-bottom:6px;text-align:center">EAGL<span style="color:var(--green)">.</span></div>
-  <div style="font-size:14px;color:var(--t2);margin-bottom:36px;text-align:center;line-height:1.7">Trouve tes partenaires de golf.<br>Joue. Progresse. Domine.</div>
-
-  <!-- TABS -->
+<div class="screen active" id="s-login" style="justify-content:center;align-items:center;padding:32px;overflow-y:auto">
+  <div style="font-family:'Bebas Neue',sans-serif;font-size:80px;letter-spacing:6px;color:var(--t);line-height:.9;margin-bottom:8px;text-align:center">EAGL<span style="color:var(--green)">.</span></div>
+  <div style="font-size:14px;color:var(--t2);margin-bottom:32px;text-align:center;line-height:1.7">Trouve tes partenaires de golf.<br>Joue. Progresse. Domine.</div>
   <div style="display:flex;background:var(--bg3);border-radius:12px;padding:3px;gap:2px;margin-bottom:20px;width:100%">
-    <button id="tab-login" onclick="switchTab('login')" style="flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:var(--green);color:#fff">Se connecter</button>
+    <button id="tab-login" onclick="switchTab('login')" style="flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:var(--green);color:#000">Se connecter</button>
     <button id="tab-signup" onclick="switchTab('signup')" style="flex:1;padding:9px 4px;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:transparent;color:var(--t3)">Créer un compte</button>
   </div>
-
-  <!-- FORMULAIRE EMAIL -->
   <div style="width:100%;display:flex;flex-direction:column">
-    <input class="input-field" id="auth-email" placeholder="Email" type="email">
-    <input class="input-field" id="auth-pwd" placeholder="Mot de passe (6 min.)" type="password">
+    <input class="inp" id="auth-email" placeholder="Email" type="email">
+    <input class="inp" id="auth-pwd" placeholder="Mot de passe (6 min.)" type="password">
     <div id="auth-err" style="font-size:12px;color:var(--red);margin-bottom:10px;display:none;text-align:center"></div>
     <button class="btn btn-g" id="btn-auth" onclick="doAuth()">Se connecter</button>
-    <div onclick="doPwdReset()" style="text-align:center;font-size:12px;color:var(--green);cursor:pointer;margin-top:10px;margin-bottom:20px">Mot de passe oublié ?</div>
+    <div onclick="doPwdReset()" style="text-align:center;font-size:12px;color:var(--green);cursor:pointer;margin-top:14px">Mot de passe oublié ?</div>
   </div>
-
-  <!-- SÉPARATEUR -->
-  <div style="display:flex;align-items:center;gap:10px;width:100%;margin-bottom:16px">
-    <div style="flex:1;height:1px;background:var(--bg4)"></div>
-    <div style="font-size:12px;color:var(--t3)">ou continuer avec</div>
-    <div style="flex:1;height:1px;background:var(--bg4)"></div>
-  </div>
-
-  <!-- GOOGLE + APPLE -->
-  <div style="display:flex;gap:10px;width:100%;margin-bottom:20px">
-    <button onclick="loginGoogle()" style="flex:1;padding:12px;border:1.5px solid var(--bg4);border-radius:12px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--t);box-shadow:var(--shadow-sm)">
-      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20H24v8h11.3C33.7 32.8 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c11 0 20-9 20-20 0-1.3-.2-2.7-.4-4z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 19 12 24 12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-1.9 13.5-5l-6.3-5.2C29.3 35.3 26.8 36 24 36c-5.3 0-9.7-3.2-11.4-7.8L6 33.4C9.4 39.5 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.8l6.3 5.1C40.9 35.3 44 30 44 24c0-1.3-.2-2.7-.4-4z"/></svg>
-      Google
-    </button>
-    <button onclick="loginApple()" style="flex:1;padding:12px;border:1.5px solid var(--bg4);border-radius:12px;background:#000;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;color:#fff;box-shadow:var(--shadow-sm)">
-      <svg width="16" height="16" viewBox="0 0 814 1000"><path fill="currentColor" d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-42.3-150.3-110.3C180.4 748.3 144.3 638.4 144.3 533.2c0-166.1 108.2-254.1 214.7-254.1 58.4 0 106.5 38.4 143.9 38.4 35.8 0 91.9-40.6 159.4-40.6 24.4 0 108.2 2.6 168.1 80.6zm-216.3-132.9c30.4-35.8 52-85.5 52-135.2 0-6.5-.6-13-1.9-18.8-49.6 1.9-107.3 33.2-142.5 73.4-27.1 30.4-52.6 80.1-52.6 130.4 0 7.1 1.3 14.3 1.9 16.5 3.2.6 8.4 1.3 13.6 1.3 44.8 0 101.8-29.8 129.5-67.6z"/></svg>
-      Apple
-    </button>
-  </div>
-
-  <div style="font-size:11px;color:var(--t3);text-align:center">100% gratuit · Aucune carte requise</div>
+  <div style="font-size:11px;color:var(--t3);text-align:center;margin-top:24px">100% gratuit · Aucune carte requise</div>
 </div>
 
 <div class="screen" id="s-home">
@@ -721,7 +697,7 @@ select.input-field option{background:var(--bg3);color:var(--t)}
 <!-- ══ FIREBASE SDK ══ -->
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider, OAuthProvider, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc, updateDoc, getDocs, limit } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseConfig = {
@@ -736,14 +712,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
-const appleProvider = new OAuthProvider('apple.com');
-appleProvider.addScope('email');
-appleProvider.addScope('name');
-// Récupérer résultat redirect au chargement
-getRedirectResult(auth).then(result => {
-  if(result?.user) console.log('Redirect auth OK:', result.user.email);
-}).catch(e => { if(e.code !== 'auth/null-user') console.log('Redirect:', e.code); });
 const db = getFirestore(app);
 let currentUser = null;
 let currentPartieId = null;
@@ -776,41 +744,6 @@ window.loginGoogle = async () => {
   btn.innerHTML = '<div class="spinner"></div> Connexion...';
   try { await signInWithPopup(auth, provider); }
   catch(e) { btn.innerHTML = '🔑 Continuer avec Google'; showToast('Erreur de connexion'); }
-};
-
-
-// ══ SOCIAL AUTH ══
-window.loginGoogle = async function() {
-  try {
-  try {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if(isMobile) {
-      await signInWithRedirect(auth, googleProvider);
-    } else {
-      await signInWithPopup(auth, googleProvider);
-    }
-  } catch(e) {
-    if(e.code !== 'auth/popup-closed-by-user') {
-      const err = document.getElementById('auth-err');
-      if(err){err.textContent='Erreur Google: '+e.message;err.style.display='block';}
-    }
-  }
-};
-
-window.loginApple = async function() {
-  try {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if(isMobile) {
-      await signInWithRedirect(auth, appleProvider);
-    } else {
-      await signInWithPopup(auth, appleProvider);
-    }
-  } catch(e) {
-    if(e.code !== 'auth/popup-closed-by-user') {
-      const err = document.getElementById('auth-err');
-      if(err){err.textContent='Apple Sign In: '+e.code;err.style.display='block';}
-    }
-  }
 };
 
 window.logout = async () => {
@@ -1147,7 +1080,7 @@ window.goTo = function(id) {
 };
 
 
-window._mode='login';
+var _mode='login';
 window.switchTab=function(m){
   _mode=m;
   var tl=document.getElementById('tab-login'),ts=document.getElementById('tab-signup'),ba=document.getElementById('btn-auth'),er=document.getElementById('auth-err');
@@ -1164,7 +1097,7 @@ window.doAuth=async function(){
   if(pwd.length<6){er.textContent='Mot de passe trop court (6 min.)';er.style.display='block';return;}
   btn.textContent='Chargement...';btn.disabled=true;
   try{
-    if(window._mode==='signup'){await createUserWithEmailAndPassword(auth,email,pwd);}
+    if(_mode==='signup'){await createUserWithEmailAndPassword(auth,email,pwd);}
     else{await signInWithEmailAndPassword(auth,email,pwd);}
   }catch(e){
     var msg='Erreur, réessaie';
@@ -1173,7 +1106,7 @@ window.doAuth=async function(){
     else if(e.code==='auth/invalid-email')msg='Email invalide';
     else if(e.code==='auth/weak-password')msg='Mot de passe trop faible';
     er.textContent=msg;er.style.display='block';
-    btn.textContent=window.window._mode==='signup'?'Créer mon compte':'Se connecter';btn.disabled=false;
+    btn.textContent=_mode==='signup'?'Créer mon compte':'Se connecter';btn.disabled=false;
   }
 };
 window.doPwdReset=async function(){
@@ -1380,22 +1313,40 @@ window._currentUid=null;
 document.addEventListener('load-pp',async function(e){
   try{var s=await getDoc(doc(db,'users',e.detail.uid));if(s.exists()&&window.setPPData)setPPData(s.data(),e.detail.uid);}catch(err){}
 });
-
-
-// ══ AMIS SEARCH + LOAD ══
-
-// ══ AMIS LISTENERS (FIX) ══
-
-
-
-
-
-
+document.addEventListener('toggle-ami',async function(e){
+  if(!currentUser)return;
+  try{
+    if(e.detail.add){await updateDoc(doc(db,'users',currentUser.uid),{amis:arrayUnion(e.detail.uid)});if(!window._mesAmis)window._mesAmis=[];window._mesAmis.push(e.detail.uid);showToast('Ami ajouté 🤝');}
+    else{await updateDoc(doc(db,'users',currentUser.uid),{amis:arrayRemove(e.detail.uid)});window._mesAmis=(window._mesAmis||[]).filter(function(a){return a!==e.detail.uid;});showToast('Ami retiré');}
+    if(window.setPPData){var s=await getDoc(doc(db,'users',e.detail.uid));if(s.exists())setPPData(s.data(),e.detail.uid);}
+  }catch(err){showToast('Erreur');}
+});
 
 // ══ AMIS SEARCH + LOAD ══
+document.addEventListener('eagl-search-ami', async function(e) {
+  var q = e.detail.q;
+  try {
+    var snap = await getDocs(query(collection(db,'users'), where('pseudo','>=',q), where('pseudo','<=',q+'\uf8ff'), limit(5)));
+    var users = [];
+    snap.forEach(function(d){ if(d.id!==currentUser?.uid) users.push(Object.assign({uid:d.id},d.data())); });
+    if(window.afficherResultatsRecherche) afficherResultatsRecherche(users);
+  } catch(err) { console.log(err); }
+});
 
-
-
+document.addEventListener('eagl-load-amis', async function() {
+  if(!currentUser) return;
+  try {
+    var snap = await getDoc(doc(db,'users',currentUser.uid));
+    var amis = (snap.data()||{}).amis || [];
+    if(window.updateMesAmis) updateMesAmis(amis);
+    var amisData = [];
+    for(var i=0; i<Math.min(amis.length,15); i++){
+      var as = await getDoc(doc(db,'users',amis[i]));
+      if(as.exists()) amisData.push(Object.assign({uid:amis[i]},as.data()));
+    }
+    if(window.afficherListeAmis) afficherListeAmis(amisData);
+  } catch(err) { console.log(err); }
+});
 
 document.addEventListener('eagl-kudos', async function(e) {
   if(!currentUser) return;
@@ -1544,14 +1495,20 @@ document.addEventListener('eagl-save-score-post', async function(e) {
   } catch(err) {}
 });
 
-// == AMIS FB ==
+window.loginApple = async function() {
+  try {
+    var provider = new OAuthProvider('apple.com');
+    provider.addScope('email');
+    provider.addScope('name');
+    var result = await signInWithPopup(auth, provider);
+    showToast('Connecté avec Apple !');
+  } catch(e) {
+    console.log('Apple login error:', e.code, e.message);
+    if(e.code !== 'auth/popup-closed-by-user') showToast('Erreur Apple: ' + (e.message||''));
+  }
+};
 
-
-
-
-
-
-// == AMIS LISTENERS CLEAN ==
+// == AMIS ==
 document.addEventListener("eagl-search-ami", async function(e) {
   if(!currentUser) return;
   var q = e.detail.q;
@@ -1560,40 +1517,37 @@ document.addEventListener("eagl-search-ami", async function(e) {
     var users = [];
     snap.forEach(function(d){ if(d.id !== currentUser.uid) users.push(Object.assign({uid:d.id}, d.data())); });
     if(window.afficherResultatsRecherche) afficherResultatsRecherche(users);
-  } catch(err) { console.log("search ami:", err); }
+  } catch(err) { console.log("search:", err); }
 });
 
 document.addEventListener("eagl-load-amis", async function() {
   if(!currentUser) return;
   try {
     var snap = await getDoc(doc(db,"users",currentUser.uid));
-    var data = snap.data() || {};
-    var amis = data.amis || [];
+    var amis = (snap.data()||{}).amis || [];
     window._mesAmis = amis;
     if(window.updateMesAmis) updateMesAmis(amis);
-    var amisData = [];
-    for(var i = 0; i < Math.min(amis.length,20); i++) {
-      var as = await getDoc(doc(db,"users",amis[i]));
-      if(as.exists()) amisData.push(Object.assign({uid:amis[i]}, as.data()));
+    var data = [];
+    for(var i=0;i<Math.min(amis.length,20);i++){
+      var s2 = await getDoc(doc(db,"users",amis[i]));
+      if(s2.exists()) data.push(Object.assign({uid:amis[i]},s2.data()));
     }
-    if(window.afficherListeAmis) afficherListeAmis(amisData);
+    if(window.afficherListeAmis) afficherListeAmis(data);
   } catch(err) { console.log("load amis:", err); }
 });
 
 document.addEventListener("toggle-ami", async function(e) {
   if(!currentUser) return;
-  var uid = e.detail.uid;
-  var add = e.detail.add;
+  var uid = e.detail.uid; var add = e.detail.add;
   try {
     if(add) {
       await updateDoc(doc(db,"users",currentUser.uid), {amis: arrayUnion(uid)});
       await updateDoc(doc(db,"users",uid), {amis: arrayUnion(currentUser.uid)});
-      await updateDoc(doc(db,"users",currentUser.uid), {points: increment(5)});
     } else {
       await updateDoc(doc(db,"users",currentUser.uid), {amis: arrayRemove(uid)});
       await updateDoc(doc(db,"users",uid), {amis: arrayRemove(currentUser.uid)});
     }
-  } catch(err) { console.log("toggle ami:", err); }
+  } catch(err) { console.log("toggle:", err); }
 });
 
 </script>
@@ -2326,154 +2280,85 @@ window.goTo = function(id) {
 };
 </script>
 
-
 <script>
-// ══ FIX AMIS ══
 window._mesAmis = [];
-window.updateMesAmis = function(amis) { window._mesAmis = amis || []; };
+window.updateMesAmis = function(a) { window._mesAmis = a || []; };
 
 window.rechercherAmis = function() {
-  var q = (document.getElementById('ami-search')?.value||'').trim().toLowerCase().replace('@','');
-  var el = document.getElementById('ami-resultats');
-  if(!q || q.length < 2) { if(el) el.innerHTML=''; return; }
-  if(el) el.innerHTML = '<div style="font-size:12px;color:var(--t3);padding:6px 0">Recherche...</div>';
-  document.dispatchEvent(new CustomEvent('eagl-search-ami', {detail:{q:q}}));
+  var inp = document.getElementById("ami-search");
+  var res = document.getElementById("ami-resultats");
+  var q = inp ? inp.value.trim().toLowerCase().replace("@","") : "";
+  if(!q || q.length < 2) { if(res) res.innerHTML = ""; return; }
+  if(res) res.innerHTML = "<div style='font-size:12px;color:var(--t3)'>Recherche...</div>";
+  document.dispatchEvent(new CustomEvent("eagl-search-ami", {detail:{q:q}}));
 };
 
 window.ajouterAmiDepuisRecherche = function(uid, pseudo) {
-  document.dispatchEvent(new CustomEvent('toggle-ami', {detail:{uid:uid, add:true}}));
-  var inp = document.getElementById('ami-search');
-  var res = document.getElementById('ami-resultats');
-  if(inp) inp.value='';
-  if(res) res.innerHTML='';
-  showToast('@'+pseudo+' ajouté ! 🤝');
-  setTimeout(function(){ document.dispatchEvent(new CustomEvent('eagl-load-amis')); }, 600);
+  document.dispatchEvent(new CustomEvent("toggle-ami", {detail:{uid:uid,add:true}}));
+  var inp = document.getElementById("ami-search");
+  var res = document.getElementById("ami-resultats");
+  if(inp) inp.value = "";
+  if(res) res.innerHTML = "";
+  if(window.showToast) showToast("@"+pseudo+" ajouté 🤝");
+  setTimeout(function(){ document.dispatchEvent(new CustomEvent("eagl-load-amis")); }, 600);
 };
 
 window.afficherResultatsRecherche = function(users) {
-  var el = document.getElementById('ami-resultats');
+  var el = document.getElementById("ami-resultats");
   if(!el) return;
-  if(!users||!users.length){ el.innerHTML='<div style="font-size:12px;color:var(--t3);padding:6px 0">Aucun utilisateur trouvé</div>'; return; }
-  var h='';
-  users.forEach(function(u){
-    var init=((u.prenom||u.pseudo||'?')[0]).toUpperCase();
-    var isAmi=(window._mesAmis||[]).includes(u.uid);
-    h+='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border-radius:12px;margin-bottom:6px;box-shadow:var(--shadow-sm)">';
-    h+='<div style="width:38px;height:38px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green);flex-shrink:0">'+init+'</div>';
-    h+='<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(u.prenom||'')+' '+(u.nom||'')+'</div>';
-    h+='<div style="font-size:11px;color:var(--green)">@'+(u.pseudo||'—')+'</div></div>';
-    if(!isAmi) h+='<button onclick="ajouterAmiDepuisRecherche(''+u.uid+'',''+(u.pseudo||u.prenom||'?')+'')" style="padding:7px 14px;border:none;border-radius:20px;background:var(--green);color:#fff;font-size:11px;font-weight:700;cursor:pointer">+ Ami</button>';
-    else h+='<span style="font-size:11px;color:var(--t3);font-weight:600">✓ Ami</span>';
-    h+='</div>';
+  if(!users || !users.length) { el.innerHTML = "<div style='font-size:12px;color:var(--t3)'>Aucun utilisateur trouvé</div>"; return; }
+  var h = "";
+  users.forEach(function(u) {
+    var init = ((u.prenom || u.pseudo || "?")[0]).toUpperCase();
+    var isAmi = (window._mesAmis || []).includes(u.uid);
+    h += "<div style='display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border-radius:12px;margin-bottom:6px;box-shadow:var(--shadow-sm)'>";
+    h += "<div style='width:38px;height:38px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green)'>" + init + "</div>";
+    h += "<div style='flex:1'><div style='font-size:13px;font-weight:600;color:var(--t)'>" + (u.prenom||"") + " " + (u.nom||"") + "</div>";
+    h += "<div style='font-size:11px;color:var(--green)'>@" + (u.pseudo||"—") + "</div></div>";
+    if(!isAmi) {
+      h += "<button data-uid='" + u.uid + "' data-pseudo='" + (u.pseudo||u.prenom||"ami") + "' style='padding:7px 14px;border:none;border-radius:20px;background:var(--green);color:#fff;font-size:11px;font-weight:700;cursor:pointer'>+ Ami</button>";
+    } else {
+      h += "<span style='font-size:11px;color:var(--t3)'>✓ Ami</span>";
+    }
+    h += "</div>";
   });
-  el.innerHTML=h;
+  el.innerHTML = h;
+  el.querySelectorAll("[data-uid]").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      ajouterAmiDepuisRecherche(btn.dataset.uid, btn.dataset.pseudo);
+    });
+  });
 };
 
 window.afficherListeAmis = function(amis) {
-  var el = document.getElementById('ami-liste');
+  var el = document.getElementById("ami-liste");
   if(!el) return;
-  if(!amis||!amis.length){ el.innerHTML='<div style="padding:16px;text-align:center;color:var(--t3);font-size:12px">Ajoute des amis via la recherche 👆</div>'; return; }
-  var h='';
-  amis.forEach(function(u){
-    var init=((u.prenom||'?')[0]).toUpperCase();
-    h+='<div style="display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line);cursor:pointer" onclick="ouvrirProfilPublic(''+u.uid+'','s-profile')">';
-    h+='<div style="width:40px;height:40px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green);flex-shrink:0">'+init+'</div>';
-    h+='<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(u.prenom||'')+' '+(u.nom||'')+'</div>';
-    h+='<div style="font-size:11px;color:var(--green)">@'+(u.pseudo||'—')+'</div>';
-    if(u.club) h+='<div style="font-size:10px;color:var(--t3)">'+u.club+'</div>';
-    h+='</div>';
-    h+='<div style="text-align:right"><div style="font-size:11px;color:var(--t3)">Hcp '+(u.handicap!=null?u.handicap:'—')+'</div></div>';
-    h+='</div>';
+  if(!amis || !amis.length) {
+    el.innerHTML = "<div style='padding:16px;text-align:center;color:var(--t3);font-size:12px'>Ajoute des amis via la recherche 👆</div>";
+    return;
+  }
+  var h = "";
+  amis.forEach(function(u) {
+    var init = ((u.prenom||"?")[0]).toUpperCase();
+    h += "<div style='display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line);cursor:pointer' data-uid='" + u.uid + "'>";
+    h += "<div style='width:40px;height:40px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green)'>" + init + "</div>";
+    h += "<div style='flex:1'><div style='font-size:13px;font-weight:600;color:var(--t)'>" + (u.prenom||"") + " " + (u.nom||"") + "</div>";
+    h += "<div style='font-size:11px;color:var(--green)'>@" + (u.pseudo||"—") + "</div></div>";
+    h += "<div style='font-size:11px;color:var(--t3)'>Hcp " + (u.handicap!=null?u.handicap:"—") + "</div>";
+    h += "</div>";
   });
-  el.innerHTML=h;
+  el.innerHTML = h;
+  el.querySelectorAll("[data-uid]").forEach(function(row) {
+    row.addEventListener("click", function() {
+      if(window.ouvrirProfilPublic) ouvrirProfilPublic(row.dataset.uid, "s-profile");
+    });
+  });
 };
 
 window.toggleAmi = function(uid, add) {
-  document.dispatchEvent(new CustomEvent('toggle-ami', {detail:{uid:uid, add:add}}));
-  showToast(add ? 'Ami ajouté ! 🤝' : 'Ami retiré');
-  setTimeout(function(){ document.dispatchEvent(new CustomEvent('eagl-load-amis')); }, 600);
-};
-</script>
-
-<script>
-window._mesAmis=[];
-window.updateMesAmis=function(a){window._mesAmis=a||[];};
-
-window.rechercherAmis=function(){
-  var el=document.getElementById("ami-search");
-  var res=document.getElementById("ami-resultats");
-  var q=el?el.value.trim().toLowerCase().replace("@",""):"";
-  if(!q||q.length<2){if(res)res.innerHTML="";return;}
-  if(res)res.innerHTML="<div style='font-size:12px;color:var(--t3)'>Recherche...</div>";
-  document.dispatchEvent(new CustomEvent("eagl-search-ami",{detail:{q:q}}));
-};
-
-window.ajouterAmiDepuisRecherche=function(uid,pseudo){
-  document.dispatchEvent(new CustomEvent("toggle-ami",{detail:{uid:uid,add:true}}));
-  var inp=document.getElementById("ami-search");
-  var res=document.getElementById("ami-resultats");
-  if(inp)inp.value="";
-  if(res)res.innerHTML="";
-  if(window.showToast)showToast("@"+pseudo+" ajouté 🤝");
-  setTimeout(function(){document.dispatchEvent(new CustomEvent("eagl-load-amis"));},600);
-};
-
-window.afficherResultatsRecherche=function(users){
-  var el=document.getElementById("ami-resultats");
-  if(!el)return;
-  if(!users||!users.length){el.innerHTML="<div style='font-size:12px;color:var(--t3)'>Aucun utilisateur trouvé</div>";return;}
-  var h="";
-  users.forEach(function(u){
-    var init=((u.prenom||u.pseudo||"?")[0]).toUpperCase();
-    var isAmi=(window._mesAmis||[]).includes(u.uid);
-    h+="<div style='display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border-radius:12px;margin-bottom:6px;box-shadow:var(--shadow-sm)'>";
-    h+="<div style='width:38px;height:38px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green)'>"+init+"</div>";
-    h+="<div style='flex:1'><div style='font-size:13px;font-weight:600;color:var(--t)'>"+(u.prenom||"")+" "+(u.nom||"")+"</div>";
-    h+="<div style='font-size:11px;color:var(--green)'>@"+(u.pseudo||"—")+"</div></div>";
-    if(!isAmi){
-      h+="<button data-ami-uid='"+u.uid+"' data-ami-pseudo='"+u.pseudo+"' style='padding:7px 14px;border:none;border-radius:20px;background:var(--green);color:#fff;font-size:11px;font-weight:700;cursor:pointer'>+ Ami</button>";
-    } else {
-      h+="<span style='font-size:11px;color:var(--t3)'>✓ Ami</span>";
-    }
-    h+="</div>";
-  });
-  el.innerHTML=h;
-  el.querySelectorAll("[data-ami-uid]").forEach(function(btn){
-    btn.addEventListener("click",function(){
-      ajouterAmiDepuisRecherche(btn.dataset.amiUid,btn.dataset.amiPseudo||"ami");
-    });
-  });
-};
-
-window.afficherListeAmis=function(amis){
-  var el=document.getElementById("ami-liste");
-  if(!el)return;
-  if(!amis||!amis.length){
-    el.innerHTML="<div style='padding:16px;text-align:center;color:var(--t3);font-size:12px'>Ajoute des amis 👆</div>";
-    return;
-  }
-  var h="";
-  amis.forEach(function(u){
-    var init=((u.prenom||"?")[0]).toUpperCase();
-    h+="<div style='display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line);cursor:pointer' data-open-uid='"+u.uid+"'>";
-    h+="<div style='width:40px;height:40px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green)'>"+init+"</div>";
-    h+="<div style='flex:1'><div style='font-size:13px;font-weight:600;color:var(--t)'>"+(u.prenom||"")+" "+(u.nom||"")+"</div>";
-    h+="<div style='font-size:11px;color:var(--green)'>@"+(u.pseudo||"—")+"</div></div>";
-    h+="<div style='font-size:11px;color:var(--t3)'>Hcp "+(u.handicap!=null?u.handicap:"—")+"</div>";
-    h+="</div>";
-  });
-  el.innerHTML=h;
-  el.querySelectorAll("[data-open-uid]").forEach(function(row){
-    row.addEventListener("click",function(){
-      if(window.ouvrirProfilPublic)ouvrirProfilPublic(row.dataset.openUid,"s-profile");
-    });
-  });
-};
-
-window.toggleAmi=function(uid,add){
-  document.dispatchEvent(new CustomEvent("toggle-ami",{detail:{uid:uid,add:add}}));
-  if(window.showToast)showToast(add?"Ami ajouté 🤝":"Ami retiré");
-  setTimeout(function(){document.dispatchEvent(new CustomEvent("eagl-load-amis"));},600);
+  document.dispatchEvent(new CustomEvent("toggle-ami", {detail:{uid:uid,add:add}}));
+  if(window.showToast) showToast(add ? "Ami ajouté 🤝" : "Ami retiré");
+  setTimeout(function(){ document.dispatchEvent(new CustomEvent("eagl-load-amis")); }, 600);
 };
 </script>
 </body>
