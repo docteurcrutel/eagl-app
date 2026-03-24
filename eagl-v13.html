@@ -402,61 +402,63 @@ select.input-field option{background:var(--bg3);color:var(--t)}
   </nav>
 </div>
 
-<!-- ██ PROFIL PUBLIC ██ -->
+
+<!-- PROFIL PUBLIC -->
 <div class="screen" id="s-profil-public">
-  <div class="sb"><span id="time-pp">9:41</span><span>███</span></div>
+  <div class="sb"><span>9:41</span><span>███</span></div>
   <div class="hdr">
     <div class="back-btn" onclick="goTo(window._ppFrom||'s-jouer')">←</div>
-    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)">Profil</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;color:var(--t)">Profil Joueur</div>
     <div style="width:36px"></div>
   </div>
   <div class="scroll">
-    <!-- AVATAR + NOM -->
     <div style="margin:0 14px 14px;padding:20px;background:var(--bg2);border:0.5px solid var(--line);border-radius:18px;text-align:center">
-      <div id="pp-avatar" style="width:72px;height:72px;border-radius:50%;background:var(--gdim);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--green);margin:0 auto 12px;overflow:hidden">TM</div>
+      <div id="pp-av" style="width:72px;height:72px;border-radius:50%;background:var(--gdim);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--green);margin:0 auto 12px">?</div>
       <div id="pp-name" style="font-size:18px;font-weight:600;color:var(--t);margin-bottom:4px">—</div>
-      <div id="pp-pseudo" style="font-size:13px;color:var(--green);font-weight:600;margin-bottom:6px">@—</div>
-      <div id="pp-club" style="font-size:12px;color:var(--t3);margin-bottom:14px">—</div>
-      <!-- BOUTONS ACTIONS -->
+      <div id="pp-pseudo" style="font-size:13px;color:var(--green);font-weight:600;margin-bottom:4px">@—</div>
+      <div id="pp-club" style="font-size:11px;color:var(--t3);margin-bottom:16px">—</div>
       <div style="display:flex;gap:8px;justify-content:center">
-        <button id="btn-ami" onclick="toggleAmi()" style="padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:var(--green);color:#000;border:none">+ Ajouter en ami</button>
-        <button onclick="envoyerMsg()" style="padding:10px 20px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:var(--bg3);color:var(--t);border:0.5px solid var(--line)">💬 Message</button>
+        <button id="btn-pp-ami" onclick="doToggleAmi()" style="flex:1;padding:11px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;background:var(--green);color:#000;border:none">+ Ajouter en ami</button>
+        <button onclick="showToast('Messagerie bientôt 💬')" style="padding:11px 16px;border-radius:12px;font-size:18px;cursor:pointer;background:var(--bg3);color:var(--t);border:0.5px solid var(--line)">💬</button>
       </div>
     </div>
-    <!-- STATS -->
     <div class="stats-row" style="padding:0 14px 14px">
       <div class="stat-card">
         <div class="stat-label">Handicap</div>
         <div class="stat-val" id="pp-hcp" style="color:var(--gold)">—</div>
-        <div class="stat-sub">index FFGolf</div>
-        <div class="stat-bar"><div class="stat-fill" id="pp-hcp-bar" style="background:var(--gold);width:50%"></div></div>
+        <div class="stat-sub">index</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--gold);width:50%"></div></div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Parties</div>
         <div class="stat-val" id="pp-parties" style="color:var(--green)">0</div>
         <div class="stat-sub">jouées</div>
-        <div class="stat-bar"><div class="stat-fill" id="pp-parties-bar" style="background:var(--green);width:0%"></div></div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--green);width:30%"></div></div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">Points</div>
+        <div class="stat-label">Arena</div>
         <div class="stat-val" id="pp-pts" style="color:var(--blue)">0</div>
-        <div class="stat-sub">Arena</div>
-        <div class="stat-bar"><div class="stat-fill" id="pp-pts-bar" style="background:var(--blue);width:0%"></div></div>
+        <div class="stat-sub">points</div>
+        <div class="stat-bar"><div class="stat-fill" style="background:var(--blue);width:20%"></div></div>
       </div>
     </div>
-    <!-- SAC -->
     <div class="sl">Équipement</div>
-    <div style="margin:0 14px 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line)"><span style="color:var(--t3)">Driver</span><span id="pp-driver" style="color:var(--t);font-weight:600">—</span></div>
-      <div style="display:flex;justify-content:space-between;font-size:12px;padding-bottom:8px;border-bottom:0.5px solid var(--line);margin-top:8px"><span style="color:var(--t3)">Balle</span><span id="pp-balle" style="color:var(--t);font-weight:600">—</span></div>
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:8px"><span style="color:var(--t3)">Team</span><span id="pp-team" style="color:var(--green);font-weight:600">—</span></div>
+    <div style="margin:0 14px 14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t3)">Driver</span><span id="pp-driver" style="color:var(--t);font-weight:600">—</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t3)">Balle</span><span id="pp-balle" style="color:var(--t);font-weight:600">—</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--t3)">Team</span><span id="pp-team" style="color:var(--green);font-weight:600">—</span></div>
     </div>
-    <!-- MES AMIS -->
     <div class="sl">Amis en commun</div>
-    <div id="pp-amis-communs" style="margin:0 14px 80px;font-size:12px;color:var(--t3);padding:12px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;text-align:center">Chargement...</div>
+    <div id="pp-communs" style="margin:0 14px 80px;padding:14px;background:var(--bg2);border:0.5px solid var(--line);border-radius:16px;font-size:12px;color:var(--t3);text-align:center">—</div>
   </div>
+  <nav class="bnav">
+    <button class="ni" onclick="goTo('s-home')"><span class="ni-ico">🏠</span><span class="ni-lbl">Accueil</span></button>
+    <button class="ni" onclick="goTo('s-jouer')"><span class="ni-ico">⛳</span><span class="ni-lbl">Jouer</span></button>
+    <button class="ni" onclick="goTo('s-arena')"><span class="ni-ico">🔥</span><span class="ni-lbl">Arena</span></button>
+    <button class="ni" onclick="goTo('s-pros')"><span class="ni-ico">🏆</span><span class="ni-lbl">Compét.</span></button>
+    <button class="ni" onclick="goTo('s-profile')"><span class="ni-ico">👤</span><span class="ni-lbl">Profil</span></button>
+  </nav>
 </div>
-
 
 </div><!-- phone -->
 
@@ -464,7 +466,7 @@ select.input-field option{background:var(--bg3);color:var(--t)}
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc, updateDoc, getDocs, limit, where, arrayUnion, arrayRemove } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, setDoc, getDoc, updateDoc, getDocs, limit } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAdu956Nu-vNvukznKYN52YgIPbhwf-Dt0",
@@ -521,7 +523,7 @@ window.logout = async () => {
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    currentUser = user;
+    currentUser = user; window._currentUid = user.uid;
     const initiales = (user.displayName||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
     const prenom = (user.displayName||'').split(' ')[0];
 
@@ -882,6 +884,20 @@ window.doPwdReset=async function(){
   catch(e){er.style.color='var(--red)';er.textContent='Email non trouvé';er.style.display='block';}
 };
 
+
+// ══ SOCIAL PATCH ══
+window._currentUid=null;
+document.addEventListener('load-pp',async function(e){
+  try{var s=await getDoc(doc(db,'users',e.detail.uid));if(s.exists()&&window.setPPData)setPPData(s.data(),e.detail.uid);}catch(err){}
+});
+document.addEventListener('toggle-ami',async function(e){
+  if(!currentUser)return;
+  try{
+    if(e.detail.add){await updateDoc(doc(db,'users',currentUser.uid),{amis:arrayUnion(e.detail.uid)});if(!window._mesAmis)window._mesAmis=[];window._mesAmis.push(e.detail.uid);showToast('Ami ajouté 🤝');}
+    else{await updateDoc(doc(db,'users',currentUser.uid),{amis:arrayRemove(e.detail.uid)});window._mesAmis=(window._mesAmis||[]).filter(function(a){return a!==e.detail.uid;});showToast('Ami retiré');}
+    if(window.setPPData){var s=await getDoc(doc(db,'users',e.detail.uid));if(s.exists())setPPData(s.data(),e.detail.uid);}
+  }catch(err){showToast('Erreur');}
+});
 </script>
 
 <script>
@@ -1003,89 +1019,54 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
 <script>
-var _ppUid = null;
-var _ppFrom = 's-jouer';
-var _mesAmis = [];
+var _ppUid=null, _mesAmis=[], _ppFrom='s-jouer';
+window._ppFrom='s-jouer';
 
-// Ouvrir profil public d'un joueur
-window.ouvrirProfilPublic = async function(uid, from) {
-  if(!uid) return;
-  _ppUid = uid;
-  _ppFrom = from || 's-jouer';
-  window._ppFrom = _ppFrom;
+window.ouvrirProfilPublic=function(uid,from){
+  if(!uid)return;
+  _ppUid=uid; _ppFrom=from||'s-jouer'; window._ppFrom=_ppFrom;
   goTo('s-profil-public');
-
-  // Reset
-  document.getElementById('pp-name').textContent = 'Chargement...';
-  document.getElementById('pp-pseudo').textContent = '@—';
-  document.getElementById('pp-club').textContent = '';
-  document.getElementById('pp-hcp').textContent = '—';
-  document.getElementById('pp-parties').textContent = '—';
-  document.getElementById('pp-pts').textContent = '—';
-  document.getElementById('pp-driver').textContent = '—';
-  document.getElementById('pp-balle').textContent = '—';
-  document.getElementById('pp-team').textContent = '—';
-  document.getElementById('pp-amis-communs').textContent = 'Chargement...';
-
-  try {
-    // Charger profil depuis Firestore via Firebase module
-    var event = new CustomEvent('eagl-load-profil', {detail: {uid: uid}});
-    document.dispatchEvent(event);
-
-    // Mettre à jour le bouton ami
-    var isAmi = _mesAmis.includes(uid);
-    var btnAmi = document.getElementById('btn-ami');
-    if(btnAmi){
-      if(uid === window._currentUid){
-        btnAmi.style.display='none';
-        document.querySelector('#s-profil-public .btn+button') && (document.querySelector('#s-profil-public button+button').style.display='none');
-      } else {
-        btnAmi.style.display='';
-        btnAmi.textContent = isAmi ? '✓ Ami' : '+ Ajouter en ami';
-        btnAmi.style.background = isAmi ? 'var(--bg3)' : 'var(--green)';
-        btnAmi.style.color = isAmi ? 'var(--t)' : '#000';
-      }
-    }
-  } catch(e) { console.log(e); }
+  // Reset UI
+  ['pp-name','pp-pseudo','pp-club','pp-hcp','pp-parties','pp-pts','pp-driver','pp-balle','pp-team'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent='...';});
+  document.getElementById('pp-communs').textContent='...';
+  document.getElementById('pp-av').textContent='?';
+  // Demander chargement au module Firebase
+  document.dispatchEvent(new CustomEvent('load-pp',{detail:{uid:uid}}));
+  // Update bouton ami
+  var b=document.getElementById('btn-pp-ami');
+  if(b){var isA=_mesAmis.includes(uid);b.textContent=isA?'✓ Ami':'+ Ajouter en ami';b.style.background=isA?'var(--bg3)':'var(--green)';b.style.color=isA?'var(--t)':'#000';b.style.border=isA?'0.5px solid var(--line)':'none';}
 };
 
-window.toggleAmi = async function() {
-  if(!_ppUid || !window._currentUid) return;
-  var isAmi = _mesAmis.includes(_ppUid);
-  var event = new CustomEvent('eagl-toggle-ami', {detail: {uid: _ppUid, add: !isAmi}});
-  document.dispatchEvent(event);
+window.doToggleAmi=function(){
+  if(!_ppUid)return;
+  document.dispatchEvent(new CustomEvent('toggle-ami',{detail:{uid:_ppUid,add:!_mesAmis.includes(_ppUid)}}));
 };
 
-window.envoyerMsg = function() {
-  showToast('Messagerie bientôt disponible 💬');
+window.setPPData=function(p,uid){
+  var fn=(p.prenom||''),ln=(p.nom||'');
+  var init=(fn+' '+ln).trim().split(' ').map(function(n){return n[0]||'';}).join('').toUpperCase().slice(0,2)||'?';
+  var av=document.getElementById('pp-av');
+  if(av){if(p.photoURL)av.innerHTML='<img src="'+p.photoURL+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';else av.textContent=init;}
+  var set=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+  set('pp-name',(fn+' '+ln).trim()||'Joueur');
+  set('pp-pseudo',p.pseudo?'@'+p.pseudo:'@eagleur');
+  set('pp-club',(p.club||'')+(p.ville?' · '+p.ville:''));
+  set('pp-hcp',p.handicap!=null?p.handicap:'—');
+  set('pp-parties',p.parties||0);
+  set('pp-pts',p.points||0);
+  set('pp-driver',p.driver||'—');
+  set('pp-balle',p.balle||'—');
+  set('pp-team',p.team||'—');
+  var comm=(p.amis||[]).filter(function(a){return _mesAmis.includes(a);}).length;
+  set('pp-communs',comm>0?comm+' ami(s) en commun 🤝':'Aucun ami en commun');
+  // Bouton ami
+  var b=document.getElementById('btn-pp-ami');
+  var isA=_mesAmis.includes(uid);
+  if(b){b.textContent=isA?'✓ Ami':'+ Ajouter en ami';b.style.background=isA?'var(--bg3)':'var(--green)';b.style.color=isA?'var(--t)':'#000';b.style.border=isA?'0.5px solid var(--line)':'none';}
+  if(uid===window._currentUid){var bb=document.getElementById('btn-pp-ami');if(bb)bb.style.display='none';}
 };
 
-// Mettre à jour le profil public depuis Firebase (appelé par le module script)
-window.updateProfilPublic = function(profil, uid) {
-  var fn = profil.prenom || '';
-  var ln = profil.nom || '';
-  var initials = (fn+' '+ln).trim().split(' ').map(function(n){return n[0]||'';}).join('').toUpperCase().slice(0,2) || '?';
-  var av = document.getElementById('pp-avatar');
-  if(av){ if(profil.photoURL) av.innerHTML='<img src="'+profil.photoURL+'" style="width:100%;height:100%;object-fit:cover">'; else av.textContent=initials; }
-  var pn=document.getElementById('pp-name'); if(pn) pn.textContent=(fn+' '+ln).trim()||'Joueur';
-  var pp=document.getElementById('pp-pseudo'); if(pp) pp.textContent=profil.pseudo?'@'+profil.pseudo:'@eagleur';
-  var pc=document.getElementById('pp-club'); if(pc) pc.textContent=(profil.club||'')+(profil.ville?' · '+profil.ville:'');
-  var ph=document.getElementById('pp-hcp'); if(ph) ph.textContent=profil.handicap!=null?profil.handicap:'—';
-  var ppa=document.getElementById('pp-parties'); if(ppa) ppa.textContent=profil.parties||0;
-  var ppt=document.getElementById('pp-pts'); if(ppt) ppt.textContent=profil.points||0;
-  var pd=document.getElementById('pp-driver'); if(pd) pd.textContent=profil.driver||'—';
-  var pb=document.getElementById('pp-balle'); if(pb) pb.textContent=profil.balle||'—';
-  var pt=document.getElementById('pp-team'); if(pt) pt.textContent=profil.team||'—';
-  // Amis communs
-  var pac=document.getElementById('pp-amis-communs');
-  var amisCommuns=(profil.amis||[]).filter(function(a){return _mesAmis.includes(a);});
-  if(pac) pac.textContent = amisCommuns.length > 0 ? amisCommuns.length+' ami(s) en commun' : 'Aucun ami en commun';
-};
-
-window.updateMesAmis = function(amis) {
-  _mesAmis = amis || [];
-};
+window.updateMesAmis=function(amis){_mesAmis=amis||[];};
 </script>
-
 </body>
 </html>
