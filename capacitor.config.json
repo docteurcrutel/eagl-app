@@ -1,0 +1,21 @@
+{
+  "appId": "com.eagl.app",
+  "appName": "EAGL",
+  "webDir": ".",
+  "server": {
+    "url": "https://docteurcrutel.github.io/eagl-app/eagl-v18.html",
+    "cleartext": true
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "allowsLinkPreview": false,
+    "scrollEnabled": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#18c964",
+      "showSpinner": false
+    }
+  }
+}
