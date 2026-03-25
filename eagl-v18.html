@@ -438,6 +438,12 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     <div id="badges-liste" style="margin:0 14px 14px;display:flex;flex-wrap:wrap;gap:8px">
       <div style="font-size:12px;color:var(--t3)">Complète des défis pour gagner des badges !</div>
     </div>
+
+    <!-- HISTORIQUE PARTIES -->
+    <div class="sl">Mon historique ⏱️</div>
+    <div id="historique-liste" style="margin:0 14px 16px;display:flex;flex-direction:column;gap:8px">
+      <div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Chargement...</div>
+    </div>
 <div class="sl">Mon sac</div>
     <div style="margin:0 14px 12px;background:var(--bg2);border-radius:16px;box-shadow:var(--shadow-sm);padding:14px">
       <div style="display:flex;flex-direction:column;gap:9px">
@@ -768,6 +774,7 @@ onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user; window._currentUid = user.uid;
     setTimeout(function(){if(!window._geoInit)initGeolocPartie();},500); // auto
+    setTimeout(archiverVieuxParties, 2000);
     setTimeout(function(){document.dispatchEvent(new CustomEvent('eagl-load-amis'));},1000);
     const initiales = (user.displayName||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
     const prenom = (user.displayName||'').split(' ')[0];
@@ -1153,7 +1160,7 @@ document.addEventListener('eagl-load-feed', async function(e) {
   } catch(err) { 
     // Fallback avec les parties existantes
     try {
-      var snap2 = await getDocs(query(collection(db,'parties'), orderBy('createdAt','desc'), limit(10)));
+      var snap2 = await getDocs(query(collection(db,'parties'), where('statut','!=','archivee'), orderBy('statut'), orderBy('createdAt','desc'), limit(10)));
       var items2 = [];
       snap2.forEach(function(d){ var feedId=d.id;
         var p = d.data();
@@ -1595,6 +1602,68 @@ document.addEventListener("toggle-ami", async function(e) {
   } catch(err) { console.log("toggle ami:", err); }
 });
 
+
+
+// ══ HISTORIQUE + ARCHIVAGE ══
+async function chargerHistorique() {
+  if(!currentUser) return;
+  try {
+    var snap = await getDoc(doc(db,'users',currentUser.uid));
+    var histo = (snap.data()||{}).historique || [];
+    if(!histo.length) { if(window.afficherHistorique) afficherHistorique([]); return; }
+    var parties = [];
+    for(var i=0;i<Math.min(histo.length,10);i++) {
+      var ps = await getDoc(doc(db,'parties',histo[i]));
+      if(ps.exists()) parties.push(Object.assign({id:histo[i]},ps.data()));
+    }
+    // Trier par date desc
+    parties.sort(function(a,b){
+      var da = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.date||0);
+      var db2 = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.date||0);
+      return db2-da;
+    });
+    if(window.afficherHistorique) afficherHistorique(parties);
+  } catch(err) { console.log('historique err:', err); }
+}
+
+async function archiverVieuxParties() {
+  if(!currentUser) return;
+  try {
+    var cutoff = new Date(Date.now() - 48*60*60*1000);
+    // Chercher les parties non archivées
+    var snap = await getDocs(query(collection(db,'parties'), orderBy('createdAt','asc'), limit(30)));
+    var toArchive = [];
+    snap.forEach(function(d){
+      var p = d.data();
+      if(p.statut === 'archivee') return;
+      var created = p.createdAt?.toDate ? p.createdAt.toDate() : null;
+      var partieDateStr = p.date;
+      var partieDate = partieDateStr ? new Date(partieDateStr + 'T23:59:00') : null;
+      var isOld = (created && created < cutoff) || (partieDate && partieDate < new Date());
+      if(isOld) toArchive.push({id:d.id, data:p});
+    });
+    
+    for(var i=0;i<toArchive.length;i++){
+      var item = toArchive[i];
+      var p = item.data;
+      // Archiver
+      await updateDoc(doc(db,'parties',item.id), {statut:'archivee', archiveeAt:serverTimestamp()});
+      // Ajouter dans historique des participants
+      var joueurs = p.joueurs || [];
+      if(p.hote && !joueurs.includes(p.hote)) joueurs.push(p.hote);
+      for(var j=0;j<joueurs.length;j++){
+        try {
+          await updateDoc(doc(db,'users',joueurs[j]), {historique: arrayUnion(item.id)});
+        } catch(e){}
+      }
+    }
+    if(toArchive.length > 0) {
+      console.log('Archivé', toArchive.length, 'vieilles parties');
+      // Recharger les parties home
+      document.dispatchEvent(new CustomEvent('eagl-load-parties-home'));
+    }
+  } catch(err){ console.log('archivage err:', err); }
+}
 </script>
 
 <script>
@@ -2521,5 +2590,27 @@ window.rechercherGolfParVilleDirecte = function(ville) {
   });
 };
 </script>
+
+window.afficherHistorique = function(parties) {
+  var el = document.getElementById('historique-liste');
+  if(!el) return;
+  if(!parties || !parties.length) {
+    el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Aucune partie jouée pour l instant 🏌️</div>';
+    return;
+  }
+  var h = '';
+  parties.forEach(function(p) {
+    var date = p.createdAt?.toDate ? p.createdAt.toDate().toLocaleDateString('fr-FR') : (p.date || '—');
+    var score = p['total_'+window._currentUid];
+    h += '<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg2);border-radius:14px;box-shadow:var(--shadow-sm)">';
+    h += '<div style="width:40px;height:40px;border-radius:12px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">⛳</div>';
+    h += '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(p.golf||'Golf')+'</div>';
+    h += '<div style="font-size:11px;color:var(--t3)">'+date+' · '+(p.trous||18)+' trous</div></div>';
+    if(score) h += '<div style="text-align:right"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;color:var(--green)">'+score+'</div><div style="font-size:10px;color:var(--t3)">coups</div></div>';
+    h += '</div>';
+  });
+  el.innerHTML = h;
+};
+
 </body>
 </html>
