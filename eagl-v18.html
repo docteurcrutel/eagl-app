@@ -1535,39 +1535,30 @@ window.loginApple = async function() {
 // ── AMIS LISTENERS ──
 document.addEventListener("eagl-search-ami", async function(e) {
   if(!currentUser) return;
-  var q = e.detail.q.toLowerCase().trim();
-  var qCap = q.charAt(0).toUpperCase() + q.slice(1);
+  var q = e.detail.q.toLowerCase();
   try {
-    var usersMap = {};
-    // Chercher par pseudoLower (minuscules stockées)
-    var s1 = await getDocs(query(collection(db,"users"), where("pseudoLower",">=",q), where("pseudoLower","<=",q+"\uf8ff"), limit(6)));
-    s1.forEach(function(d){ if(d.id!==currentUser.uid) usersMap[d.id]=Object.assign({uid:d.id},d.data()); });
-    // Chercher par pseudo normal (compat anciens comptes)
-    var s2 = await getDocs(query(collection(db,"users"), where("pseudo",">=",q), where("pseudo","<=",q+"\uf8ff"), limit(6)));
-    s2.forEach(function(d){ if(d.id!==currentUser.uid) usersMap[d.id]=Object.assign({uid:d.id},d.data()); });
-    // Chercher par prénom
-    var s3 = await getDocs(query(collection(db,"users"), where("prenom",">=",qCap), where("prenom","<=",qCap+"\uf8ff"), limit(6)));
-    s3.forEach(function(d){ if(d.id!==currentUser.uid) usersMap[d.id]=Object.assign({uid:d.id},d.data()); });
-    // Chercher par prénom en minuscules
-    var s4 = await getDocs(query(collection(db,"users"), where("prenom",">=",q), where("prenom","<=",q+"\uf8ff"), limit(4)));
-    s4.forEach(function(d){ if(d.id!==currentUser.uid) usersMap[d.id]=Object.assign({uid:d.id},d.data()); });
-    
-    var users = Object.values(usersMap).slice(0,8);
+    // Charger tous les users et filtrer côté client (pas besoin d'index Firestore)
+    var snap = await getDocs(collection(db,"users"));
+    var users = [];
+    snap.forEach(function(d){
+      if(d.id === currentUser.uid) return;
+      var u = d.data();
+      var pseudo = (u.pseudo||'').toLowerCase();
+      var prenom = (u.prenom||'').toLowerCase();
+      var nom = (u.nom||'').toLowerCase();
+      // Chercher dans pseudo, prénom ou nom
+      if(pseudo.includes(q) || prenom.includes(q) || nom.includes(q) || (prenom+' '+nom).includes(q)) {
+        users.push(Object.assign({uid:d.id}, u));
+      }
+    });
+    // Limiter à 8 résultats
+    users = users.slice(0, 8);
     if(window.afficherResultatsRecherche) afficherResultatsRecherche(users);
   } catch(err) { 
     console.log("search ami err:", err);
-    // Fallback : charger tous les users et filtrer localement
-    try {
-      var allSnap = await getDocs(query(collection(db,"users"), limit(50)));
-      var allUsers = [];
-      allSnap.forEach(function(d){
-        if(d.id===currentUser.uid) return;
-        var u = d.data();
-        var haystack = ((u.pseudo||"")+" "+(u.prenom||"")+" "+(u.nom||"")).toLowerCase();
-        if(haystack.includes(q)) allUsers.push(Object.assign({uid:d.id},u));
-      });
-      if(window.afficherResultatsRecherche) afficherResultatsRecherche(allUsers.slice(0,8));
-    } catch(e2) { console.log("fallback search err:", e2); }
+    // Afficher l'erreur à l'utilisateur
+    var el = document.getElementById("ami-resultats");
+    if(el) el.innerHTML = "<div style='font-size:12px;color:var(--red)'>Erreur: "+err.message+"</div>";
   }
 });
 
@@ -1652,37 +1643,23 @@ function haversineP(a,b,x,y){
 }
 
 function initGeolocPartie() {
-  var golfsList = document.getElementById('golfs-list');
-  if(!golfsList) return;
-  
-  if(!navigator.geolocation) {
-    // Pas de géoloc disponible → fallback ville
-    _afficherFallbackVille();
+  if(_pLat) return;
+  if(!navigator.geolocation) { 
+    _pLat=48.8566;_pLng=2.3522;
+    if(typeof chargerGolfs==='function')chargerGolfs(48.8566,2.3522);
     return;
   }
-  
-  if(golfsList) golfsList.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px"><div class="spinner" style="margin:0 auto 8px;width:16px;height:16px;border-width:2px"></div>Localisation en cours...</div>';
-  
-  // Options optimisées pour iPhone Safari PWA
-  var geoOptions = {
-    enableHighAccuracy: false, // false = plus rapide sur iPhone
-    timeout: 8000,
-    maximumAge: 300000 // 5 min de cache
-  };
-  
   navigator.geolocation.getCurrentPosition(
     function(pos) {
-      _uLat = pos.coords.latitude;
-      _uLng = pos.coords.longitude;
-      chargerGolfs(_uLat, _uLng);
+      _pLat=pos.coords.latitude;_pLng=pos.coords.longitude;
+      if(typeof chargerGolfs==='function')chargerGolfs(_pLat,_pLng);
     },
     function(err) {
-      console.log('Géoloc erreur:', err.code, err.message);
-      // Sur iPhone Safari, souvent le code 1 = refus
-      // Afficher le fallback avec option de saisir sa ville
-      _afficherFallbackVille(err.code);
+      console.log('geo refusé, fallback Paris:', err.code);
+      _pLat=48.8566;_pLng=2.3522;
+      if(typeof chargerGolfs==='function')chargerGolfs(48.8566,2.3522);
     },
-    geoOptions
+    {timeout:8000,maximumAge:300000}
   );
 }
 
