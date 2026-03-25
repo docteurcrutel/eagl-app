@@ -1,21 +1,11 @@
 {
   "appId": "com.eagl.app",
   "appName": "EAGL",
-  "webDir": ".",
-  "server": {
-    "url": "https://docteurcrutel.github.io/eagl-app/eagl-v18.html",
-    "cleartext": true
-  },
-  "ios": {
-    "contentInset": "automatic",
-    "allowsLinkPreview": false,
-    "scrollEnabled": false
-  },
+  "webDir": "www",
+  "server": { "androidScheme": "https" },
+  "ios": { "contentInset": "automatic", "backgroundColor": "#F7F8FA" },
   "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 2000,
-      "backgroundColor": "#18c964",
-      "showSpinner": false
-    }
+    "SplashScreen": { "launchShowDuration": 1500, "backgroundColor": "#18c964", "showSpinner": false },
+    "StatusBar": { "style": "Dark", "backgroundColor": "#FFFFFF" }
   }
 }
