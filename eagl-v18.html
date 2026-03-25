@@ -767,6 +767,7 @@ window.logout = async () => {
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user; window._currentUid = user.uid;
+    setTimeout(function(){if(!window._geoInit)initGeolocPartie();},500); // auto
     setTimeout(function(){document.dispatchEvent(new CustomEvent('eagl-load-amis'));},1000);
     const initiales = (user.displayName||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
     const prenom = (user.displayName||'').split(' ')[0];
@@ -1643,24 +1644,38 @@ function haversineP(a,b,x,y){
 }
 
 function initGeolocPartie() {
-  if(_pLat) return;
-  if(!navigator.geolocation) { 
-    _pLat=48.8566;_pLng=2.3522;
-    if(typeof chargerGolfs==='function')chargerGolfs(48.8566,2.3522);
+  if(window._geoInit) return;
+  window._geoInit = true;
+  
+  function onSuccess(pos) {
+    var lat = pos.coords.latitude;
+    var lng = pos.coords.longitude;
+    // Setter toutes les variables de position
+    window._pLat = lat; window._pLng = lng;
+    window._uLat = lat; window._uLng = lng;
+    if(typeof chargerGolfs === 'function') chargerGolfs(lat, lng);
+    if(typeof chargerPartiesProches === 'function') chargerPartiesProches(lat, lng);
+  }
+  
+  function onError(err) {
+    console.log('Geo refusée (code:'+err.code+'), fallback Paris');
+    // Fallback Paris pour toutes les variables
+    window._pLat = 48.8566; window._pLng = 2.3522;
+    window._uLat = 48.8566; window._uLng = 2.3522;
+    if(typeof chargerGolfs === 'function') chargerGolfs(48.8566, 2.3522);
+    if(typeof chargerPartiesProches === 'function') chargerPartiesProches(48.8566, 2.3522);
+  }
+  
+  if(!navigator.geolocation) {
+    onError({code:0, message:'not supported'});
     return;
   }
-  navigator.geolocation.getCurrentPosition(
-    function(pos) {
-      _pLat=pos.coords.latitude;_pLng=pos.coords.longitude;
-      if(typeof chargerGolfs==='function')chargerGolfs(_pLat,_pLng);
-    },
-    function(err) {
-      console.log('geo refusé, fallback Paris:', err.code);
-      _pLat=48.8566;_pLng=2.3522;
-      if(typeof chargerGolfs==='function')chargerGolfs(48.8566,2.3522);
-    },
-    {timeout:8000,maximumAge:300000}
-  );
+  
+  navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+    timeout: 8000,
+    maximumAge: 300000,
+    enableHighAccuracy: false
+  });
 }
 
 function _afficherFallbackVille(errCode) {
@@ -1735,7 +1750,7 @@ document.addEventListener('DOMContentLoaded',function(){
   if(origGoTo){
     window.goTo=function(id){
       origGoTo(id);
-      if(id==='s-jouer'&&!_pLat){initGeolocPartie();}
+      if(id==='s-jouer'){if(!window._geoInit)initGeolocPartie();}
     if(id==='s-profile'){document.dispatchEvent(new CustomEvent('eagl-load-amis'));}
       if(id==='s-jouer'&&_pLat){afficherPartiesAvecDistance();}
     };
