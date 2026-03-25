@@ -2,18 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-
-  <!-- PWA -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="EAGL">
-  <meta name="theme-color" content="#18c964">
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icon.svg">
-  <link rel="apple-touch-startup-image" href="icon.svg">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Eagl.</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -438,12 +427,6 @@ select.input-field option{background:var(--bg3);color:var(--t)}
     <div id="badges-liste" style="margin:0 14px 14px;display:flex;flex-wrap:wrap;gap:8px">
       <div style="font-size:12px;color:var(--t3)">Complète des défis pour gagner des badges !</div>
     </div>
-
-    <!-- HISTORIQUE PARTIES -->
-    <div class="sl">Mon historique ⏱️</div>
-    <div id="historique-liste" style="margin:0 14px 16px;display:flex;flex-direction:column;gap:8px">
-      <div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Chargement...</div>
-    </div>
 <div class="sl">Mon sac</div>
     <div style="margin:0 14px 12px;background:var(--bg2);border-radius:16px;box-shadow:var(--shadow-sm);padding:14px">
       <div style="display:flex;flex-direction:column;gap:9px">
@@ -773,8 +756,6 @@ window.logout = async () => {
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user; window._currentUid = user.uid;
-    setTimeout(function(){if(!window._geoInit)initGeolocPartie();},500); // auto
-    setTimeout(archiverVieuxParties, 2000);
     setTimeout(function(){document.dispatchEvent(new CustomEvent('eagl-load-amis'));},1000);
     const initiales = (user.displayName||'U').split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
     const prenom = (user.displayName||'').split(' ')[0];
@@ -1160,7 +1141,7 @@ document.addEventListener('eagl-load-feed', async function(e) {
   } catch(err) { 
     // Fallback avec les parties existantes
     try {
-      var snap2 = await getDocs(query(collection(db,'parties'), where('statut','!=','archivee'), orderBy('statut'), orderBy('createdAt','desc'), limit(10)));
+      var snap2 = await getDocs(query(collection(db,'parties'), orderBy('createdAt','desc'), limit(10)));
       var items2 = [];
       snap2.forEach(function(d){ var feedId=d.id;
         var p = d.data();
@@ -1514,60 +1495,34 @@ document.addEventListener('eagl-save-score-post', async function(e) {
   } catch(err) {}
 });
 
-// ── GOOGLE LOGIN ──
-window.loginGoogle = async function() {
-  try {
-    var provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-  } catch(e) {
-    if(e.code !== 'auth/popup-closed-by-user') {
-      showToast('Erreur Google: ' + (e.code||''));
-    }
-  }
-};
-
-// ── APPLE LOGIN ──
+// == APPLE LOGIN ==
 window.loginApple = async function() {
   try {
-    var provider = new OAuthProvider('apple.com');
-    provider.addScope('email');
-    provider.addScope('name');
-    await signInWithPopup(auth, provider);
+    var p = new OAuthProvider("apple.com");
+    p.addScope("email"); p.addScope("name");
+    await signInWithPopup(auth, p);
+    showToast("Connecté avec Apple !");
   } catch(e) {
-    if(e.code !== 'auth/popup-closed-by-user') {
-      showToast('Erreur Apple: ' + (e.code||''));
-    }
+    if(e.code !== "auth/popup-closed-by-user") showToast("Erreur Apple");
   }
 };
 
-// ── AMIS LISTENERS ──
+// == AMIS ==
 document.addEventListener("eagl-search-ami", async function(e) {
   if(!currentUser) return;
   var q = e.detail.q.toLowerCase();
   try {
-    // Charger tous les users et filtrer côté client (pas besoin d'index Firestore)
     var snap = await getDocs(collection(db,"users"));
     var users = [];
     snap.forEach(function(d){
       if(d.id === currentUser.uid) return;
       var u = d.data();
-      var pseudo = (u.pseudo||'').toLowerCase();
-      var prenom = (u.prenom||'').toLowerCase();
-      var nom = (u.nom||'').toLowerCase();
-      // Chercher dans pseudo, prénom ou nom
-      if(pseudo.includes(q) || prenom.includes(q) || nom.includes(q) || (prenom+' '+nom).includes(q)) {
-        users.push(Object.assign({uid:d.id}, u));
+      if((u.pseudo||"").toLowerCase().includes(q) || (u.prenom||"").toLowerCase().includes(q) || (u.nom||"").toLowerCase().includes(q)) {
+        users.push(Object.assign({uid:d.id},u));
       }
     });
-    // Limiter à 8 résultats
-    users = users.slice(0, 8);
-    if(window.afficherResultatsRecherche) afficherResultatsRecherche(users);
-  } catch(err) { 
-    console.log("search ami err:", err);
-    // Afficher l'erreur à l'utilisateur
-    var el = document.getElementById("ami-resultats");
-    if(el) el.innerHTML = "<div style='font-size:12px;color:var(--red)'>Erreur: "+err.message+"</div>";
-  }
+    if(window.afficherResultatsRecherche) afficherResultatsRecherche(users.slice(0,8));
+  } catch(err) { console.log("search:", err); }
 });
 
 document.addEventListener("eagl-load-amis", async function() {
@@ -1577,153 +1532,58 @@ document.addEventListener("eagl-load-amis", async function() {
     var amis = (snap.data()||{}).amis || [];
     window._mesAmis = amis;
     if(window.updateMesAmis) updateMesAmis(amis);
-    var amisData = [];
+    var data = [];
     for(var i=0;i<Math.min(amis.length,20);i++){
       var s2 = await getDoc(doc(db,"users",amis[i]));
-      if(s2.exists()) amisData.push(Object.assign({uid:amis[i]}, s2.data()));
+      if(s2.exists()) data.push(Object.assign({uid:amis[i]},s2.data()));
     }
-    if(window.afficherListeAmis) afficherListeAmis(amisData);
-  } catch(err) { console.log("load amis:", err); }
+    if(window.afficherListeAmis) afficherListeAmis(data);
+  } catch(err) { console.log("amis:", err); }
 });
 
 document.addEventListener("toggle-ami", async function(e) {
   if(!currentUser) return;
-  var uid = e.detail.uid;
-  var add = e.detail.add;
   try {
-    if(add) {
-      await updateDoc(doc(db,"users",currentUser.uid), {amis: arrayUnion(uid)});
-      await updateDoc(doc(db,"users",uid), {amis: arrayUnion(currentUser.uid)});
-      await updateDoc(doc(db,"users",currentUser.uid), {points: increment(5)});
+    if(e.detail.add) {
+      await updateDoc(doc(db,"users",currentUser.uid),{amis:arrayUnion(e.detail.uid)});
+      await updateDoc(doc(db,"users",e.detail.uid),{amis:arrayUnion(currentUser.uid)});
     } else {
-      await updateDoc(doc(db,"users",currentUser.uid), {amis: arrayRemove(uid)});
-      await updateDoc(doc(db,"users",uid), {amis: arrayRemove(currentUser.uid)});
+      await updateDoc(doc(db,"users",currentUser.uid),{amis:arrayRemove(e.detail.uid)});
+      await updateDoc(doc(db,"users",e.detail.uid),{amis:arrayRemove(currentUser.uid)});
     }
-  } catch(err) { console.log("toggle ami:", err); }
+  } catch(err) { console.log("toggle:", err); }
 });
 
-
-
-// ══ HISTORIQUE + ARCHIVAGE ══
-async function chargerHistorique() {
-  if(!currentUser) return;
-  try {
-    var snap = await getDoc(doc(db,'users',currentUser.uid));
-    var histo = (snap.data()||{}).historique || [];
-    if(!histo.length) { if(window.afficherHistorique) afficherHistorique([]); return; }
-    var parties = [];
-    for(var i=0;i<Math.min(histo.length,10);i++) {
-      var ps = await getDoc(doc(db,'parties',histo[i]));
-      if(ps.exists()) parties.push(Object.assign({id:histo[i]},ps.data()));
-    }
-    // Trier par date desc
-    parties.sort(function(a,b){
-      var da = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.date||0);
-      var db2 = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.date||0);
-      return db2-da;
-    });
-    if(window.afficherHistorique) afficherHistorique(parties);
-  } catch(err) { console.log('historique err:', err); }
-}
-
-async function archiverVieuxParties() {
-  if(!currentUser) return;
-  try {
-    var cutoff = new Date(Date.now() - 48*60*60*1000);
-    // Chercher les parties non archivées
-    var snap = await getDocs(query(collection(db,'parties'), orderBy('createdAt','asc'), limit(30)));
-    var toArchive = [];
-    snap.forEach(function(d){
-      var p = d.data();
-      if(p.statut === 'archivee') return;
-      var created = p.createdAt?.toDate ? p.createdAt.toDate() : null;
-      var partieDateStr = p.date;
-      var partieDate = partieDateStr ? new Date(partieDateStr + 'T23:59:00') : null;
-      var isOld = (created && created < cutoff) || (partieDate && partieDate < new Date());
-      if(isOld) toArchive.push({id:d.id, data:p});
-    });
-    
-    for(var i=0;i<toArchive.length;i++){
-      var item = toArchive[i];
-      var p = item.data;
-      // Archiver
-      await updateDoc(doc(db,'parties',item.id), {statut:'archivee', archiveeAt:serverTimestamp()});
-      // Ajouter dans historique des participants
-      var joueurs = p.joueurs || [];
-      if(p.hote && !joueurs.includes(p.hote)) joueurs.push(p.hote);
-      for(var j=0;j<joueurs.length;j++){
-        try {
-          await updateDoc(doc(db,'users',joueurs[j]), {historique: arrayUnion(item.id)});
-        } catch(e){}
-      }
-    }
-    if(toArchive.length > 0) {
-      console.log('Archivé', toArchive.length, 'vieilles parties');
-      // Recharger les parties home
-      document.dispatchEvent(new CustomEvent('eagl-load-parties-home'));
-    }
-  } catch(err){ console.log('archivage err:', err); }
-}
 </script>
 
 <script>
 var _uLat=null,_uLng=null,_golfsOk=false;
 function haversine(a,b,x,y){var R=6371,d=(x-a)*Math.PI/180,e=(y-b)*Math.PI/180,f=Math.sin(d/2)*Math.sin(d/2)+Math.cos(a*Math.PI/180)*Math.cos(x*Math.PI/180)*Math.sin(e/2)*Math.sin(e/2);return R*2*Math.atan2(Math.sqrt(f),Math.sqrt(1-f));}
 function chargerGolfs(lat, lng) {
-  var el = document.getElementById('golfs-list');
+  var el = document.getElementById("golfs-list");
   if(!el) return;
-  
-  // Utiliser les coords passées en param, sinon le fallback Paris
   var useLat = lat || window._uLat || 48.8566;
   var useLng = lng || window._uLng || 2.3522;
-  
-  el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px"><div class="spinner" style="margin:0 auto 8px;width:16px;height:16px;border-width:2px"></div>Golfs en cours de chargement...</div>';
-  
-  var radius = 40000;
-  var url = 'https://overpass-api.de/api/interpreter?data=[out:json][timeout:15];(node["leisure"="golf_course"](around:'+radius+','+useLat+','+useLng+');way["leisure"="golf_course"](around:'+radius+','+useLat+','+useLng+');relation["leisure"="golf_course"](around:'+radius+','+useLat+','+useLng+'););out center 12;';
-  
-  fetch(url)
-    .then(function(r){ return r.json(); })
-    .then(function(data) {
-      var elements = data.elements || [];
-      if(!elements.length) {
-        el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Aucun golf trouvé dans les 40km</div>';
-        return;
-      }
-      var h = '';
-      elements.slice(0,8).forEach(function(item) {
-        var gLat = item.lat || item.center?.lat;
-        var gLng = item.lon || item.center?.lon;
-        var dist = '';
-        if(gLat && gLng) {
-          var R = 6371;
-          var dLat = (gLat-useLat)*Math.PI/180;
-          var dLng = (gLng-useLng)*Math.PI/180;
-          var a = Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(useLat*Math.PI/180)*Math.cos(gLat*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);
-          var km = R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
-          dist = km < 1 ? Math.round(km*1000)+'m' : Math.round(km*10)/10+'km';
-        }
-        var name = item.tags?.name || 'Golf';
-        var website = item.tags?.website || item.tags?.['contact:website'] || '';
-        var access = item.tags?.access || 'public';
-        var accessLabel = access === 'private' ? '🔒 Privé' : '🌍 Public';
-        
-        h += '<div style="background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow-sm)">';
-        h += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">';
-        h += '<div style="font-size:13px;font-weight:600;color:var(--t)">'+name+'</div>';
-        h += '<span style="font-size:10px;background:var(--gdim);color:var(--green);padding:2px 8px;border-radius:20px;font-weight:600">'+accessLabel+'</span>';
-        h += '</div>';
-        if(dist) h += '<div style="font-size:11px;color:var(--t3);margin-bottom:8px">📍 '+dist+'</div>';
-        if(website) h += '<a href="'+website+'" target="_blank" style="font-size:11px;color:var(--blue);text-decoration:none">🌐 Site web</a> ';
-        h += '<div style="margin-top:8px"><button onclick="filtrerPartiesParGolf(\''+name+'\')" style="width:100%;padding:9px;border:1px solid var(--green);border-radius:10px;background:transparent;color:var(--green);font-size:12px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif">Voir les parties Eagl →</button></div>';
-        h += '</div>';
-      });
-      el.innerHTML = h;
-    })
-    .catch(function(err) {
-      console.log('OSM error:', err);
-      el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Erreur de chargement — réessaie dans un instant</div>';
+  el.innerHTML = "<div style='text-align:center;padding:16px;color:var(--t3);font-size:12px'>Chargement des golfs...</div>";
+  var url = "https://overpass-api.de/api/interpreter?data=[out:json][timeout:15];(node[leisure=golf_course](around:40000,"+useLat+","+useLng+");way[leisure=golf_course](around:40000,"+useLat+","+useLng+");relation[leisure=golf_course](around:40000,"+useLat+","+useLng+"););out center 10;";
+  fetch(url).then(function(r){return r.json();}).then(function(data){
+    var items = data.elements||[];
+    if(!items.length){el.innerHTML="<div style='text-align:center;padding:16px;color:var(--t3);font-size:12px'>Aucun golf trouvé dans les 40km</div>";return;}
+    var h="";
+    items.slice(0,8).forEach(function(item){
+      var gLat=item.lat||item.center&&item.center.lat;
+      var gLng=item.lon||item.center&&item.center.lon;
+      var dist="";
+      if(gLat&&gLng){var R=6371,dL=(gLat-useLat)*Math.PI/180,dG=(gLng-useLng)*Math.PI/180,a=Math.sin(dL/2)*Math.sin(dL/2)+Math.cos(useLat*Math.PI/180)*Math.cos(gLat*Math.PI/180)*Math.sin(dG/2)*Math.sin(dG/2);dist=(R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))<1?Math.round(R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))*1000)+"m":Math.round(R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))*10)/10+"km");}
+      var name=item.tags&&item.tags.name||"Golf";
+      h+="<div style='background:var(--bg2);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow-sm)'>";
+      h+="<div style='display:flex;align-items:center;justify-content:space-between;margin-bottom:6px'>";
+      h+="<div style='font-size:13px;font-weight:600;color:var(--t)'>"+name+"</div></div>";
+      if(dist)h+="<div style='font-size:11px;color:var(--t3);margin-bottom:8px'>📍 "+dist+"</div>";
+      h+="</div>";
     });
+    el.innerHTML=h;
+  }).catch(function(){el.innerHTML="<div style='text-align:center;padding:16px;color:var(--t3);font-size:12px'>Erreur de chargement</div>";});
 }
 function voirPartiesGolf(n){if(window.goTo)goTo('s-jouer');if(window.showToast)showToast('⛳ '+n);}
 window.addEventListener('load',function(){setTimeout(chargerGolfs,2000);});
@@ -1741,63 +1601,17 @@ function haversineP(a,b,x,y){
 function initGeolocPartie() {
   if(window._geoInit) return;
   window._geoInit = true;
-  
-  function onSuccess(pos) {
-    var lat = pos.coords.latitude;
-    var lng = pos.coords.longitude;
-    // Setter toutes les variables de position
-    window._pLat = lat; window._pLng = lng;
-    window._uLat = lat; window._uLng = lng;
-    if(typeof chargerGolfs === 'function') chargerGolfs(lat, lng);
-    if(typeof chargerPartiesProches === 'function') chargerPartiesProches(lat, lng);
-  }
-  
-  function onError(err) {
-    console.log('Geo refusée (code:'+err.code+'), fallback Paris');
-    // Fallback Paris pour toutes les variables
-    window._pLat = 48.8566; window._pLng = 2.3522;
-    window._uLat = 48.8566; window._uLng = 2.3522;
-    if(typeof chargerGolfs === 'function') chargerGolfs(48.8566, 2.3522);
-    if(typeof chargerPartiesProches === 'function') chargerPartiesProches(48.8566, 2.3522);
-  }
-  
-  if(!navigator.geolocation) {
-    onError({code:0, message:'not supported'});
-    return;
-  }
-  
-  navigator.geolocation.getCurrentPosition(onSuccess, onError, {
-    timeout: 8000,
-    maximumAge: 300000,
-    enableHighAccuracy: false
-  });
-}
-
-function _afficherFallbackVille(errCode) {
-  var golfsList = document.getElementById('golfs-list');
-  if(!golfsList) return;
-  
-  var msg = errCode === 1 
-    ? 'Localisation refusée' 
-    : errCode === 3 
-    ? 'Localisation trop lente' 
-    : 'Localisation non disponible';
-    
-  golfsList.innerHTML = 
-    '<div style="margin:0 14px 0;background:var(--bg2);border-radius:14px;padding:16px;box-shadow:var(--shadow-sm)">' +
-    '<div style="font-size:13px;font-weight:600;color:var(--t);margin-bottom:4px">📍 ' + msg + '</div>' +
-    '<div style="font-size:12px;color:var(--t3);margin-bottom:12px">Entre ta ville pour trouver les golfs proches</div>' +
-    '<div style="display:flex;gap:8px">' +
-    '<input id="geo-ville-input" class="inp" placeholder="Paris, Lyon, Bordeaux..." type="text" style="margin:0;flex:1" onkeypress="if(event.key===\'Enter\')rechercherGolfParVille()">' +
-    '<button onclick="rechercherGolfParVille()" style="padding:10px 16px;border:none;border-radius:10px;background:var(--green);color:#fff;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">Chercher</button>' +
-    '</div>' +
-    '<div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px">' +
-    '<div onclick="rechercherGolfParVilleDirecte(\'Paris\')" style="padding:5px 10px;background:var(--bg3);border-radius:20px;font-size:11px;color:var(--t2);cursor:pointer">Paris</div>' +
-    '<div onclick="rechercherGolfParVilleDirecte(\'Lyon\')" style="padding:5px 10px;background:var(--bg3);border-radius:20px;font-size:11px;color:var(--t2);cursor:pointer">Lyon</div>' +
-    '<div onclick="rechercherGolfParVilleDirecte(\'Bordeaux\')" style="padding:5px 10px;background:var(--bg3);border-radius:20px;font-size:11px;color:var(--t2);cursor:pointer">Bordeaux</div>' +
-    '<div onclick="rechercherGolfParVilleDirecte(\'Marseille\')" style="padding:5px 10px;background:var(--bg3);border-radius:20px;font-size:11px;color:var(--t2);cursor:pointer">Marseille</div>' +
-    '</div>' +
-    '</div>';
+  var ok = function(pos) {
+    var lat=pos.coords.latitude, lng=pos.coords.longitude;
+    window._pLat=lat; window._pLng=lng; window._uLat=lat; window._uLng=lng;
+    chargerGolfs(lat, lng);
+  };
+  var err = function() {
+    window._pLat=48.8566; window._pLng=2.3522; window._uLat=48.8566; window._uLng=2.3522;
+    chargerGolfs(48.8566, 2.3522);
+  };
+  if(!navigator.geolocation){err();return;}
+  navigator.geolocation.getCurrentPosition(ok, err, {timeout:8000,maximumAge:300000});
 }
 
 window.setFiltreDistance=function(km,el){
@@ -1845,7 +1659,7 @@ document.addEventListener('DOMContentLoaded',function(){
   if(origGoTo){
     window.goTo=function(id){
       origGoTo(id);
-      if(id==='s-jouer'){if(!window._geoInit)initGeolocPartie();}
+      if(id==='s-jouer'&&!_pLat){initGeolocPartie();}
     if(id==='s-profile'){document.dispatchEvent(new CustomEvent('eagl-load-amis'));}
       if(id==='s-jouer'&&_pLat){afficherPartiesAvecDistance();}
     };
@@ -2463,154 +2277,69 @@ window.goTo = function(id) {
 };
 </script>
 
+
 <script>
-window._mesAmis = [];
-window.updateMesAmis = function(a) { window._mesAmis = a || []; };
-
-window.rechercherAmis = function() {
-  var inp = document.getElementById("ami-search");
-  var res = document.getElementById("ami-resultats");
-  var q = inp ? inp.value.trim().toLowerCase().replace("@","") : "";
-  if(!q || q.length < 2) { if(res) res.innerHTML = ""; return; }
-  if(res) res.innerHTML = "<div style='font-size:12px;color:var(--t3)'>Recherche...</div>";
-  document.dispatchEvent(new CustomEvent("eagl-search-ami", {detail:{q:q}}));
+window._mesAmis=[];
+window.updateMesAmis=function(a){window._mesAmis=a||[];};
+window.rechercherAmis=function(){
+  var inp=document.getElementById("ami-search");
+  var res=document.getElementById("ami-resultats");
+  var q=inp?inp.value.trim().toLowerCase().replace("@",""):"";
+  if(!q||q.length<2){if(res)res.innerHTML="";return;}
+  if(res)res.innerHTML="<div style='font-size:12px;color:var(--t3)'>Recherche...</div>";
+  document.dispatchEvent(new CustomEvent("eagl-search-ami",{detail:{q:q}}));
 };
-
-window.ajouterAmiDepuisRecherche = function(uid, pseudo) {
-  document.dispatchEvent(new CustomEvent("toggle-ami", {detail:{uid:uid, add:true}}));
-  var inp = document.getElementById("ami-search");
-  var res = document.getElementById("ami-resultats");
-  if(inp) inp.value = "";
-  if(res) res.innerHTML = "";
-  if(window.showToast) showToast("@"+pseudo+" ajouté 🤝");
-  setTimeout(function(){ document.dispatchEvent(new CustomEvent("eagl-load-amis")); }, 600);
+window.ajouterAmiDepuisRecherche=function(uid,pseudo){
+  document.dispatchEvent(new CustomEvent("toggle-ami",{detail:{uid:uid,add:true}}));
+  var inp=document.getElementById("ami-search");
+  var res=document.getElementById("ami-resultats");
+  if(inp)inp.value="";if(res)res.innerHTML="";
+  showToast("@"+pseudo+" ajouté 🤝");
+  setTimeout(function(){document.dispatchEvent(new CustomEvent("eagl-load-amis"));},600);
 };
-
-window.afficherResultatsRecherche = function(users) {
-  var el = document.getElementById("ami-resultats");
-  if(!el) return;
-  if(!users || !users.length) {
-    el.innerHTML = "<div style='font-size:12px;color:var(--t3)'>Aucun utilisateur trouvé</div>";
-    return;
-  }
-  var h = "";
-  users.forEach(function(u) {
-    var init = ((u.prenom || u.pseudo || "?")[0]).toUpperCase();
-    var isAmi = (window._mesAmis || []).includes(u.uid);
-    h += "<div style='display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border-radius:12px;margin-bottom:6px;box-shadow:var(--shadow-sm)'>";
-    h += "<div style='width:38px;height:38px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green)'>" + init + "</div>";
-    h += "<div style='flex:1'><div style='font-size:13px;font-weight:600;color:var(--t)'>" + (u.prenom||"") + " " + (u.nom||"") + "</div>";
-    h += "<div style='font-size:11px;color:var(--green)'>@" + (u.pseudo||"—") + "</div></div>";
-    if(!isAmi) {
-      h += "<button data-uid='" + u.uid + "' data-pseudo='" + (u.pseudo||u.prenom||"ami") + "' style='padding:7px 14px;border:none;border-radius:20px;background:var(--green);color:#fff;font-size:11px;font-weight:700;cursor:pointer'>+ Ami</button>";
-    } else {
-      h += "<span style='font-size:11px;color:var(--t3)'>✓ Ami</span>";
-    }
-    h += "</div>";
+window.afficherResultatsRecherche=function(users){
+  var el=document.getElementById("ami-resultats");if(!el)return;
+  if(!users||!users.length){el.innerHTML="<div style='font-size:12px;color:var(--t3)'>Aucun résultat</div>";return;}
+  var h="";
+  users.forEach(function(u){
+    var init=((u.prenom||u.pseudo||"?")[0]).toUpperCase();
+    var isAmi=(window._mesAmis||[]).includes(u.uid);
+    h+="<div style='display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border-radius:12px;margin-bottom:6px'>";
+    h+="<div style='width:38px;height:38px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green)'>"+init+"</div>";
+    h+="<div style='flex:1'><div style='font-size:13px;font-weight:600;color:var(--t)'>"+(u.prenom||"")+" "+(u.nom||"")+"</div>";
+    h+="<div style='font-size:11px;color:var(--green)'>@"+(u.pseudo||"—")+"</div></div>";
+    if(!isAmi)h+="<button data-uid='"+u.uid+"' data-pseudo='"+(u.pseudo||"ami")+"' style='padding:7px 14px;border:none;border-radius:20px;background:var(--green);color:#fff;font-size:11px;font-weight:700;cursor:pointer'>+ Ami</button>";
+    else h+="<span style='font-size:11px;color:var(--t3)'>✓</span>";
+    h+="</div>";
   });
-  el.innerHTML = h;
-  el.querySelectorAll("[data-uid]").forEach(function(btn) {
-    btn.addEventListener("click", function() {
-      ajouterAmiDepuisRecherche(btn.dataset.uid, btn.dataset.pseudo);
-    });
+  el.innerHTML=h;
+  el.querySelectorAll("[data-uid]").forEach(function(btn){
+    btn.addEventListener("click",function(){ajouterAmiDepuisRecherche(btn.dataset.uid,btn.dataset.pseudo);});
   });
 };
-
-window.afficherListeAmis = function(amis) {
-  var el = document.getElementById("ami-liste");
-  if(!el) return;
-  if(!amis || !amis.length) {
-    el.innerHTML = "<div style='padding:16px;text-align:center;color:var(--t3);font-size:12px'>Ajoute des amis via la recherche 👆</div>";
-    return;
-  }
-  var h = "";
-  amis.forEach(function(u) {
-    var init = ((u.prenom||"?")[0]).toUpperCase();
-    h += "<div style='display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line);cursor:pointer' data-uid='" + u.uid + "'>";
-    h += "<div style='width:40px;height:40px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green)'>" + init + "</div>";
-    h += "<div style='flex:1'><div style='font-size:13px;font-weight:600;color:var(--t)'>" + (u.prenom||"") + " " + (u.nom||"") + "</div>";
-    h += "<div style='font-size:11px;color:var(--green)'>@" + (u.pseudo||"—") + "</div></div>";
-    h += "<div style='font-size:11px;color:var(--t3)'>Hcp " + (u.handicap!=null?u.handicap:"—") + "</div>";
-    h += "</div>";
+window.afficherListeAmis=function(amis){
+  var el=document.getElementById("ami-liste");if(!el)return;
+  if(!amis||!amis.length){el.innerHTML="<div style='padding:16px;text-align:center;color:var(--t3);font-size:12px'>Ajoute des amis via la recherche 👆</div>";return;}
+  var h="";
+  amis.forEach(function(u){
+    var init=((u.prenom||"?")[0]).toUpperCase();
+    h+="<div style='display:flex;align-items:center;gap:11px;padding:12px 14px;border-bottom:0.5px solid var(--line);cursor:pointer' data-uid='"+u.uid+"'>";
+    h+="<div style='width:40px;height:40px;border-radius:50%;background:var(--gdim);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--green)'>"+init+"</div>";
+    h+="<div style='flex:1'><div style='font-size:13px;font-weight:600;color:var(--t)'>"+(u.prenom||"")+" "+(u.nom||"")+"</div>";
+    h+="<div style='font-size:11px;color:var(--green)'>@"+(u.pseudo||"—")+"</div></div>";
+    h+="</div>";
   });
-  el.innerHTML = h;
-  el.querySelectorAll("[data-uid]").forEach(function(row) {
-    row.addEventListener("click", function() {
-      if(window.ouvrirProfilPublic) ouvrirProfilPublic(row.dataset.uid, "s-profile");
-    });
+  el.innerHTML=h;
+  el.querySelectorAll("[data-uid]").forEach(function(row){
+    row.addEventListener("click",function(){if(window.ouvrirProfilPublic)ouvrirProfilPublic(row.dataset.uid,"s-profile");});
   });
 };
-
-window.toggleAmi = function(uid, add) {
-  document.dispatchEvent(new CustomEvent("toggle-ami", {detail:{uid:uid, add:add}}));
-  if(window.showToast) showToast(add ? "Ami ajouté 🤝" : "Ami retiré");
-  setTimeout(function(){ document.dispatchEvent(new CustomEvent("eagl-load-amis")); }, 600);
-};
-
-// Charger amis quand on va sur s-profile
-var _origGoTo18 = window.goTo;
-if(_origGoTo18) {
-  window.goTo = function(id) {
-    _origGoTo18(id);
-    if(id === 's-profile') {
-      setTimeout(function(){ document.dispatchEvent(new CustomEvent("eagl-load-amis")); }, 400);
-    }
-  };
-}
-</script>
-<script>
-window.rechercherGolfParVille = function() {
-  var inp = document.getElementById('geo-ville-input');
-  var ville = inp ? inp.value.trim() : '';
-  if(!ville) return;
-  rechercherGolfParVilleDirecte(ville);
-};
-
-window.rechercherGolfParVilleDirecte = function(ville) {
-  var golfsList = document.getElementById('golfs-list');
-  if(golfsList) golfsList.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px"><div class="spinner" style="margin:0 auto 8px;width:16px;height:16px;border-width:2px"></div>Recherche des golfs près de ' + ville + '...</div>';
-  
-  // Utiliser Nominatim pour géocoder la ville
-  fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(ville + ', France') + '&format=json&limit=1', {
-    headers: {'Accept-Language': 'fr'}
-  })
-  .then(function(r){ return r.json(); })
-  .then(function(data) {
-    if(!data || !data.length) {
-      if(golfsList) golfsList.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Ville non trouvée 😕</div>';
-      return;
-    }
-    var lat = parseFloat(data[0].lat);
-    var lng = parseFloat(data[0].lon);
-    _uLat = lat; _uLng = lng;
-    chargerGolfs(lat, lng);
-  })
-  .catch(function(err) {
-    if(golfsList) golfsList.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Erreur de recherche. Réessaie.</div>';
-  });
+window.toggleAmi=function(uid,add){
+  document.dispatchEvent(new CustomEvent("toggle-ami",{detail:{uid:uid,add:add}}));
+  showToast(add?"Ami ajouté 🤝":"Ami retiré");
+  setTimeout(function(){document.dispatchEvent(new CustomEvent("eagl-load-amis"));},600);
 };
 </script>
-
-window.afficherHistorique = function(parties) {
-  var el = document.getElementById('historique-liste');
-  if(!el) return;
-  if(!parties || !parties.length) {
-    el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--t3);font-size:12px">Aucune partie jouée pour l instant 🏌️</div>';
-    return;
-  }
-  var h = '';
-  parties.forEach(function(p) {
-    var date = p.createdAt?.toDate ? p.createdAt.toDate().toLocaleDateString('fr-FR') : (p.date || '—');
-    var score = p['total_'+window._currentUid];
-    h += '<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg2);border-radius:14px;box-shadow:var(--shadow-sm)">';
-    h += '<div style="width:40px;height:40px;border-radius:12px;background:var(--gdim);border:0.5px solid var(--gring);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">⛳</div>';
-    h += '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--t)">'+(p.golf||'Golf')+'</div>';
-    h += '<div style="font-size:11px;color:var(--t3)">'+date+' · '+(p.trous||18)+' trous</div></div>';
-    if(score) h += '<div style="text-align:right"><div style="font-family:\'Bebas Neue\',sans-serif;font-size:22px;color:var(--green)">'+score+'</div><div style="font-size:10px;color:var(--t3)">coups</div></div>';
-    h += '</div>';
-  });
-  el.innerHTML = h;
-};
 
 </body>
 </html>
